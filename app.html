@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <title>braid / application documentation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="lib/skeleton-2.0.4/css/normalize.css">
+        <link rel="stylesheet" href="lib/skeleton-2.0.4/css/skeleton.css">
+        <link rel="stylesheet" href="css/site.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="column" style="margin-top: 50px">
+                    <img src="braid.png" alt="" width="50" height="50" style="float: left" />
+                    <h1 style="position: relative; left: 10px; top: 5px;">
+                        <a href="/index.html">braid</a> / application documentation
+                    </h1>
+
+                    <p>
+                        While you can link directly the
+                        <a href="https://braidery.github.io/api-doc/braid/index.html">Braid library</a>, it’s generally
+                        faster to use the server and account management applications.
+                    </p>
+                    
+                    <h2><a id="Server_2"></a>Server</h2>
+                    <p>
+                        The server exposes an HTTP API for graph querying and manipulation, and a lua scripting layer.
+                        This application is called <code>braid-server</code>.
+                    </p>
+
+                    <h3><a id="Environment_variables_6"></a>Environment variables</h3>
+                    <p>The server is configured via these environment variables:</p>
+                    <ul>
+                        <li>
+                            <code>DATABASE_URL</code> - The connection string to the underlying database. Examples:
+                            <ul>
+                                <li>
+                                    For a postgres datastore:
+                                    <code>postgres://user:pass@localhost:5432/database-name</code>.
+                                </li>
+                                <li>
+                                    For a rocksdb datastore: <code>rocksdb://braid.rdb</code>. This will store data in
+                                    the directory <code>./braid.rdb</code>.
+                                </li>
+                            </ul>
+                        </li>
+                        <li><code>PORT</code> - The port to run the server on. Defaults to <code>8000</code>.</li>
+                        <li>
+                            <code>SECRET</code> - The postgres implementation uses this as a
+                            <a href="https://en.wikipedia.org/wiki/Pepper_%28cryptography%29">pepper</a> for increased
+                            security. Defaults to an empty string.
+                        </li>
+                        <li>
+                            <code>BRAID_SCRIPT_ROOT</code> - The directory housing the lua scripts. Defaults to
+                            <code>./scripts</code>.
+                        </li>
+                    </ul>
+                    
+                    <h3><a id="HTTP_authentication_17"></a>HTTP authentication</h3>
+                    <p>
+                        The HTTP API uses basic authentication. The username is the user UUID, and the password is the
+                        secret. These are returned by <code>braid-user</code> when you add a new user.
+                    </p>
+                    
+                    <h3><a id="HTTP_status_messages_21"></a>HTTP status messages</h3>
+                    <p>The HTTP API uses these return status codes:</p>
+                    <ul>
+                        <li><code>200</code> - If the request went through fine.</li>
+                        <li><code>401</code> - If authentication failed.</li>
+                        <li>
+                            <code>404</code> - If the endpoint was not found. Note that, due to a current shortcoming
+                            in the routing library, this is used in place <code>405</code> as well.
+                        </li>
+                        <li><code>500</code> - When a server error occurs.</li>
+                    </ul>
+
+                    <h3><a id="HTTP_endpoints_30"></a>HTTP endpoints</h3>
+
+                    <div class="http-endpoint-card">
+                        <p>
+                            <code>PUT /edge/:outbound_id/:type/:inbound_id?weight=:weight</code>: Creates a new edge,
+                            or updates an existing one.
+                        </p>
+                        <p>URL parameters:</p>
+                        <ul>
+                            <li><code>outbound_id</code> - The vertex UUID from which the edge is outbounding.</li>
+                            <li><code>type</code> - The edge type.</li>
+                            <li><code>inbound_id</code> - The vertex UUID into which the edge is inbounding.</li>
+                        </ul>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li><code>weight</code> - The edge weight, which must be between -1.0 and 1.0.</li>
+                        </ul>
+                        <p>Returns nothing.</p>
+                    </div>
+                    
+                    <div class="http-endpoint-card">
+                        <p><code>GET /edge?q=:query</code>: Gets the edges that match the query.</p>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li><code>query</code> - The edge query JSON.</li>
+                        </ul>
+                        <p>Returns a JSON array of edges that match the query.</p>
+                        
+                        <p>
+                            <code>GET /edge?action=count&amp;q=:query</code>: Gets the number of edges that match the
+                            query.
+                        </p>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li><code>query</code> - The edge query JSON.</li>
+                        </ul>
+                        <p>Returns the number of edges that match the query.</p>
+                    </div>
+
+                    <div class="http-endpoint-card">
+                        <p>
+                            <code>PUT /edge?q=:query&amp;weight=:weight</code>: Updates the edges that match the query
+                            with the supplied weight.
+                        </p>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li><code>query</code> - The edge query JSON.</li>
+                            <li>
+                                <code>weight</code> - The weight to set the edges to, which must be between -1.0 and
+                                1.0.
+                            </li>
+                        </ul>
+                        <p>Returns nothing.</p>
+                    </div>
+                    
+                    <div class="http-endpoint-card">
+                        <p><code>DELETE /edge?q=:query</code>: Deletes edges that match the query.</p>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li><code>query</code> - The edge query JSON.</li>
+                        </ul>
+                        <p>Returns nothing.</p>
+                    </div>
+                    
+                    <div class="http-endpoint-card">
+                        <p><code>GET /vertex?q=:query</code>: Get vertices that match a query.</p>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li><code>query</code> - The vertex query JSON.</li>
+                        </ul>
+                        <p>Returns a JSON array of the vertices.</p>
+                        
+                        <p><code>POST /vertex?type=:type</code> - Creates a new vertex with the given type.</p>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li>
+                                <code>type</code> - The type of the vertex. Must be less than 256 characters long, and
+                                can only contain letters, numbers, dashes, and underscores.
+                            </li>
+                        </ul>
+                        <p>Returns the vertex UUID.</p>
+                    </div>
+                    
+                    <div class="http-endpoint-card">
+                        <p>
+                            <code>PUT /vertex?q=:query&amp;type=:type</code>: Updates existing vertices that match a query.
+                        </p>
+                        <p>Query parameters:</p>
+                        <ul>
+                            <li><code>query</code> - The vertex query JSON.</li>
+                            <li>
+                                <code>type</code> - Matching vertices will be updated to have this type. Must be less than
+                                256 characters long, and can only contain letters, numbers, dashes, and underscores.
+                            </li>
+                        </ul>
+                        <p>Returns nothing.</p>
+                    </div>
+                    
+                    <div class="http-endpoint-card">
+                        <p><code>DELETE /vertex?q=:query</code>: Deletes vertices that match a query.</p>
+                        <p>Query parameters:</p>
+                        <ul>
+                        <li><code>query</code> - The vertex query JSON.</li>
+                        </ul>
+                        <p>Returns nothing.</p>
+                    </div>
+                    
+                    <div class="http-endpoint-card">
+                        <p><code>POST /script/:filename</code>: Runs a script with the given filename.</p>
+                        <p>URL parameters:</p>
+                        <ul>
+                        <li><code>filename</code> - The lua script to run.</li>
+                        </ul>
+                        <p>The request body can be JSON. When it is, it is passed to the script as <code>arg</code>.</p>
+                        <p>Returns the value returned by the script, serialized to JSON.</p>
+                    </div>
+                    
+                    <div class="http-endpoint-card">
+                        <p><code>POST /transaction</code>: Executes several requests in a single transaction.</p>
+                        <p>The request body must be a JSON array of requests.</p>
+                        <p>Returns a JSON array of responses.</p>
+                    </div>
+                    
+                    <h3><a id="Scripting_139"></a>Scripting</h3>
+                    <p>
+                        The server has a lua-based scripting layer, which allows you to run several requests without
+                        the network overhead of repeated HTTP requests. See
+                        <a href="https://github.com/braidery/braid/tree/develop/bin/test_scripts">bin/test_scripts</a>
+                        for the test scripts as examples. You can reuse
+                        <a href="https://github.com/braidery/braid/blob/develop/bin/test_scripts/queries.lua">bin/test_scripts/queries.lua</a>
+                        to help build vertex and edge queries in lua scripts more easily.
+                    </p>
+                    <p>Scripts have access to these globals:</p>
+                    <ul>
+                        <li><code>account_id</code> - The UUID of the account that is executing the script.</li>
+                        <li><code>arg</code> - The JSON body of the request that called the script.</li>
+                        <li>
+                            All transaction methods are exposed as global functions. All requests in the script are run
+                            through a single transaction.
+                        </li>
+                    </ul>
+
+                    <h2><a id="Account_Management_148"></a>Account Management</h2>
+                    <p>
+                        For security reasons, account management is handled in a separate application, and not exposed
+                        via HTTP API or the lua scripting layer. This application is called <code>braid-user</code>,
+                        and allows you to create and delete accounts.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

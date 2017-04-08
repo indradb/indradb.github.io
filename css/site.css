@@ -9,3 +9,22 @@ li {
 a {
     text-decoration: none;
 }
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 2.5em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+.http-endpoint-card {
+    border-radius: 5px;
+    border: 1px solid gray;
+    padding: 1em 1em 0 1em;
+    margin-bottom: 2em;
+}
