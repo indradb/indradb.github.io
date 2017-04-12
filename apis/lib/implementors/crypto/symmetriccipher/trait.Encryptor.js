@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors["braid"] = [];
+implementors["braid_server"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);
