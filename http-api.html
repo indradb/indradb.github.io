@@ -167,9 +167,9 @@
                     <p>
                         The server has a lua-based scripting layer, which allows you to run several requests without
                         the network overhead of repeated HTTP requests. See
-                        <a href="https://github.com/braidery/braid/tree/develop/bin/test_scripts">bin/test_scripts</a>
+                        <a href="https://github.com/braidery/braid/tree/develop/test_scripts">test_scripts</a>
                         for the test scripts as examples. You can reuse
-                        <a href="https://github.com/braidery/braid/blob/develop/bin/test_scripts/queries.lua">bin/test_scripts/queries.lua</a>
+                        <a href="https://github.com/braidery/braid/blob/develop/test_scripts/queries.lua">test_scripts/queries.lua</a>
                         to help build vertex and edge queries in lua scripts more easily.
                     </p>
                     <p>Scripts have access to these globals:</p>
@@ -181,13 +181,6 @@
                             through a single transaction.
                         </li>
                     </ul>
-
-                    <h2><a id="Account_Management_148"></a>Account Management</h2>
-                    <p>
-                        For security reasons, account management is handled in a separate application, and not exposed
-                        via HTTP API or the lua scripting layer. This application is called <code>braid-user</code>,
-                        and allows you to create and delete accounts.
-                    </p>
                 </div>
             </div>
         </div>
