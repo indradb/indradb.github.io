@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <title>braid / scripting</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="lib/skeleton-2.0.4/css/normalize.css">
+        <link rel="stylesheet" href="lib/skeleton-2.0.4/css/skeleton.css">
+        <link rel="stylesheet" href="css/site.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="column" style="margin-top: 50px">
+                    <img src="braid.png" alt="" width="50" height="50" style="float: left" />
+                    <h1 style="position: relative; left: 10px; top: 5px;">
+                        <a href="/index.html">braid</a> / scripting
+                    </h1>
+
+                    <p>
+                        The server has a lua-based scripting layer, which allows you to run several requests without
+                        the network overhead of repeated HTTP API requests. Scripts are executed via a request to the
+                        HTTP API. See <code>test_scripts</code> for the test scripts as examples. You can reuse
+                        <code>test_scripts/queries.lua</code> to help build vertex and edge queries in lua scripts more
+                        easily.
+                    </p>
+                    <p>Scripts have access to these globals:</p>
+                    <ul>
+                        <li><code>account_id</code> - The UUID of the account that is executing the script.</li>
+                        <li><code>arg</code> - The JSON body of the request that called the script.</li>
+                        <li>
+                            All transaction methods are exposed as global functions. All requests in the script are run
+                            through a single transaction.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
