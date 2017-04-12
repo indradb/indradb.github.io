@@ -22,7 +22,7 @@ h3 {
     font-size: 1.5em;
 }
 
-.http-endpoint-card {
+.card {
     border-radius: 5px;
     border: 1px solid gray;
     padding: 1em 1em 0 1em;
