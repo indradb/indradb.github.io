@@ -161,7 +161,8 @@
                         <p><code>POST /transaction</code>: Executes several requests in a single transaction.</p>
                         <p>
                             The request body must be a JSON array of requests. Each request is an object that includes
-                            an <code>action</code> argument, along with arguments associated with the action.
+                            an <code>action</code> argument specifying what method to run, along with arguments
+                            associated with the method.
                         </p>
                         <p>Returns a JSON array of responses.</p>
                         <p>The transaction requests and responses:</p>
