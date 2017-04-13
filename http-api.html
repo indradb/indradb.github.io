@@ -159,8 +159,163 @@
                     
                     <div class="card">
                         <p><code>POST /transaction</code>: Executes several requests in a single transaction.</p>
-                        <p>The request body must be a JSON array of requests.</p>
+                        <p>
+                            The request body must be a JSON array of requests. Each request is an object that includes
+                            an <code>action</code> argument, along with arguments associated with the action.
+                        </p>
                         <p>Returns a JSON array of responses.</p>
+                        <p>The transaction requests and responses:</p>
+
+                        <div class="card">
+                            <p><code>create_vertex</code> - Creates a new vertex.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>type</code> - The vertex type. Must be less than 256 characters long, and can
+                                    only contain letters, numbers, dashes, and underscores.
+                                </li>
+                            </ul>
+
+                            <p>Returns the new vertex UUID.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>get_vertices</code> - Gets vertices by a given query.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                    use.
+                                </li>
+                            </ul>
+
+                            <p>Returns the a list of the vertices matching the query.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>set_vertices</code> - Updates existing vertices by a given query with a new type.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>type</code> - The vertex type. Must be less than 256 characters long, and can
+                                    only contain letters, numbers, dashes, and underscores.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>delete_vertices</code> - Deletes vertices by a given query.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                    use.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>create_edge</code> - Creates a new edge.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>key</code> - The <a href="/concepts.html#EdgeKeys">edge key</a> that identifies
+                                    the edge.
+                                </li>
+                                <li>
+                                    <code>weight</code> - The weight to set the edge to; it must be between -1.0 and 1.0.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>get_edges</code> - Gets edges by a given query.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                    use.
+                                </li>
+                            </ul>
+
+                            <p>Returns a list of the edges matching the query.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>get_edge_count</code> - Gets the number of edges that match a given query.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                    use.
+                                </li>
+                            </ul>
+
+                            <p>Returns the number of edges that match the query.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>set_edges</code> - Updates existing edges that match a given query with a new weight.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>weight</code> - The weight to set the edge to; it must be between -1.0 and 1.0.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>delete_edges</code> - Deletes edges by a given query.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                    use.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>run_script</code> - Executes a lua script.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>name</code> - The name of the lua script, which should be in the server's script
+                                    root directory. It should include the `.lua` extension of the file.
+                                </li>
+                                <li>
+                                    <code>payload</code> - A JSON-serializable payload to send to the script.
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
