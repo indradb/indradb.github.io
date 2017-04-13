@@ -21,9 +21,14 @@
                     <p>
                         The server has a lua-based scripting layer, which allows you to run several requests without
                         the network overhead of repeated HTTP API requests. Scripts are executed via a request to the
-                        HTTP API. See <code>test_scripts</code> for the test scripts as examples. You can reuse
-                        <code>test_scripts/queries.lua</code> to help build vertex and edge queries in lua scripts more
-                        easily.
+                        HTTP API.
+                    </p>
+
+                    <p>
+                        See <a href="https://github.com/braidery/braid/tree/develop/test_scripts">test_scripts</a> for
+                        the test scripts as examples. You can reuse
+                        <a href="https://github.com/braidery/braid/blob/develop/test_scripts/queries.lua">test_scripts/queries.lua</a>
+                        to help build vertex and edge queries in lua scripts more easily.
                     </p>
 
                     <p>Scripts have access to these globals:</p>
@@ -37,11 +42,376 @@
                     </ul>
 
                     <p>
-                        See <a href="https://github.com/braidery/braid/tree/develop/test_scripts">test_scripts</a> for
-                        the test scripts as examples. You can reuse
-                        <a href="https://github.com/braidery/braid/blob/develop/test_scripts/queries.lua">test_scripts/queries.lua</a>
-                        to help build vertex and edge queries in lua scripts more easily.
+                        Furthermore, you have access to all of the transaction methods. All requests are run through a
+                        single transaction, and are committed after the script ends. Here are the transaction methods:
                     </p>
+
+                    <div class="card">
+                        <p><code>create_vertex</code> - Creates a new vertex.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>type</code> - The vertex type. Must be less than 256 characters long, and can
+                                only contain letters, numbers, dashes, and underscores.
+                            </li>
+                        </ol>
+
+                        <p>Returns the new vertex UUID.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>get_vertices</code> - Gets vertices by a given query.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                use.
+                            </li>
+                        </ol>
+
+                        <p>Returns the a list of the vertices matching the query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>set_vertices</code> - Updates existing vertices by a given query with a new type.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                use.
+                            </li>
+                            <li>
+                                <code>type</code> - The vertex type. Must be less than 256 characters long, and can
+                                only contain letters, numbers, dashes, and underscores.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>delete_vertices</code> - Deletes vertices by a given query.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                use.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>create_edge</code> - Creates a new edge.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>key</code> - The <a href="/concepts.html#EdgeKeys">edge key</a> that identifies
+                                the edge.
+                            </li>
+                            <li>
+                                <code>weight</code> - The weight to set the edge to; it must be between -1.0 and 1.0.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>get_edges</code> - Gets edges by a given query.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                use.
+                            </li>
+                        </ol>
+
+                        <p>Returns a list of the edges matching the query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>get_edge_count</code> - Gets the number of edges that match a given query.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                use.
+                            </li>
+                        </ol>
+
+                        <p>Returns the number of edges that match the query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>set_edges</code> - Updates existing edges that match a given query with a new weight.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                use.
+                            </li>
+                            <li>
+                                <code>weight</code> - The weight to set the edge to; it must be between -1.0 and 1.0.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>delete_edges</code> - Deletes edges by a given query.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                use.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>get_global_metadata</code> - Gets a global
+                            <a href="/concepts.html#Metadata_27">metadata</a> value.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns the metadata value.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>set_global_metadata</code> - Sets a global
+                            <a href="/concepts.html#Metadata_27">metadata</a> value.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                            <li>
+                                <code>value</code> - The metadata value.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>delete_global_metadata</code> - Deletes a global
+                            <a href="/concepts.html#Metadata_27">metadata</a> value.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>get_account_metadata</code> - Gets an account
+                            <a href="/concepts.html#Metadata_27">metadata</a> value.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>account_id</code> - The ID of the account that the metadata is tied to.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns the metadata value.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>set_account_metadata</code> - Sets an account
+                            <a href="/concepts.html#Metadata_27">metadata</a> value.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>account_id</code> - The ID of the account that the metadata is tied to.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                            <li>
+                                <code>value</code> - The metadata value.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>delete_account_metadata</code> - Deletes an account
+                            <a href="/concepts.html#Metadata_27">metadata</a> value.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>account_id</code> - The ID of the account that the metadata is tied to.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>get_vertex_metadata</code> - Gets vertex
+                            <a href="/concepts.html#Metadata_27">metadata</a> values by a vertex query.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to run.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns a mapping of vertex IDs to metadata values.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>set_vertex_metadata</code> - Sets vertex
+                            <a href="/concepts.html#Metadata_27">metadata</a> values by a vertex query.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to run.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                            <li>
+                                <code>value</code> - The metadata value.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>delete_vertex_metadata</code> - Deletes vertex
+                            <a href="/concepts.html#Metadata_27">metadata</a> values by a vertex query.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to run.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>get_edge_metadata</code> - Gets edge
+                            <a href="/concepts.html#Metadata_27">metadata</a> values by an edge query.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to run.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns a mapping of <a href="/concepts.html#EdgeKeys">edge keys</a> to metadata values.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>set_edge_metadata</code> - Sets edge
+                            <a href="/concepts.html#Metadata_27">metadata</a> values by an edge query.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to run.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                            <li>
+                                <code>value</code> - The metadata value.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
+
+                    <div class="card">
+                        <p>
+                            <code>delete_edge_metadata</code> - Deletes edge
+                            <a href="/concepts.html#Metadata_27">metadata</a> values by an edge query.
+                        </p>
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to run.
+                            </li>
+                            <li>
+                                <code>name</code> - The name of the metadata variable.
+                            </li>
+                        </ol>
+
+                        <p>Returns nothing.</p>
+                    </div>
                 </div>
             </div>
         </div>
