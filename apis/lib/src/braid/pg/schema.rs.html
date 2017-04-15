@@ -127,21 +127,17 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
-<span id="85">85</span>
-<span id="86">86</span>
 </pre><pre class='rust '>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SCHEMA</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;static</span> <span class='ident'>str</span> <span class='op'>=</span> <span class='string'>&quot;
 /* Accounts */
 CREATE TABLE accounts (
     id UUID NOT NULL,
-    email VARCHAR(250) NOT NULL,
     salt VARCHAR(150) NOT NULL,
     api_secret_hash VARCHAR(150) NOT NULL
 );
 
 ALTER TABLE accounts
-    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id),
-    ADD CONSTRAINT accounts_email_ukey UNIQUE (email);
+    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 
 /* Vertices */
 CREATE TABLE vertices (

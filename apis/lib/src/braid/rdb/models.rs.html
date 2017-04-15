@@ -91,8 +91,6 @@
 <span id="46">46</span>
 <span id="47">47</span>
 <span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>uuid</span>::<span class='ident'>Uuid</span>;
 <span class='kw'>use</span> <span class='ident'>models</span>;
@@ -100,15 +98,13 @@
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>AccountValue</span> {
-    <span class='kw'>pub</span> <span class='ident'>email</span>: <span class='ident'>String</span>,
     <span class='kw'>pub</span> <span class='ident'>salt</span>: <span class='ident'>String</span>,
     <span class='kw'>pub</span> <span class='ident'>hash</span>: <span class='ident'>String</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>AccountValue</span> {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>email</span>: <span class='ident'>String</span>, <span class='ident'>salt</span>: <span class='ident'>String</span>, <span class='ident'>hash</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>salt</span>: <span class='ident'>String</span>, <span class='ident'>hash</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
         <span class='ident'>AccountValue</span> {
-            <span class='ident'>email</span>: <span class='ident'>email</span>,
             <span class='ident'>salt</span>: <span class='ident'>salt</span>,
             <span class='ident'>hash</span>: <span class='ident'>hash</span>,
         }
