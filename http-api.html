@@ -78,22 +78,6 @@
                     </div>
 
                     <div class="card">
-                        <p>
-                            <code>PUT /edge?q=:query&amp;weight=:weight</code>: Updates the edges that match the query
-                            with the supplied weight.
-                        </p>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li><code>query</code> - <a href="/concepts.html#Edge_queries_84">edge query JSON</a>.</li>
-                            <li>
-                                <code>weight</code> - The weight to set the edges to, which must be between -1.0 and
-                                1.0.
-                            </li>
-                        </ul>
-                        <p>Returns nothing.</p>
-                    </div>
-                    
-                    <div class="card">
                         <p><code>DELETE /edge?q=:query</code>: Deletes edges that match the query.</p>
                         <p>Query parameters:</p>
                         <ul>
@@ -121,21 +105,6 @@
                             </li>
                         </ul>
                         <p>Returns the vertex UUID.</p>
-                    </div>
-                    
-                    <div class="card">
-                        <p>
-                            <code>PUT /vertex?q=:query&amp;type=:type</code>: Updates existing vertices that match a query.
-                        </p>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li><code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query JSON</a>.</li>
-                            <li>
-                                <code>type</code> - Matching vertices will be updated to have this type. Must be less than
-                                256 characters long, and can only contain letters, numbers, dashes, and underscores.
-                            </li>
-                        </ul>
-                        <p>Returns nothing.</p>
                     </div>
                     
                     <div class="card">
@@ -196,24 +165,6 @@
                         </div>
 
                         <div class="card">
-                            <p><code>set_vertices</code> - Updates existing vertices by a given query with a new type.
-
-                            <p>Arguments:</p>
-                            <ul>
-                                <li>
-                                    <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
-                                    use.
-                                </li>
-                                <li>
-                                    <code>type</code> - The vertex type. Must be less than 256 characters long, and can
-                                    only contain letters, numbers, dashes, and underscores.
-                                </li>
-                            </ul>
-
-                            <p>Returns nothing.</p>
-                        </div>
-
-                        <div class="card">
                             <p><code>delete_vertices</code> - Deletes vertices by a given query.
 
                             <p>Arguments:</p>
@@ -270,23 +221,6 @@
                             </ul>
 
                             <p>Returns the number of edges that match the query.</p>
-                        </div>
-
-                        <div class="card">
-                            <p><code>set_edges</code> - Updates existing edges that match a given query with a new weight.
-
-                            <p>Arguments:</p>
-                            <ul>
-                                <li>
-                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
-                                    use.
-                                </li>
-                                <li>
-                                    <code>weight</code> - The weight to set the edge to; it must be between -1.0 and 1.0.
-                                </li>
-                            </ul>
-
-                            <p>Returns nothing.</p>
                         </div>
 
                         <div class="card">
