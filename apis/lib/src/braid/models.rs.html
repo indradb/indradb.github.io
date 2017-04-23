@@ -294,7 +294,7 @@
 <span class='kw'>use</span> <span class='ident'>chrono</span>::{<span class='ident'>UTC</span>, <span class='ident'>DateTime</span>};
 
 <span class='macro'>lazy_static</span><span class='macro'>!</span> {
-	<span class='kw'>static</span> <span class='kw-2'>ref</span> <span class='ident'>TYPE_VALIDATOR</span>: <span class='ident'>Regex</span> <span class='op'>=</span> <span class='ident'>Regex</span>::<span class='ident'>new</span>(<span class='string'>&quot;^[a-zA-Z0-9-_]+$&quot;</span>).<span class='ident'>unwrap</span>();
+    <span class='kw'>static</span> <span class='kw-2'>ref</span> <span class='ident'>TYPE_VALIDATOR</span>: <span class='ident'>Regex</span> <span class='op'>=</span> <span class='ident'>Regex</span>::<span class='ident'>new</span>(<span class='string'>&quot;^[a-zA-Z0-9-_]+$&quot;</span>).<span class='ident'>unwrap</span>();
 }
 
 <span class='doccomment'>/// A vertex.</span>
@@ -375,8 +375,8 @@
     <span class='doccomment'>/// The weight of the edge.</span>
     <span class='kw'>pub</span> <span class='ident'>weight</span>: <span class='ident'>Weight</span>,
 
-    <span class='doccomment'>/// When the edge was last updated.</span>
-    <span class='kw'>pub</span> <span class='ident'>update_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>
+    <span class='doccomment'>/// When the edge was created.</span>
+    <span class='kw'>pub</span> <span class='ident'>created_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>
 }
 
 <span class='kw'>impl</span> <span class='ident'>Edge</span> {
@@ -395,12 +395,12 @@
     <span class='doccomment'>/// # Arguments</span>
     <span class='doccomment'>/// * `key` - The key to the edge.</span>
     <span class='doccomment'>/// * `weight` - The weight of the edge.</span>
-    <span class='doccomment'>/// * `update_datetime` - When the edge was last updated.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>key</span>: <span class='ident'>EdgeKey</span>, <span class='ident'>weight</span>: <span class='ident'>Weight</span>, <span class='ident'>update_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Edge</span> {
+    <span class='doccomment'>/// * `created_datetime` - When the edge was created.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>key</span>: <span class='ident'>EdgeKey</span>, <span class='ident'>weight</span>: <span class='ident'>Weight</span>, <span class='ident'>created_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Edge</span> {
         <span class='ident'>Edge</span> {
             <span class='ident'>key</span>: <span class='ident'>key</span>,
             <span class='ident'>weight</span>: <span class='ident'>weight</span>,
-            <span class='ident'>update_datetime</span>: <span class='ident'>update_datetime</span>
+            <span class='ident'>created_datetime</span>: <span class='ident'>created_datetime</span>
         }
     }
 }

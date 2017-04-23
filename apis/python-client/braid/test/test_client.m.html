@@ -1047,8 +1047,6 @@ table {
     <li class="mono"><a href="#braid.test.test_client.ClientTestCase.test_get_edges">test_get_edges</a></li>
     <li class="mono"><a href="#braid.test.test_client.ClientTestCase.test_get_vertices">test_get_vertices</a></li>
     <li class="mono"><a href="#braid.test.test_client.ClientTestCase.test_run_script">test_run_script</a></li>
-    <li class="mono"><a href="#braid.test.test_client.ClientTestCase.test_set_edges">test_set_edges</a></li>
-    <li class="mono"><a href="#braid.test.test_client.ClientTestCase.test_set_vertices">test_set_vertices</a></li>
     <li class="mono"><a href="#braid.test.test_client.ClientTestCase.setUpClass">setUpClass</a></li>
     <li class="mono"><a href="#braid.test.test_client.ClientTestCase.tearDownClass">tearDownClass</a></li>
   </ul>
@@ -1091,14 +1089,6 @@ class ClientTestCase(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].id, uuid)
 
-    def test_set_vertices(self):
-        uuid = self.client.create_vertex("foo")
-        self.client.set_vertices(VertexQuery.vertices([uuid]), "bar")
-        results = self.client.get_vertices(VertexQuery.vertex(uuid))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].id, uuid)
-        self.assertEqual(results[0].type, "bar")
-
     def test_delete_vertices(self):
         uuid = self.client.create_vertex("foo")
         self.client.delete_vertices(VertexQuery.vertex(uuid))
@@ -1124,19 +1114,6 @@ class ClientTestCase(unittest.TestCase):
         self.client.create_edge(key, 0.5)
         count = self.client.get_edge_count(EdgeQuery.edge(key))
         self.assertEqual(count, 1)
-
-    def test_set_edges(self):
-        outbound_id = self.client.create_vertex("foo")
-        inbound_id = self.client.create_vertex("foo")
-        key = EdgeKey(outbound_id, "bar", inbound_id)
-        self.client.create_edge(key, 0.5)
-        self.client.set_edges(EdgeQuery.edge(key), 1.0)
-        results = self.client.get_edges(EdgeQuery.edge(key))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].key.outbound_id, outbound_id)
-        self.assertEqual(results[0].key.type, "bar")
-        self.assertEqual(results[0].key.inbound_id, inbound_id)
-        self.assertEqual(results[0].weight, 1.0)
 
     def test_delete_edges(self):
         outbound_id = self.client.create_vertex("foo")
@@ -1205,14 +1182,6 @@ in order to be run.</p>
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].id, uuid)
 
-    def test_set_vertices(self):
-        uuid = self.client.create_vertex("foo")
-        self.client.set_vertices(VertexQuery.vertices([uuid]), "bar")
-        results = self.client.get_vertices(VertexQuery.vertex(uuid))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].id, uuid)
-        self.assertEqual(results[0].type, "bar")
-
     def test_delete_vertices(self):
         uuid = self.client.create_vertex("foo")
         self.client.delete_vertices(VertexQuery.vertex(uuid))
@@ -1238,19 +1207,6 @@ in order to be run.</p>
         self.client.create_edge(key, 0.5)
         count = self.client.get_edge_count(EdgeQuery.edge(key))
         self.assertEqual(count, 1)
-
-    def test_set_edges(self):
-        outbound_id = self.client.create_vertex("foo")
-        inbound_id = self.client.create_vertex("foo")
-        key = EdgeKey(outbound_id, "bar", inbound_id)
-        self.client.create_edge(key, 0.5)
-        self.client.set_edges(EdgeQuery.edge(key), 1.0)
-        results = self.client.get_edges(EdgeQuery.edge(key))
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].key.outbound_id, outbound_id)
-        self.assertEqual(results[0].key.type, "bar")
-        self.assertEqual(results[0].key.inbound_id, inbound_id)
-        self.assertEqual(results[0].weight, 1.0)
 
     def test_delete_edges(self):
         outbound_id = self.client.create_vertex("foo")
@@ -3526,61 +3482,6 @@ def subTest(self, msg=None, **params):
     <pre><code>def test_run_script(self):
     result = self.client.run_script("echo.lua", dict(foo="bar"))
     self.assertEqual(result, dict(foo="bar"))
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="braid.test.test_client.ClientTestCase.test_set_edges">
-    <p>def <span class="ident">test_set_edges</span>(</p><p>self)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-braid.test.test_client.ClientTestCase.test_set_edges', this);">Show source &equiv;</a></p>
-  <div id="source-braid.test.test_client.ClientTestCase.test_set_edges" class="source">
-    <pre><code>def test_set_edges(self):
-    outbound_id = self.client.create_vertex("foo")
-    inbound_id = self.client.create_vertex("foo")
-    key = EdgeKey(outbound_id, "bar", inbound_id)
-    self.client.create_edge(key, 0.5)
-    self.client.set_edges(EdgeQuery.edge(key), 1.0)
-    results = self.client.get_edges(EdgeQuery.edge(key))
-    self.assertEqual(len(results), 1)
-    self.assertEqual(results[0].key.outbound_id, outbound_id)
-    self.assertEqual(results[0].key.type, "bar")
-    self.assertEqual(results[0].key.inbound_id, inbound_id)
-    self.assertEqual(results[0].weight, 1.0)
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="braid.test.test_client.ClientTestCase.test_set_vertices">
-    <p>def <span class="ident">test_set_vertices</span>(</p><p>self)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-braid.test.test_client.ClientTestCase.test_set_vertices', this);">Show source &equiv;</a></p>
-  <div id="source-braid.test.test_client.ClientTestCase.test_set_vertices" class="source">
-    <pre><code>def test_set_vertices(self):
-    uuid = self.client.create_vertex("foo")
-    self.client.set_vertices(VertexQuery.vertices([uuid]), "bar")
-    results = self.client.get_vertices(VertexQuery.vertex(uuid))
-    self.assertEqual(len(results), 1)
-    self.assertEqual(results[0].id, uuid)
-    self.assertEqual(results[0].type, "bar")
 </code></pre>
   </div>
 </div>

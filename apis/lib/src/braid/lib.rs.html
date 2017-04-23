@@ -145,10 +145,10 @@
 <span class='kw'>mod</span> <span class='ident'>errors</span>;
 <span class='kw'>mod</span> <span class='ident'>models</span>;
 <span class='kw'>mod</span> <span class='ident'>traits</span>;
-<span class='kw'>mod</span> <span class='ident'>util</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>util</span>;
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>models</span>::<span class='kw-2'>*</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>errors</span>::<span class='kw-2'>*</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>models</span>::<span class='kw-2'>*</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>traits</span>::<span class='kw-2'>*</span>;
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;postgres-datastore&quot;</span>)]</span>

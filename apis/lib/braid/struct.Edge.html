@@ -52,7 +52,7 @@
 <pre class='rust struct'>pub struct Edge {
     pub key: <a class='struct' href='../braid/struct.EdgeKey.html' title='braid::EdgeKey'>EdgeKey</a>,
     pub weight: <a class='struct' href='../braid/struct.Weight.html' title='braid::Weight'>Weight</a>,
-    pub update_datetime: <a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;,
+    pub created_datetime: <a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;,
 }</pre><div class='docblock'><p>An edge.</p>
 
 <p>Edges are how you would represent a verb or a relationship in the
@@ -66,10 +66,10 @@ and directed.</p>
                            <span id='weight.v' class='invisible'>
                            <code>weight: <a class='struct' href='../braid/struct.Weight.html' title='braid::Weight'>Weight</a></code>
                            </span></span><span class='stab '></span><div class='docblock'><p>The weight of the edge.</p>
-</div><span id='structfield.update_datetime' class='structfield'>
-                           <span id='update_datetime.v' class='invisible'>
-                           <code>update_datetime: <a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;</code>
-                           </span></span><span class='stab '></span><div class='docblock'><p>When the edge was last updated.</p>
+</div><span id='structfield.created_datetime' class='structfield'>
+                           <span id='created_datetime.v' class='invisible'>
+                           <code>created_datetime: <a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;</code>
+                           </span></span><span class='stab '></span><div class='docblock'><p>When the edge was created.</p>
 </div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../braid/struct.Edge.html' title='braid::Edge'>Edge</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/braid/models.rs.html#93-117' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.new_with_current_datetime' class='method'><span id='new_with_current_datetime.v' class='invisible'><code>fn <a href='#method.new_with_current_datetime' class='fnname'>new_with_current_datetime</a>(key: <a class='struct' href='../braid/struct.EdgeKey.html' title='braid::EdgeKey'>EdgeKey</a>, weight: <a class='struct' href='../braid/struct.Weight.html' title='braid::Weight'>Weight</a>) -&gt; <a class='struct' href='../braid/struct.Edge.html' title='braid::Edge'>Edge</a></code></span></h4>
 <div class='docblock'><p>Creates a new edge with the current datetime in UTC.</p>
@@ -80,14 +80,14 @@ and directed.</p>
 <li><code>weight</code> - The edge weight.</li>
 <li><code>inbound_id</code> - The id of the inbound vertex.</li>
 </ul>
-</div><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>(key: <a class='struct' href='../braid/struct.EdgeKey.html' title='braid::EdgeKey'>EdgeKey</a>, weight: <a class='struct' href='../braid/struct.Weight.html' title='braid::Weight'>Weight</a>, update_datetime: <a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;) -&gt; <a class='struct' href='../braid/struct.Edge.html' title='braid::Edge'>Edge</a></code></span></h4>
+</div><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>(key: <a class='struct' href='../braid/struct.EdgeKey.html' title='braid::EdgeKey'>EdgeKey</a>, weight: <a class='struct' href='../braid/struct.Weight.html' title='braid::Weight'>Weight</a>, created_datetime: <a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='https://docs.rs/chrono/0.3.0/chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;) -&gt; <a class='struct' href='../braid/struct.Edge.html' title='braid::Edge'>Edge</a></code></span></h4>
 <div class='docblock'><p>Creates a new edge with a specified datetime.</p>
 
 <h1 id='arguments-1' class='section-header'><a href='#arguments-1'>Arguments</a></h1>
 <ul>
 <li><code>key</code> - The key to the edge.</li>
 <li><code>weight</code> - The weight of the edge.</li>
-<li><code>update_datetime</code> - When the edge was last updated.</li>
+<li><code>created_datetime</code> - When the edge was created.</li>
 </ul>
 </div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../braid/struct.Edge.html' title='braid::Edge'>Edge</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/braid/models.rs.html#81' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.clone' class='method'><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../braid/struct.Edge.html' title='braid::Edge'>Edge</a></code></span></h4>

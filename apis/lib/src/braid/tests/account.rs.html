@@ -142,7 +142,7 @@
 }
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>should_fail_when_attempting_to_delete_invalid_accounts</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>sandbox</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>DatastoreTestSandbox</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>)
-	<span class='kw'>where</span> <span class='ident'>D</span>: <span class='ident'>Datastore</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>,
+    <span class='kw'>where</span> <span class='ident'>D</span>: <span class='ident'>Datastore</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>,
           <span class='ident'>T</span>: <span class='ident'>Transaction</span>
 {
     <span class='kw'>let</span> <span class='ident'>result</span> <span class='op'>=</span> <span class='ident'>sandbox</span>.<span class='ident'>datastore</span>.<span class='ident'>delete_account</span>(<span class='ident'>Uuid</span>::<span class='ident'>default</span>());

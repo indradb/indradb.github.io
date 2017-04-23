@@ -987,8 +987,6 @@ table {
     <li class="mono"><a href="#braid.transaction.Transaction.get_edges">get_edges</a></li>
     <li class="mono"><a href="#braid.transaction.Transaction.get_vertices">get_vertices</a></li>
     <li class="mono"><a href="#braid.transaction.Transaction.run_script">run_script</a></li>
-    <li class="mono"><a href="#braid.transaction.Transaction.set_edges">set_edges</a></li>
-    <li class="mono"><a href="#braid.transaction.Transaction.set_vertices">set_vertices</a></li>
   </ul>
 
         </li>
@@ -1044,17 +1042,6 @@ table {
         self._add(action="get_vertices", query=query._query)
         return self
 
-    def set_vertices(self, query, type):
-        """
-        Updates existing vertices by a given query with a new type.
-
-        `query` specifies the `VertexQuery` to use. `type` specifies the new type for the vertices; it must be less
-        than 256 characters long, and can only contain letters, numbers,
-        dashes, and underscores.
-        """
-        self._add(action="set_vertices", query=query._query, type=type)
-        return self
-
     def delete_vertices(self, query):
         """
         Deletes vertices by a given query.
@@ -1090,16 +1077,6 @@ table {
         `query` specifies the `EdgeQuery` to use.
         """
         self._add(action="get_edge_count", query=query._query)
-        return self
-
-    def set_edges(self, query, weight):
-        """
-        Updates existing edges that match a given query with a new weight.
-
-        `query` specifies the `EdgeQuery` to use. `weight` is the weight to set the edges to; it must be between -1.0
-        and 1.0.
-        """
-        self._add(action="set_edges", query=query._query, weight=weight)
         return self
 
     def delete_edges(self, query):
@@ -1179,17 +1156,6 @@ chain queries together, e.g.:</p>
         self._add(action="get_vertices", query=query._query)
         return self
 
-    def set_vertices(self, query, type):
-        """
-        Updates existing vertices by a given query with a new type.
-
-        `query` specifies the `VertexQuery` to use. `type` specifies the new type for the vertices; it must be less
-        than 256 characters long, and can only contain letters, numbers,
-        dashes, and underscores.
-        """
-        self._add(action="set_vertices", query=query._query, type=type)
-        return self
-
     def delete_vertices(self, query):
         """
         Deletes vertices by a given query.
@@ -1225,16 +1191,6 @@ chain queries together, e.g.:</p>
         `query` specifies the `EdgeQuery` to use.
         """
         self._add(action="get_edge_count", query=query._query)
-        return self
-
-    def set_edges(self, query, weight):
-        """
-        Updates existing edges that match a given query with a new weight.
-
-        `query` specifies the `EdgeQuery` to use. `weight` is the weight to set the edges to; it must be between -1.0
-        and 1.0.
-        """
-        self._add(action="set_edges", query=query._query, weight=weight)
         return self
 
     def delete_edges(self, query):
@@ -1503,66 +1459,6 @@ include the <code>.lua</code> extension of the file. <code>payload</code> is a J
     include the `.lua` extension of the file. `payload` is a JSON-serializable payload to send to the script.
     """
     self._add(action="run_script", name=name, payload=payload)
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="braid.transaction.Transaction.set_edges">
-    <p>def <span class="ident">set_edges</span>(</p><p>self, query, weight)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Updates existing edges that match a given query with a new weight.</p>
-<p><code>query</code> specifies the <code>EdgeQuery</code> to use. <code>weight</code> is the weight to set the edges to; it must be between -1.0
-and 1.0.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-braid.transaction.Transaction.set_edges', this);">Show source &equiv;</a></p>
-  <div id="source-braid.transaction.Transaction.set_edges" class="source">
-    <pre><code>def set_edges(self, query, weight):
-    """
-    Updates existing edges that match a given query with a new weight.
-    `query` specifies the `EdgeQuery` to use. `weight` is the weight to set the edges to; it must be between -1.0
-    and 1.0.
-    """
-    self._add(action="set_edges", query=query._query, weight=weight)
-    return self
-</code></pre>
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="braid.transaction.Transaction.set_vertices">
-    <p>def <span class="ident">set_vertices</span>(</p><p>self, query, type)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Updates existing vertices by a given query with a new type.</p>
-<p><code>query</code> specifies the <code>VertexQuery</code> to use. <code>type</code> specifies the new type for the vertices; it must be less
-than 256 characters long, and can only contain letters, numbers,
-dashes, and underscores.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-braid.transaction.Transaction.set_vertices', this);">Show source &equiv;</a></p>
-  <div id="source-braid.transaction.Transaction.set_vertices" class="source">
-    <pre><code>def set_vertices(self, query, type):
-    """
-    Updates existing vertices by a given query with a new type.
-    `query` specifies the `VertexQuery` to use. `type` specifies the new type for the vertices; it must be less
-    than 256 characters long, and can only contain letters, numbers,
-    dashes, and underscores.
-    """
-    self._add(action="set_vertices", query=query._query, type=type)
     return self
 </code></pre>
   </div>

@@ -248,29 +248,6 @@
 <span id="203">203</span>
 <span id="204">204</span>
 <span id="205">205</span>
-<span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
-<span id="209">209</span>
-<span id="210">210</span>
-<span id="211">211</span>
-<span id="212">212</span>
-<span id="213">213</span>
-<span id="214">214</span>
-<span id="215">215</span>
-<span id="216">216</span>
-<span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::{<span class='ident'>Datastore</span>, <span class='ident'>Transaction</span>, <span class='ident'>VertexQuery</span>};
 <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>sandbox</span>::<span class='ident'>DatastoreTestSandbox</span>;
@@ -436,29 +413,6 @@
     <span class='ident'>trans</span>.<span class='ident'>commit</span>().<span class='ident'>unwrap</span>();
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>range</span>.<span class='ident'>len</span>(), <span class='number'>1</span>);
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>range</span>[<span class='number'>0</span>].<span class='ident'>id</span>, <span class='ident'>inserted_id_5</span>);
-}
-
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>should_update_a_valid_vertex</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>sandbox</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>DatastoreTestSandbox</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>)
-    <span class='kw'>where</span> <span class='ident'>D</span>: <span class='ident'>Datastore</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>,
-          <span class='ident'>T</span>: <span class='ident'>Transaction</span>
-{
-    <span class='kw'>let</span> <span class='ident'>trans</span> <span class='op'>=</span> <span class='ident'>sandbox</span>.<span class='ident'>transaction</span>();
-    <span class='kw'>let</span> <span class='ident'>original_t</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Type</span>::<span class='ident'>new</span>(<span class='string'>&quot;test_vertex_type&quot;</span>.<span class='ident'>to_string</span>()).<span class='ident'>unwrap</span>();
-    <span class='kw'>let</span> <span class='ident'>id</span> <span class='op'>=</span> <span class='ident'>trans</span>.<span class='ident'>create_vertex</span>(<span class='ident'>original_t</span>).<span class='ident'>unwrap</span>();
-    <span class='kw'>let</span> <span class='ident'>updated_t</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Type</span>::<span class='ident'>new</span>(<span class='string'>&quot;test_vertex_type_2&quot;</span>.<span class='ident'>to_string</span>()).<span class='ident'>unwrap</span>();
-    <span class='ident'>trans</span>.<span class='ident'>set_vertices</span>(<span class='ident'>VertexQuery</span>::<span class='ident'>Vertex</span>(<span class='ident'>id</span>), <span class='ident'>updated_t</span>.<span class='ident'>clone</span>()).<span class='ident'>unwrap</span>();
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='ident'>trans</span>.<span class='ident'>get_vertices</span>(<span class='ident'>VertexQuery</span>::<span class='ident'>Vertex</span>(<span class='ident'>id</span>)).<span class='ident'>unwrap</span>();
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>v</span>[<span class='number'>0</span>].<span class='ident'>id</span>, <span class='ident'>id</span>);
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>v</span>[<span class='number'>0</span>].<span class='ident'>t</span>, <span class='ident'>updated_t</span>);
-}
-
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>should_not_update_an_invalid_vertex</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>sandbox</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>DatastoreTestSandbox</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>)
-    <span class='kw'>where</span> <span class='ident'>D</span>: <span class='ident'>Datastore</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>,
-          <span class='ident'>T</span>: <span class='ident'>Transaction</span>
-{
-    <span class='kw'>let</span> <span class='ident'>trans</span> <span class='op'>=</span> <span class='ident'>sandbox</span>.<span class='ident'>transaction</span>();
-    <span class='kw'>let</span> <span class='ident'>t</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Type</span>::<span class='ident'>new</span>(<span class='string'>&quot;test_vertex_type&quot;</span>.<span class='ident'>to_string</span>()).<span class='ident'>unwrap</span>();
-    <span class='ident'>trans</span>.<span class='ident'>set_vertices</span>(<span class='ident'>VertexQuery</span>::<span class='ident'>Vertex</span>(<span class='ident'>Uuid</span>::<span class='ident'>default</span>()), <span class='ident'>t</span>).<span class='ident'>unwrap</span>();
 }
 
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>should_delete_a_valid_vertex</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>(<span class='kw-2'>mut</span> <span class='ident'>sandbox</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>DatastoreTestSandbox</span><span class='op'>&lt;</span><span class='ident'>D</span>, <span class='ident'>T</span><span class='op'>&gt;</span>)
