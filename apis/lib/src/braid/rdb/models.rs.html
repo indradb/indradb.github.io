@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1"> 1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -91,52 +91,52 @@
 <span id="46">46</span>
 <span id="47">47</span>
 <span id="48">48</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>uuid</span>::<span class='ident'>Uuid</span>;
-<span class='kw'>use</span> <span class='ident'>models</span>;
-<span class='kw'>use</span> <span class='ident'>chrono</span>::{<span class='ident'>DateTime</span>, <span class='ident'>UTC</span>};
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
+<span class="kw">use</span> <span class="ident">models</span>;
+<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">UTC</span>};
 
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>AccountValue</span> {
-    <span class='kw'>pub</span> <span class='ident'>salt</span>: <span class='ident'>String</span>,
-    <span class='kw'>pub</span> <span class='ident'>hash</span>: <span class='ident'>String</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AccountValue</span> {
+    <span class="kw">pub</span> <span class="ident">salt</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">hash</span>: <span class="ident">String</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>AccountValue</span> {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>salt</span>: <span class='ident'>String</span>, <span class='ident'>hash</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-        <span class='ident'>AccountValue</span> {
-            <span class='ident'>salt</span>: <span class='ident'>salt</span>,
-            <span class='ident'>hash</span>: <span class='ident'>hash</span>,
+<span class="kw">impl</span> <span class="ident">AccountValue</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">salt</span>: <span class="ident">String</span>, <span class="ident">hash</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">AccountValue</span> {
+            <span class="ident">salt</span>: <span class="ident">salt</span>,
+            <span class="ident">hash</span>: <span class="ident">hash</span>,
         }
     }
 }
 
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>VertexValue</span> {
-    <span class='kw'>pub</span> <span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>,
-    <span class='kw'>pub</span> <span class='ident'>t</span>: <span class='ident'>models</span>::<span class='ident'>Type</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VertexValue</span> {
+    <span class="kw">pub</span> <span class="ident">owner_id</span>: <span class="ident">Uuid</span>,
+    <span class="kw">pub</span> <span class="ident">t</span>: <span class="ident">models</span>::<span class="ident">Type</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>VertexValue</span> {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>t</span>: <span class='ident'>models</span>::<span class='ident'>Type</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-        <span class='ident'>VertexValue</span> {
-            <span class='ident'>owner_id</span>: <span class='ident'>owner_id</span>,
-            <span class='ident'>t</span>: <span class='ident'>t</span>,
+<span class="kw">impl</span> <span class="ident">VertexValue</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">owner_id</span>: <span class="ident">Uuid</span>, <span class="ident">t</span>: <span class="ident">models</span>::<span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">VertexValue</span> {
+            <span class="ident">owner_id</span>: <span class="ident">owner_id</span>,
+            <span class="ident">t</span>: <span class="ident">t</span>,
         }
     }
 }
 
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>EdgeValue</span> {
-    <span class='kw'>pub</span> <span class='ident'>update_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>,
-    <span class='kw'>pub</span> <span class='ident'>weight</span>: <span class='ident'>models</span>::<span class='ident'>Weight</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EdgeValue</span> {
+    <span class="kw">pub</span> <span class="ident">update_datetime</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">weight</span>: <span class="ident">models</span>::<span class="ident">Weight</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>EdgeValue</span> {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>update_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>, <span class='ident'>weight</span>: <span class='ident'>models</span>::<span class='ident'>Weight</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-        <span class='ident'>EdgeValue</span> {
-            <span class='ident'>update_datetime</span>: <span class='ident'>update_datetime</span>,
-            <span class='ident'>weight</span>: <span class='ident'>weight</span>,
+<span class="kw">impl</span> <span class="ident">EdgeValue</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">update_datetime</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;</span>, <span class="ident">weight</span>: <span class="ident">models</span>::<span class="ident">Weight</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">EdgeValue</span> {
+            <span class="ident">update_datetime</span>: <span class="ident">update_datetime</span>,
+            <span class="ident">weight</span>: <span class="ident">weight</span>,
         }
     }
 }

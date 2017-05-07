@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -286,248 +286,248 @@
 <span id="241">241</span>
 <span id="242">242</span>
 <span id="243">243</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>regex</span>::<span class='ident'>Regex</span>;
-<span class='kw'>use</span> <span class='ident'>errors</span>::<span class='ident'>ValidationError</span>;
-<span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>str</span>::<span class='ident'>FromStr</span>;
-<span class='kw'>use</span> <span class='ident'>uuid</span>::<span class='ident'>Uuid</span>;
-<span class='kw'>use</span> <span class='ident'>chrono</span>::{<span class='ident'>UTC</span>, <span class='ident'>DateTime</span>};
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
+<span class="kw">use</span> <span class="ident">errors</span>::<span class="ident">ValidationError</span>;
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+<span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
+<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">UTC</span>, <span class="ident">DateTime</span>};
 
-<span class='macro'>lazy_static</span><span class='macro'>!</span> {
-    <span class='kw'>static</span> <span class='kw-2'>ref</span> <span class='ident'>TYPE_VALIDATOR</span>: <span class='ident'>Regex</span> <span class='op'>=</span> <span class='ident'>Regex</span>::<span class='ident'>new</span>(<span class='string'>&quot;^[a-zA-Z0-9-_]+$&quot;</span>).<span class='ident'>unwrap</span>();
+<span class="macro">lazy_static</span><span class="macro">!</span> {
+    <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">TYPE_VALIDATOR</span>: <span class="ident">Regex</span> <span class="op">=</span> <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">&quot;^[a-zA-Z0-9-_]+$&quot;</span>).<span class="ident">unwrap</span>();
 }
 
-<span class='doccomment'>/// A vertex.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Vertices are how you would represent nouns in the datastore. An example</span>
-<span class='doccomment'>/// might be a user, or a movie. All vertices have a unique ID and a type.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Vertex</span> {
-    <span class='doccomment'>/// The id of the vertex.</span>
-    <span class='kw'>pub</span> <span class='ident'>id</span>: <span class='ident'>Uuid</span>,
+<span class="doccomment">/// A vertex.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Vertices are how you would represent nouns in the datastore. An example</span>
+<span class="doccomment">/// might be a user, or a movie. All vertices have a unique ID and a type.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Vertex</span> {
+    <span class="doccomment">/// The id of the vertex.</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">Uuid</span>,
 
-    <span class='doccomment'>/// The type of the vertex.</span>
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;type&quot;</span>)]</span>
-    <span class='kw'>pub</span> <span class='ident'>t</span>: <span class='ident'>Type</span>,
+    <span class="doccomment">/// The type of the vertex.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;type&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">t</span>: <span class="ident">Type</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>Vertex</span> {
-    <span class='doccomment'>/// Creates a new vertex.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// </span>
-    <span class='doccomment'>/// * `id` - The id of the vertex.</span>
-    <span class='doccomment'>/// * `t` - The type of the vertex.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>id</span>: <span class='ident'>Uuid</span>, <span class='ident'>t</span>: <span class='ident'>Type</span>) <span class='op'>-&gt;</span> <span class='ident'>Vertex</span> {
-        <span class='ident'>Vertex</span> { <span class='ident'>id</span>: <span class='ident'>id</span>, <span class='ident'>t</span>: <span class='ident'>t</span> }
+<span class="kw">impl</span> <span class="ident">Vertex</span> {
+    <span class="doccomment">/// Creates a new vertex.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// </span>
+    <span class="doccomment">/// * `id` - The id of the vertex.</span>
+    <span class="doccomment">/// * `t` - The type of the vertex.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">id</span>: <span class="ident">Uuid</span>, <span class="ident">t</span>: <span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="ident">Vertex</span> {
+        <span class="ident">Vertex</span> { <span class="ident">id</span>: <span class="ident">id</span>, <span class="ident">t</span>: <span class="ident">t</span> }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>PartialEq</span> <span class='kw'>for</span> <span class='ident'>Vertex</span> {
-    <span class='kw'>fn</span> <span class='ident'>eq</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Vertex</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='self'>self</span>.<span class='ident'>id</span> <span class='op'>==</span> <span class='ident'>other</span>.<span class='ident'>id</span>
+<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Vertex</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Vertex</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">id</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">id</span>
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>Eq</span> <span class='kw'>for</span> <span class='ident'>Vertex</span> {}
+<span class="kw">impl</span> <span class="ident">Eq</span> <span class="kw">for</span> <span class="ident">Vertex</span> {}
 
-<span class='doccomment'>/// Represents a uniquely identifiable key to an edge.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>, <span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Hash</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>EdgeKey</span> {
-    <span class='doccomment'>/// The id of the outbound vertex.</span>
-    <span class='kw'>pub</span> <span class='ident'>outbound_id</span>: <span class='ident'>Uuid</span>,
+<span class="doccomment">/// Represents a uniquely identifiable key to an edge.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Hash</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EdgeKey</span> {
+    <span class="doccomment">/// The id of the outbound vertex.</span>
+    <span class="kw">pub</span> <span class="ident">outbound_id</span>: <span class="ident">Uuid</span>,
 
-    <span class='doccomment'>/// The type of the edge.</span>
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;type&quot;</span>)]</span>
-    <span class='kw'>pub</span> <span class='ident'>t</span>: <span class='ident'>Type</span>,
+    <span class="doccomment">/// The type of the edge.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;type&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">t</span>: <span class="ident">Type</span>,
 
-    <span class='doccomment'>/// The id of the inbound vertex.</span>
-    <span class='kw'>pub</span> <span class='ident'>inbound_id</span>: <span class='ident'>Uuid</span>
+    <span class="doccomment">/// The id of the inbound vertex.</span>
+    <span class="kw">pub</span> <span class="ident">inbound_id</span>: <span class="ident">Uuid</span>
 }
 
-<span class='kw'>impl</span> <span class='ident'>EdgeKey</span> {
-    <span class='doccomment'>/// Creates a new edge key.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// </span>
-    <span class='doccomment'>/// * `outbound_id` - The id of the outbound vertex.</span>
-    <span class='doccomment'>/// * `t` - The type of the edge.</span>
-    <span class='doccomment'>/// * `inbound_id` - The id of the inbound vertex.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>outbound_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>t</span>: <span class='ident'>Type</span>, <span class='ident'>inbound_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='ident'>EdgeKey</span> {
-        <span class='ident'>EdgeKey</span> {
-            <span class='ident'>outbound_id</span>: <span class='ident'>outbound_id</span>,
-            <span class='ident'>t</span>: <span class='ident'>t</span>,
-            <span class='ident'>inbound_id</span>: <span class='ident'>inbound_id</span>
+<span class="kw">impl</span> <span class="ident">EdgeKey</span> {
+    <span class="doccomment">/// Creates a new edge key.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// </span>
+    <span class="doccomment">/// * `outbound_id` - The id of the outbound vertex.</span>
+    <span class="doccomment">/// * `t` - The type of the edge.</span>
+    <span class="doccomment">/// * `inbound_id` - The id of the inbound vertex.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">outbound_id</span>: <span class="ident">Uuid</span>, <span class="ident">t</span>: <span class="ident">Type</span>, <span class="ident">inbound_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="ident">EdgeKey</span> {
+        <span class="ident">EdgeKey</span> {
+            <span class="ident">outbound_id</span>: <span class="ident">outbound_id</span>,
+            <span class="ident">t</span>: <span class="ident">t</span>,
+            <span class="ident">inbound_id</span>: <span class="ident">inbound_id</span>
         }
     }
 }
 
-<span class='doccomment'>/// An edge.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Edges are how you would represent a verb or a relationship in the</span>
-<span class='doccomment'>/// datastore. An example might be &quot;liked&quot; or &quot;reviewed&quot;. Edges are typed</span>
-<span class='doccomment'>/// and directed.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Edge</span> {
-    <span class='doccomment'>/// The key to the edge.</span>
-    <span class='kw'>pub</span> <span class='ident'>key</span>: <span class='ident'>EdgeKey</span>,
+<span class="doccomment">/// An edge.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Edges are how you would represent a verb or a relationship in the</span>
+<span class="doccomment">/// datastore. An example might be &quot;liked&quot; or &quot;reviewed&quot;. Edges are typed</span>
+<span class="doccomment">/// and directed.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Edge</span> {
+    <span class="doccomment">/// The key to the edge.</span>
+    <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">EdgeKey</span>,
 
-    <span class='doccomment'>/// The weight of the edge.</span>
-    <span class='kw'>pub</span> <span class='ident'>weight</span>: <span class='ident'>Weight</span>,
+    <span class="doccomment">/// The weight of the edge.</span>
+    <span class="kw">pub</span> <span class="ident">weight</span>: <span class="ident">Weight</span>,
 
-    <span class='doccomment'>/// When the edge was created.</span>
-    <span class='kw'>pub</span> <span class='ident'>created_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>
+    <span class="doccomment">/// When the edge was created.</span>
+    <span class="kw">pub</span> <span class="ident">created_datetime</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;</span>
 }
 
-<span class='kw'>impl</span> <span class='ident'>Edge</span> {
-    <span class='doccomment'>/// Creates a new edge with the current datetime in UTC.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `key` - The key to the edge.</span>
-    <span class='doccomment'>/// * `weight` - The edge weight.</span>
-    <span class='doccomment'>/// * `inbound_id` - The id of the inbound vertex.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new_with_current_datetime</span>(<span class='ident'>key</span>: <span class='ident'>EdgeKey</span>, <span class='ident'>weight</span>: <span class='ident'>Weight</span>) <span class='op'>-&gt;</span> <span class='ident'>Edge</span> {
-        <span class='self'>Self</span>::<span class='ident'>new</span>(<span class='ident'>key</span>, <span class='ident'>weight</span>, <span class='ident'>UTC</span>::<span class='ident'>now</span>())
+<span class="kw">impl</span> <span class="ident">Edge</span> {
+    <span class="doccomment">/// Creates a new edge with the current datetime in UTC.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `key` - The key to the edge.</span>
+    <span class="doccomment">/// * `weight` - The edge weight.</span>
+    <span class="doccomment">/// * `inbound_id` - The id of the inbound vertex.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_with_current_datetime</span>(<span class="ident">key</span>: <span class="ident">EdgeKey</span>, <span class="ident">weight</span>: <span class="ident">Weight</span>) <span class="op">-&gt;</span> <span class="ident">Edge</span> {
+        <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">key</span>, <span class="ident">weight</span>, <span class="ident">UTC</span>::<span class="ident">now</span>())
     }
 
-    <span class='doccomment'>/// Creates a new edge with a specified datetime.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `key` - The key to the edge.</span>
-    <span class='doccomment'>/// * `weight` - The weight of the edge.</span>
-    <span class='doccomment'>/// * `created_datetime` - When the edge was created.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>key</span>: <span class='ident'>EdgeKey</span>, <span class='ident'>weight</span>: <span class='ident'>Weight</span>, <span class='ident'>created_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Edge</span> {
-        <span class='ident'>Edge</span> {
-            <span class='ident'>key</span>: <span class='ident'>key</span>,
-            <span class='ident'>weight</span>: <span class='ident'>weight</span>,
-            <span class='ident'>created_datetime</span>: <span class='ident'>created_datetime</span>
+    <span class="doccomment">/// Creates a new edge with a specified datetime.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `key` - The key to the edge.</span>
+    <span class="doccomment">/// * `weight` - The weight of the edge.</span>
+    <span class="doccomment">/// * `created_datetime` - When the edge was created.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">key</span>: <span class="ident">EdgeKey</span>, <span class="ident">weight</span>: <span class="ident">Weight</span>, <span class="ident">created_datetime</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Edge</span> {
+        <span class="ident">Edge</span> {
+            <span class="ident">key</span>: <span class="ident">key</span>,
+            <span class="ident">weight</span>: <span class="ident">weight</span>,
+            <span class="ident">created_datetime</span>: <span class="ident">created_datetime</span>
         }
     }
 }
 
-<span class='doccomment'>/// An edge weight.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Edge weights must be between -1.0 and 1.0.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>, <span class='ident'>Copy</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Weight</span>(<span class='kw'>pub</span> <span class='ident'>f32</span>);
+<span class="doccomment">/// An edge weight.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Edge weights must be between -1.0 and 1.0.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Copy</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Weight</span>(<span class="kw">pub</span> <span class="ident">f32</span>);
 
-<span class='kw'>impl</span> <span class='ident'>Weight</span> {
-    <span class='doccomment'>/// Constructs a new edge weight.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// </span>
-    <span class='doccomment'>/// * `weight` - The weight, between -1.0 and 1.0.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns a `ValidationError` if the weight is below -1.0 or above 1.0.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>w</span>: <span class='ident'>f32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='self'>Self</span>, <span class='ident'>ValidationError</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='ident'>w</span> <span class='op'>&lt;</span> <span class='op'>-</span><span class='number'>1.0</span> <span class='op'>||</span> <span class='ident'>w</span> <span class='op'>&gt;</span> <span class='number'>1.0</span> {
-            <span class='prelude-val'>Err</span>(<span class='ident'>ValidationError</span>::<span class='ident'>new</span>(<span class='string'>&quot;Weight out of range&quot;</span>.<span class='ident'>to_string</span>()))
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>Weight</span>(<span class='ident'>w</span>))
+<span class="kw">impl</span> <span class="ident">Weight</span> {
+    <span class="doccomment">/// Constructs a new edge weight.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// </span>
+    <span class="doccomment">/// * `weight` - The weight, between -1.0 and 1.0.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns a `ValidationError` if the weight is below -1.0 or above 1.0.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">w</span>: <span class="ident">f32</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ValidationError</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">w</span> <span class="op">&lt;</span> <span class="op">-</span><span class="number">1.0</span> <span class="op">||</span> <span class="ident">w</span> <span class="op">&gt;</span> <span class="number">1.0</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">ValidationError</span>::<span class="ident">new</span>(<span class="string">&quot;Weight out of range&quot;</span>.<span class="ident">to_string</span>()))
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">Weight</span>(<span class="ident">w</span>))
         }
     }
 }
 
-<span class='doccomment'>/// An edge or vertex type.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Types must be less than 256 characters long, and can only contain letters,</span>
-<span class='doccomment'>/// numbers, dashes and underscores.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>, <span class='ident'>Hash</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Type</span>(<span class='kw'>pub</span> <span class='ident'>String</span>);
+<span class="doccomment">/// An edge or vertex type.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Types must be less than 256 characters long, and can only contain letters,</span>
+<span class="doccomment">/// numbers, dashes and underscores.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Hash</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Type</span>(<span class="kw">pub</span> <span class="ident">String</span>);
 
-<span class='kw'>impl</span> <span class='ident'>Type</span> {
-    <span class='doccomment'>/// Constructs a new type.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// </span>
-    <span class='doccomment'>/// * `t` - The type, which must be less than 256 characters long.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns a `ValidationError` if the type is longer than 255 characters,</span>
-    <span class='doccomment'>/// or has invalid characters.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>t</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='self'>Self</span>, <span class='ident'>ValidationError</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='ident'>t</span>.<span class='ident'>len</span>() <span class='op'>&gt;</span> <span class='number'>255</span> {
-            <span class='prelude-val'>Err</span>(<span class='ident'>ValidationError</span>::<span class='ident'>new</span>(<span class='string'>&quot;Type is too long&quot;</span>.<span class='ident'>to_string</span>()))
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>TYPE_VALIDATOR</span>.<span class='ident'>is_match</span>(<span class='kw-2'>&amp;</span><span class='ident'>t</span>[..]) {
-            <span class='prelude-val'>Err</span>(<span class='ident'>ValidationError</span>::<span class='ident'>new</span>(<span class='string'>&quot;Invalid type&quot;</span>.<span class='ident'>to_string</span>()))
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>Type</span>(<span class='ident'>t</span>))
+<span class="kw">impl</span> <span class="ident">Type</span> {
+    <span class="doccomment">/// Constructs a new type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// </span>
+    <span class="doccomment">/// * `t` - The type, which must be less than 256 characters long.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns a `ValidationError` if the type is longer than 255 characters,</span>
+    <span class="doccomment">/// or has invalid characters.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">t</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ValidationError</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">t</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">255</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">ValidationError</span>::<span class="ident">new</span>(<span class="string">&quot;Type is too long&quot;</span>.<span class="ident">to_string</span>()))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">TYPE_VALIDATOR</span>.<span class="ident">is_match</span>(<span class="kw-2">&amp;</span><span class="ident">t</span>[..]) {
+            <span class="prelude-val">Err</span>(<span class="ident">ValidationError</span>::<span class="ident">new</span>(<span class="string">&quot;Invalid type&quot;</span>.<span class="ident">to_string</span>()))
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">Type</span>(<span class="ident">t</span>))
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>FromStr</span> <span class='kw'>for</span> <span class='ident'>Type</span> {
-    <span class='kw'>type</span> <span class='prelude-val'>Err</span> <span class='op'>=</span> <span class='ident'>ValidationError</span>;
+<span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">Type</span> {
+    <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> <span class="ident">ValidationError</span>;
 
-    <span class='kw'>fn</span> <span class='ident'>from_str</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='self'>Self</span>, <span class='self'>Self</span>::<span class='prelude-val'>Err</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Ok</span>(<span class='self'>Self</span>::<span class='ident'>new</span>(<span class='ident'>s</span>.<span class='ident'>to_string</span>())<span class='question-mark'>?</span>)
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">s</span>.<span class="ident">to_string</span>())<span class="question-mark">?</span>)
     }
 }
 
-<span class='doccomment'>/// Specifies what kind of items should be piped from one type of query to</span>
-<span class='doccomment'>/// another.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Edge and vertex queries can build off of one another via pipes - e.g. you</span>
-<span class='doccomment'>/// can get the outbound edges of a set of vertices by piping from a vertex</span>
-<span class='doccomment'>/// query to an edge query. `QueryTypeConverter`s are used to specify which</span>
-<span class='doccomment'>/// end of things you want to pipe - either the outbound items or the inbound</span>
-<span class='doccomment'>/// items.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>, <span class='ident'>Hash</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>QueryTypeConverter</span> {
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;outbound&quot;</span>)]</span>
-    <span class='ident'>Outbound</span>,
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;inbound&quot;</span>)]</span>
-    <span class='ident'>Inbound</span>
+<span class="doccomment">/// Specifies what kind of items should be piped from one type of query to</span>
+<span class="doccomment">/// another.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Edge and vertex queries can build off of one another via pipes - e.g. you</span>
+<span class="doccomment">/// can get the outbound edges of a set of vertices by piping from a vertex</span>
+<span class="doccomment">/// query to an edge query. `QueryTypeConverter`s are used to specify which</span>
+<span class="doccomment">/// end of things you want to pipe - either the outbound items or the inbound</span>
+<span class="doccomment">/// items.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Hash</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">QueryTypeConverter</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;outbound&quot;</span>)]</span>
+    <span class="ident">Outbound</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;inbound&quot;</span>)]</span>
+    <span class="ident">Inbound</span>
 }
 
-<span class='doccomment'>/// A query for vertices.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// This is used by transactions to get, set and delete vertices and vertex</span>
-<span class='doccomment'>/// metadata.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>, <span class='ident'>Hash</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>VertexQuery</span> {
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;all&quot;</span>)]</span>
-    <span class='ident'>All</span>(<span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Uuid</span><span class='op'>&gt;</span>, <span class='ident'>u32</span>),
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;vertex&quot;</span>)]</span>
-    <span class='ident'>Vertex</span>(<span class='ident'>Uuid</span>),
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;vertices&quot;</span>)]</span>
-    <span class='ident'>Vertices</span>(<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Uuid</span><span class='op'>&gt;</span>),
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;pipe&quot;</span>)]</span>
-    <span class='ident'>Pipe</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>EdgeQuery</span><span class='op'>&gt;</span>, <span class='ident'>QueryTypeConverter</span>, <span class='ident'>u32</span>)
+<span class="doccomment">/// A query for vertices.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is used by transactions to get, set and delete vertices and vertex</span>
+<span class="doccomment">/// metadata.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Hash</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">VertexQuery</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;all&quot;</span>)]</span>
+    <span class="ident">All</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Uuid</span><span class="op">&gt;</span>, <span class="ident">u32</span>),
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;vertex&quot;</span>)]</span>
+    <span class="ident">Vertex</span>(<span class="ident">Uuid</span>),
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;vertices&quot;</span>)]</span>
+    <span class="ident">Vertices</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Uuid</span><span class="op">&gt;</span>),
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;pipe&quot;</span>)]</span>
+    <span class="ident">Pipe</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">EdgeQuery</span><span class="op">&gt;</span>, <span class="ident">QueryTypeConverter</span>, <span class="ident">u32</span>)
 }
 
-<span class='kw'>impl</span> <span class='ident'>VertexQuery</span> {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>outbound_edges</span>(<span class='self'>self</span>, <span class='ident'>t</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Type</span><span class='op'>&gt;</span>, <span class='ident'>high</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;&gt;</span>, <span class='ident'>low</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;&gt;</span>, <span class='ident'>limit</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>EdgeQuery</span> {
-        <span class='ident'>EdgeQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>self</span>), <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Outbound</span>, <span class='ident'>t</span>, <span class='ident'>high</span>, <span class='ident'>low</span>, <span class='ident'>limit</span>)
+<span class="kw">impl</span> <span class="ident">VertexQuery</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_edges</span>(<span class="self">self</span>, <span class="ident">t</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span>, <span class="ident">high</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;&gt;</span>, <span class="ident">low</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;&gt;</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">EdgeQuery</span> {
+        <span class="ident">EdgeQuery</span>::<span class="ident">Pipe</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>), <span class="ident">QueryTypeConverter</span>::<span class="ident">Outbound</span>, <span class="ident">t</span>, <span class="ident">high</span>, <span class="ident">low</span>, <span class="ident">limit</span>)
     }
 
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>inbound_edges</span>(<span class='self'>self</span>, <span class='ident'>t</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Type</span><span class='op'>&gt;</span>, <span class='ident'>high</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;&gt;</span>, <span class='ident'>low</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;&gt;</span>, <span class='ident'>limit</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>EdgeQuery</span> {
-        <span class='ident'>EdgeQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>self</span>), <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Inbound</span>, <span class='ident'>t</span>, <span class='ident'>high</span>, <span class='ident'>low</span>, <span class='ident'>limit</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_edges</span>(<span class="self">self</span>, <span class="ident">t</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span>, <span class="ident">high</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;&gt;</span>, <span class="ident">low</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;&gt;</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">EdgeQuery</span> {
+        <span class="ident">EdgeQuery</span>::<span class="ident">Pipe</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>), <span class="ident">QueryTypeConverter</span>::<span class="ident">Inbound</span>, <span class="ident">t</span>, <span class="ident">high</span>, <span class="ident">low</span>, <span class="ident">limit</span>)
     }
 }
 
-<span class='doccomment'>/// A query for edges.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// This is used by transactions to get, set and delete edges and edge</span>
-<span class='doccomment'>/// metadata.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Serialize</span>, <span class='ident'>Deserialize</span>, <span class='ident'>Hash</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>EdgeQuery</span> {
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;edge&quot;</span>)]</span>
-    <span class='ident'>Edge</span>(<span class='ident'>EdgeKey</span>),
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;edges&quot;</span>)]</span>
-    <span class='ident'>Edges</span>(<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>EdgeKey</span><span class='op'>&gt;</span>),
-    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>rename</span><span class='op'>=</span><span class='string'>&quot;pipe&quot;</span>)]</span>
-    <span class='ident'>Pipe</span>(<span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>VertexQuery</span><span class='op'>&gt;</span>, <span class='ident'>QueryTypeConverter</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Type</span><span class='op'>&gt;</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;&gt;</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;&gt;</span>, <span class='ident'>u32</span>)
+<span class="doccomment">/// A query for edges.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is used by transactions to get, set and delete edges and edge</span>
+<span class="doccomment">/// metadata.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Hash</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EdgeQuery</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;edge&quot;</span>)]</span>
+    <span class="ident">Edge</span>(<span class="ident">EdgeKey</span>),
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;edges&quot;</span>)]</span>
+    <span class="ident">Edges</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">EdgeKey</span><span class="op">&gt;</span>),
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span><span class="op">=</span><span class="string">&quot;pipe&quot;</span>)]</span>
+    <span class="ident">Pipe</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">VertexQuery</span><span class="op">&gt;</span>, <span class="ident">QueryTypeConverter</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;&gt;</span>, <span class="ident">u32</span>)
 }
 
-<span class='kw'>impl</span> <span class='ident'>EdgeQuery</span> {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>outbound_vertices</span>(<span class='self'>self</span>, <span class='ident'>limit</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>VertexQuery</span> {
-        <span class='ident'>VertexQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>self</span>), <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Outbound</span>, <span class='ident'>limit</span>)
+<span class="kw">impl</span> <span class="ident">EdgeQuery</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_vertices</span>(<span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">VertexQuery</span> {
+        <span class="ident">VertexQuery</span>::<span class="ident">Pipe</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>), <span class="ident">QueryTypeConverter</span>::<span class="ident">Outbound</span>, <span class="ident">limit</span>)
     }
 
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>inbound_vertices</span>(<span class='self'>self</span>, <span class='ident'>limit</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>VertexQuery</span> {
-        <span class='ident'>VertexQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>self</span>), <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Inbound</span>, <span class='ident'>limit</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_vertices</span>(<span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">VertexQuery</span> {
+        <span class="ident">VertexQuery</span>::<span class="ident">Pipe</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>), <span class="ident">QueryTypeConverter</span>::<span class="ident">Inbound</span>, <span class="ident">limit</span>)
     }
 }
 </pre>

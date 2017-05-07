@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1"> 1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -101,65 +101,65 @@
 <span id="56">56</span>
 <span id="57">57</span>
 <span id="58">58</span>
-</pre><pre class='rust '>
-<span class='doccomment'>//! Braid - a graph datastore.</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! Braid is broken up into a library and an application. This is the library,</span>
-<span class='doccomment'>//! which you would use if you want to create new datastore implementations, or</span>
-<span class='doccomment'>//! plug into the low-level details of braid. For most use cases, you can use</span>
-<span class='doccomment'>//! the application, which exposes an API and scripting layer.</span>
+</pre><pre class="rust ">
+<span class="doccomment">//! Braid - a graph datastore.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Braid is broken up into a library and an application. This is the library,</span>
+<span class="doccomment">//! which you would use if you want to create new datastore implementations, or</span>
+<span class="doccomment">//! plug into the low-level details of braid. For most use cases, you can use</span>
+<span class="doccomment">//! the application, which exposes an API and scripting layer.</span>
 
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>uuid</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>crypto</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>chrono</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>core</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>serde</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>serde_json</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>libc</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>regex</span>;
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>serde_derive</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">uuid</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">crypto</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">chrono</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">core</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">libc</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rand</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">regex</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive</span>;
 
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;postgres-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>postgres</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;postgres-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>r2d2</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;postgres-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>r2d2_postgres</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;postgres-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>num_cpus</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;rocksdb-datastore&quot;</span>)]</span>
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>lazy_static</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;rocksdb-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rocksdb</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;rocksdb-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>librocksdb_sys</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;rocksdb-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>bincode</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;rocksdb-datastore&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>byteorder</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;postgres-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">postgres</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;postgres-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">r2d2</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;postgres-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">r2d2_postgres</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;postgres-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">num_cpus</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;rocksdb-datastore&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">lazy_static</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;rocksdb-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocksdb</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;rocksdb-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">librocksdb_sys</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;rocksdb-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">bincode</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;rocksdb-datastore&quot;</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">byteorder</span>;
 
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>tests</span>;
-<span class='kw'>mod</span> <span class='ident'>errors</span>;
-<span class='kw'>mod</span> <span class='ident'>models</span>;
-<span class='kw'>mod</span> <span class='ident'>traits</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>util</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span>;
+<span class="kw">mod</span> <span class="ident">errors</span>;
+<span class="kw">mod</span> <span class="ident">models</span>;
+<span class="kw">mod</span> <span class="ident">traits</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">util</span>;
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>errors</span>::<span class='kw-2'>*</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>models</span>::<span class='kw-2'>*</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>traits</span>::<span class='kw-2'>*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">errors</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">models</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">traits</span>::<span class="kw-2">*</span>;
 
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;postgres-datastore&quot;</span>)]</span>
-<span class='kw'>mod</span> <span class='ident'>pg</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;postgres-datastore&quot;</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>pg</span>::{<span class='ident'>PostgresDatastore</span>, <span class='ident'>PostgresTransaction</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;postgres-datastore&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">pg</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;postgres-datastore&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pg</span>::{<span class="ident">PostgresDatastore</span>, <span class="ident">PostgresTransaction</span>};
 
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;rocksdb-datastore&quot;</span>)]</span>
-<span class='kw'>mod</span> <span class='ident'>rdb</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;rocksdb-datastore&quot;</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>rdb</span>::{<span class='ident'>RocksdbDatastore</span>, <span class='ident'>RocksdbTransaction</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;rocksdb-datastore&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">rdb</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span><span class="op">=</span><span class="string">&quot;rocksdb-datastore&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">rdb</span>::{<span class="ident">RocksdbDatastore</span>, <span class="ident">RocksdbTransaction</span>};
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

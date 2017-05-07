@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -265,228 +265,228 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>errors</span>::<span class='ident'>Error</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>vec</span>::<span class='ident'>Vec</span>;
-<span class='kw'>use</span> <span class='ident'>serde_json</span>::<span class='ident'>value</span>::<span class='ident'>Value</span> <span class='kw'>as</span> <span class='ident'>JsonValue</span>;
-<span class='kw'>use</span> <span class='ident'>models</span>;
-<span class='kw'>use</span> <span class='ident'>uuid</span>::<span class='ident'>Uuid</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>HashMap</span>;
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="ident">errors</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">value</span>::<span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>;
+<span class="kw">use</span> <span class="ident">models</span>;
+<span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 
-<span class='doccomment'>/// Specifies a datastore implementation.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Datastores are responsible for managing accounts, and constructing new</span>
-<span class='doccomment'>/// transactions.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// # Errors</span>
-<span class='doccomment'>/// All methods may return an error if something unexpected happens - e.g.</span>
-<span class='doccomment'>/// if there was a problem connecting to the underlying database.</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Datastore</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Transaction</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Checks if an account exists.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `account_id` - The ID of the account to check.</span>
-    <span class='kw'>fn</span> <span class='ident'>has_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>bool</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+<span class="doccomment">/// Specifies a datastore implementation.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Datastores are responsible for managing accounts, and constructing new</span>
+<span class="doccomment">/// transactions.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Errors</span>
+<span class="doccomment">/// All methods may return an error if something unexpected happens - e.g.</span>
+<span class="doccomment">/// if there was a problem connecting to the underlying database.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Datastore</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Transaction</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Checks if an account exists.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `account_id` - The ID of the account to check.</span>
+    <span class="kw">fn</span> <span class="ident">has_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Creates a new account, returning a tuple of its ID and secret.</span>
-    <span class='kw'>fn</span> <span class='ident'>create_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(<span class='ident'>Uuid</span>, <span class='ident'>String</span>), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Creates a new account, returning a tuple of its ID and secret.</span>
+    <span class="kw">fn</span> <span class="ident">create_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Uuid</span>, <span class="ident">String</span>), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Deletes an account.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `account_id` - The ID of the account to delete.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns an error if the account does not exist.</span>
-    <span class='kw'>fn</span> <span class='ident'>delete_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Deletes an account.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `account_id` - The ID of the account to delete.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns an error if the account does not exist.</span>
+    <span class="kw">fn</span> <span class="ident">delete_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Checks account authentication.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `account_id` - The ID of the account to authenticate.</span>
-    <span class='doccomment'>/// * `secret` - The account&#39;s secret.</span>
-    <span class='kw'>fn</span> <span class='ident'>auth</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>secret</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>bool</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Checks account authentication.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `account_id` - The ID of the account to authenticate.</span>
+    <span class="doccomment">/// * `secret` - The account&#39;s secret.</span>
+    <span class="kw">fn</span> <span class="ident">auth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">secret</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Creates a new transaction tied to a given account.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `account_id` - The ID of the account that&#39;s triggering the</span>
-    <span class='doccomment'>/// transaction.</span>
-    <span class='kw'>fn</span> <span class='ident'>transaction</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Creates a new transaction tied to a given account.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `account_id` - The ID of the account that&#39;s triggering the</span>
+    <span class="doccomment">/// transaction.</span>
+    <span class="kw">fn</span> <span class="ident">transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 }
 
-<span class='doccomment'>/// Specifies a transaction implementation, which are returned by datastores.</span>
-<span class='doccomment'>/// Transactions are responsible for managing:</span>
-<span class='doccomment'>/// </span>
-<span class='doccomment'>/// 1. Vertices.</span>
-<span class='doccomment'>/// 2. Edges, which connect two vertices.</span>
-<span class='doccomment'>/// 3. Global metadata: metadata that is not owned by anything, and as a</span>
-<span class='doccomment'>///    result needs to be manually managed.</span>
-<span class='doccomment'>/// 4. Account metadata: metadata that is owned by an account, and will be</span>
-<span class='doccomment'>///    automatically deleted when the associated account is deleted.</span>
-<span class='doccomment'>/// 5. Vertex metadata: metadata that is owned by a vertex, and will be</span>
-<span class='doccomment'>///    automatically deleted when the associated vertex is deleted.</span>
-<span class='doccomment'>/// 6. Edge metadata: metadata that is owned by an edge, and will be</span>
-<span class='doccomment'>///    automatically deleted when the associated edge is deleted.</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Transaction</span> {
-    <span class='doccomment'>/// Creates a new vertex.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `t` - The type of the vertex.</span>
-    <span class='kw'>fn</span> <span class='ident'>create_vertex</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>t</span>: <span class='ident'>models</span>::<span class='ident'>Type</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+<span class="doccomment">/// Specifies a transaction implementation, which are returned by datastores.</span>
+<span class="doccomment">/// Transactions are responsible for managing:</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// 1. Vertices.</span>
+<span class="doccomment">/// 2. Edges, which connect two vertices.</span>
+<span class="doccomment">/// 3. Global metadata: metadata that is not owned by anything, and as a</span>
+<span class="doccomment">///    result needs to be manually managed.</span>
+<span class="doccomment">/// 4. Account metadata: metadata that is owned by an account, and will be</span>
+<span class="doccomment">///    automatically deleted when the associated account is deleted.</span>
+<span class="doccomment">/// 5. Vertex metadata: metadata that is owned by a vertex, and will be</span>
+<span class="doccomment">///    automatically deleted when the associated vertex is deleted.</span>
+<span class="doccomment">/// 6. Edge metadata: metadata that is owned by an edge, and will be</span>
+<span class="doccomment">///    automatically deleted when the associated edge is deleted.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Transaction</span> {
+    <span class="doccomment">/// Creates a new vertex.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `t` - The type of the vertex.</span>
+    <span class="kw">fn</span> <span class="ident">create_vertex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">t</span>: <span class="ident">models</span>::<span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Gets a range of vertices specified by a query.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='kw'>fn</span> <span class='ident'>get_vertices</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>VertexQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Vertex</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Gets a range of vertices specified by a query.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="kw">fn</span> <span class="ident">get_vertices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">VertexQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Vertex</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Deletes existing vertices specified by a query.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='kw'>fn</span> <span class='ident'>delete_vertices</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>VertexQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Deletes existing vertices specified by a query.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="kw">fn</span> <span class="ident">delete_vertices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">VertexQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Creates a new edge. If the edge already exists, this will update it</span>
-    <span class='doccomment'>/// with a new update datetime and weight. The transaction tied to the</span>
-    <span class='doccomment'>/// account must own the vertex from which the edge is outbounding from,</span>
-    <span class='doccomment'>/// but does not need to own the inbounding vertex.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// `key`: The edge to create.</span>
-    <span class='doccomment'>/// * `weight` - The edge weight.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Return `Error::VertexNotFound` if either of the connected vertices do</span>
-    <span class='doccomment'>/// not exist. Returns `Error::Unauthorized` if the account tied to the</span>
-    <span class='doccomment'>/// current transaction does not own the source vertex.</span>
-    <span class='kw'>fn</span> <span class='ident'>create_edge</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>key</span>: <span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>weight</span>: <span class='ident'>models</span>::<span class='ident'>Weight</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Creates a new edge. If the edge already exists, this will update it</span>
+    <span class="doccomment">/// with a new update datetime and weight. The transaction tied to the</span>
+    <span class="doccomment">/// account must own the vertex from which the edge is outbounding from,</span>
+    <span class="doccomment">/// but does not need to own the inbounding vertex.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// `key`: The edge to create.</span>
+    <span class="doccomment">/// * `weight` - The edge weight.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Return `Error::VertexNotFound` if either of the connected vertices do</span>
+    <span class="doccomment">/// not exist. Returns `Error::Unauthorized` if the account tied to the</span>
+    <span class="doccomment">/// current transaction does not own the source vertex.</span>
+    <span class="kw">fn</span> <span class="ident">create_edge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">weight</span>: <span class="ident">models</span>::<span class="ident">Weight</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
     
-    <span class='doccomment'>/// Gets a range of edges specified by a query.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='kw'>fn</span> <span class='ident'>get_edges</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Edge</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Gets a range of edges specified by a query.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="kw">fn</span> <span class="ident">get_edges</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Edge</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Deletes a set of edges specified by a query.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='kw'>fn</span> <span class='ident'>delete_edges</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Deletes a set of edges specified by a query.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="kw">fn</span> <span class="ident">delete_edges</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Gets the number of edges that match a query.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `outbound_id` - The ID of the outbound vertex.</span>
-    <span class='doccomment'>/// * `t` - The edge type.</span>
-    <span class='kw'>fn</span> <span class='ident'>get_edge_count</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>u64</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Gets the number of edges that match a query.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `outbound_id` - The ID of the outbound vertex.</span>
+    <span class="doccomment">/// * `t` - The edge type.</span>
+    <span class="kw">fn</span> <span class="ident">get_edge_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Gets a global metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
-    <span class='kw'>fn</span> <span class='ident'>get_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>JsonValue</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Gets a global metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
+    <span class="kw">fn</span> <span class="ident">get_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JsonValue</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Sets a global metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>/// * `value` - The metadata value.</span>
-    <span class='kw'>fn</span> <span class='ident'>set_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Sets a global metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">/// * `value` - The metadata value.</span>
+    <span class="kw">fn</span> <span class="ident">set_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Deletes a global metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
-    <span class='kw'>fn</span> <span class='ident'>delete_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Deletes a global metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
+    <span class="kw">fn</span> <span class="ident">delete_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Gets an account metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `account_id`: The ID of the account that the metadata is tied to.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
-    <span class='kw'>fn</span> <span class='ident'>get_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>JsonValue</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Gets an account metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `account_id`: The ID of the account that the metadata is tied to.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
+    <span class="kw">fn</span> <span class="ident">get_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JsonValue</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Sets an account metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `account_id`: The ID of the account that the metadata is tied to.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>/// * `value` - The metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns `Error::AccountNotFound` if the specified account ID does not</span>
-    <span class='doccomment'>/// exist.</span>
-    <span class='kw'>fn</span> <span class='ident'>set_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Sets an account metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `account_id`: The ID of the account that the metadata is tied to.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">/// * `value` - The metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns `Error::AccountNotFound` if the specified account ID does not</span>
+    <span class="doccomment">/// exist.</span>
+    <span class="kw">fn</span> <span class="ident">set_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Deletes an account metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `account_id`: The ID of the account that the metadata is tied to.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Errors</span>
-    <span class='doccomment'>/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
-    <span class='kw'>fn</span> <span class='ident'>delete_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Deletes an account metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `account_id`: The ID of the account that the metadata is tied to.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">/// Returns `Error::MetadataNotFound` if the metadata does not exist.</span>
+    <span class="kw">fn</span> <span class="ident">delete_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Gets a vertex metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='kw'>fn</span> <span class='ident'>get_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Gets a vertex metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="kw">fn</span> <span class="ident">get_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Sets a vertex metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>/// * `value` - The metadata value.</span>
-    <span class='kw'>fn</span> <span class='ident'>set_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Sets a vertex metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">/// * `value` - The metadata value.</span>
+    <span class="kw">fn</span> <span class="ident">set_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Deletes a vertex metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='kw'>fn</span> <span class='ident'>delete_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Deletes a vertex metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="kw">fn</span> <span class="ident">delete_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Gets an edge metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='kw'>fn</span> <span class='ident'>get_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Gets an edge metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="kw">fn</span> <span class="ident">get_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Sets an edge metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='doccomment'>/// * `value` - The metadata value.</span>
-    <span class='kw'>fn</span> <span class='ident'>set_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Sets an edge metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="doccomment">/// * `value` - The metadata value.</span>
+    <span class="kw">fn</span> <span class="ident">set_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Deletes an edge metadata value.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `q` - The query to run.</span>
-    <span class='doccomment'>/// * `name` - The metadata name.</span>
-    <span class='kw'>fn</span> <span class='ident'>delete_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>models</span>::<span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Deletes an edge metadata value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `q` - The query to run.</span>
+    <span class="doccomment">/// * `name` - The metadata name.</span>
+    <span class="kw">fn</span> <span class="ident">delete_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">models</span>::<span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Commits the transaction.</span>
-    <span class='kw'>fn</span> <span class='ident'>commit</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Commits the transaction.</span>
+    <span class="kw">fn</span> <span class="ident">commit</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class='doccomment'>/// Rolls the transaction back.</span>
-    <span class='kw'>fn</span> <span class='ident'>rollback</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span>;
+    <span class="doccomment">/// Rolls the transaction back.</span>
+    <span class="kw">fn</span> <span class="ident">rollback</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 }
 </pre>
 </section>

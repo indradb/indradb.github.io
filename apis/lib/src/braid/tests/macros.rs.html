@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1"> 1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -129,91 +129,91 @@
 <span id="84">84</span>
 <span id="85">85</span>
 <span id="86">86</span>
-</pre><pre class='rust '>
-<span class='doccomment'>/// Defines a unit test function.</span>
-<span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>define_test</span> {
-	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>datastore_constructor</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
-		<span class='attribute'>#[<span class='ident'>test</span>]</span>
-		<span class='kw'>fn</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>() {
-			<span class='kw'>let</span> <span class='ident'>datastore</span> <span class='op'>=</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>datastore_constructor</span>;
-			<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sandbox</span> <span class='op'>=</span> ::<span class='ident'>tests</span>::<span class='ident'>DatastoreTestSandbox</span>::<span class='ident'>new</span>(<span class='ident'>datastore</span>);
-			<span class='ident'>sandbox</span>.<span class='ident'>setup</span>(<span class='macro'>stringify</span><span class='macro'>!</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>));
-			::<span class='ident'>tests</span>::<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sandbox</span>);
-			<span class='ident'>sandbox</span>.<span class='ident'>teardown</span>();
+</pre><pre class="rust ">
+<span class="doccomment">/// Defines a unit test function.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">define_test</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">datastore_constructor</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
+		<span class="attribute">#[<span class="ident">test</span>]</span>
+		<span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>() {
+			<span class="kw">let</span> <span class="ident">datastore</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">datastore_constructor</span>;
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sandbox</span> <span class="op">=</span> ::<span class="ident">tests</span>::<span class="ident">DatastoreTestSandbox</span>::<span class="ident">new</span>(<span class="ident">datastore</span>);
+			<span class="ident">sandbox</span>.<span class="ident">setup</span>(<span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>));
+			::<span class="ident">tests</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sandbox</span>);
+			<span class="ident">sandbox</span>.<span class="ident">teardown</span>();
 		}
 	)
 }
 
-<span class='doccomment'>/// Use this macro to enable the standard test suite for accounts.</span>
-<span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>test_account_impl</span> {
-	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_fail_auth_with_a_bad_username</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_fail_auth_with_a_bad_password</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_successfully_auth_with_good_credentials</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_lookup_valid_accounts</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_fail_to_lookup_invalid_accounts</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_fail_when_attempting_to_delete_invalid_accounts</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
+<span class="doccomment">/// Use this macro to enable the standard test suite for accounts.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">test_account_impl</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_fail_auth_with_a_bad_username</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_fail_auth_with_a_bad_password</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_successfully_auth_with_good_credentials</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_lookup_valid_accounts</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_fail_to_lookup_invalid_accounts</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_fail_when_attempting_to_delete_invalid_accounts</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
 	)
 }
 
-<span class='doccomment'>/// Use this macro to enable the standard test suite for transactions.</span>
-<span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>test_transaction_impl</span> {
-	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
-		<span class='comment'>// Vertex queries</span>
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_all_vertices</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_all_vertices_with_zero_limit</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_all_vertices_out_of_range</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_single_vertices</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_single_vertices_nonexisting</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_vertices</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_vertices_piped</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
+<span class="doccomment">/// Use this macro to enable the standard test suite for transactions.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">test_transaction_impl</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
+		<span class="comment">// Vertex queries</span>
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_all_vertices</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_all_vertices_with_zero_limit</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_all_vertices_out_of_range</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_single_vertices</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_single_vertices_nonexisting</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_vertices</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_vertices_piped</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
 
-		<span class='comment'>// Vertex updates</span>
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_delete_a_valid_vertex</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_delete_an_invalid_vertex</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_delete_an_unowned_vertex</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
+		<span class="comment">// Vertex updates</span>
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_delete_a_valid_vertex</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_delete_an_invalid_vertex</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_delete_an_unowned_vertex</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
 
-		<span class='comment'>// Edges</span>
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_a_valid_edge</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_get_an_invalid_edge</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_create_a_valid_edge</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_create_an_invalid_edge</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_create_an_edge_with_bad_permissions</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_delete_a_valid_edge</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_delete_an_invalid_edge</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_delete_an_edge_with_bad_permissions</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_an_edge_count</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_an_edge_count_with_no_type</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_an_edge_count_for_an_invalid_edge</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_an_edge_range</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_edges_with_no_type</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_no_edges_for_an_invalid_range</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_edges_with_no_high</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_edges_with_no_low</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_edges_with_no_time</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_no_edges_for_reversed_time</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_get_edges</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
+		<span class="comment">// Edges</span>
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_a_valid_edge</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_get_an_invalid_edge</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_create_a_valid_edge</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_create_an_invalid_edge</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_create_an_edge_with_bad_permissions</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_delete_a_valid_edge</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_delete_an_invalid_edge</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_delete_an_edge_with_bad_permissions</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_an_edge_count</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_an_edge_count_with_no_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_an_edge_count_for_an_invalid_edge</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_an_edge_range</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_edges_with_no_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_no_edges_for_an_invalid_range</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_edges_with_no_high</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_edges_with_no_low</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_edges_with_no_time</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_no_edges_for_reversed_time</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_get_edges</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
 	)
 }
 
-<span class='doccomment'>/// Use this macro to enable the standard test suite for metadata.</span>
-<span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>test_metadata_impl</span> {
-	(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
-		<span class='comment'>// Metadata</span>
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_handle_global_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_handle_account_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_set_invalid_account_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_delete_invalid_account_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_handle_vertex_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_set_invalid_vertex_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_delete_invalid_vertex_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_handle_edge_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_set_invalid_edge_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
-		<span class='macro'>define_test</span><span class='macro'>!</span>(<span class='ident'>should_not_delete_invalid_edge_metadata</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>code</span>);
+<span class="doccomment">/// Use this macro to enable the standard test suite for metadata.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">test_metadata_impl</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
+		<span class="comment">// Metadata</span>
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_handle_global_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_handle_account_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_set_invalid_account_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_delete_invalid_account_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_handle_vertex_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_set_invalid_vertex_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_delete_invalid_vertex_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_handle_edge_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_set_invalid_edge_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
+		<span class="macro">define_test</span><span class="macro">!</span>(<span class="ident">should_not_delete_invalid_edge_metadata</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>);
 	)
 }
 </pre>

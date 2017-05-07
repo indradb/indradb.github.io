@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1"> 1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -140,102 +140,102 @@
 <span id="95">95</span>
 <span id="96">96</span>
 <span id="97">97</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>error</span>::<span class='ident'>Error</span> <span class='kw'>as</span> <span class='ident'>StdError</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
 
-<span class='doccomment'>/// The error returned by datastore and transaction implementation methods.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Clone</span>, <span class='ident'>Debug</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Error</span> {
-    <span class='ident'>AccountNotFound</span>,
-    <span class='ident'>VertexNotFound</span>,
-    <span class='ident'>EdgeNotFound</span>,
-    <span class='ident'>MetadataNotFound</span>,
-    <span class='ident'>Unauthorized</span>,
-    <span class='ident'>OutOfRange</span>(<span class='ident'>String</span>),
-    <span class='ident'>Unexpected</span>(<span class='ident'>String</span>),
+<span class="doccomment">/// The error returned by datastore and transaction implementation methods.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
+    <span class="ident">AccountNotFound</span>,
+    <span class="ident">VertexNotFound</span>,
+    <span class="ident">EdgeNotFound</span>,
+    <span class="ident">MetadataNotFound</span>,
+    <span class="ident">Unauthorized</span>,
+    <span class="ident">OutOfRange</span>(<span class="ident">String</span>),
+    <span class="ident">Unexpected</span>(<span class="ident">String</span>),
 }
 
-<span class='kw'>impl</span> <span class='ident'>Error</span> {
-    <span class='doccomment'>/// A utility method that converts an error message back to an error</span>
-    <span class='doccomment'>/// object.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>description_to_error</span>(<span class='ident'>message</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-        <span class='kw'>match</span> <span class='kw-2'>&amp;</span><span class='ident'>message</span>[..] {
-            <span class='string'>&quot;Account not found&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span>,
-            <span class='string'>&quot;Vertex does not exist&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>Error</span>::<span class='ident'>VertexNotFound</span>,
-            <span class='string'>&quot;Edge does not exist&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>Error</span>::<span class='ident'>EdgeNotFound</span>,
-            <span class='string'>&quot;Metadata does not exist&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>Error</span>::<span class='ident'>MetadataNotFound</span>,
-            <span class='string'>&quot;Unauthorized&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>Error</span>::<span class='ident'>Unauthorized</span>,
-            _ <span class='op'>=&gt;</span> {
-                <span class='kw'>if</span> <span class='ident'>message</span>.<span class='ident'>starts_with</span>(<span class='string'>&quot;Value out of range: &quot;</span>) {
-                    <span class='ident'>Error</span>::<span class='ident'>OutOfRange</span>(<span class='ident'>message</span>[<span class='number'>20</span>..<span class='ident'>message</span>.<span class='ident'>len</span>()].<span class='ident'>to_string</span>())
-                } <span class='kw'>else</span> {
-                    <span class='ident'>Error</span>::<span class='ident'>Unexpected</span>(<span class='ident'>message</span>.<span class='ident'>to_string</span>())
+<span class="kw">impl</span> <span class="ident">Error</span> {
+    <span class="doccomment">/// A utility method that converts an error message back to an error</span>
+    <span class="doccomment">/// object.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">description_to_error</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">message</span>[..] {
+            <span class="string">&quot;Account not found&quot;</span> <span class="op">=&gt;</span> <span class="ident">Error</span>::<span class="ident">AccountNotFound</span>,
+            <span class="string">&quot;Vertex does not exist&quot;</span> <span class="op">=&gt;</span> <span class="ident">Error</span>::<span class="ident">VertexNotFound</span>,
+            <span class="string">&quot;Edge does not exist&quot;</span> <span class="op">=&gt;</span> <span class="ident">Error</span>::<span class="ident">EdgeNotFound</span>,
+            <span class="string">&quot;Metadata does not exist&quot;</span> <span class="op">=&gt;</span> <span class="ident">Error</span>::<span class="ident">MetadataNotFound</span>,
+            <span class="string">&quot;Unauthorized&quot;</span> <span class="op">=&gt;</span> <span class="ident">Error</span>::<span class="ident">Unauthorized</span>,
+            _ <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="ident">message</span>.<span class="ident">starts_with</span>(<span class="string">&quot;Value out of range: &quot;</span>) {
+                    <span class="ident">Error</span>::<span class="ident">OutOfRange</span>(<span class="ident">message</span>[<span class="number">20</span>..<span class="ident">message</span>.<span class="ident">len</span>()].<span class="ident">to_string</span>())
+                } <span class="kw">else</span> {
+                    <span class="ident">Error</span>::<span class="ident">Unexpected</span>(<span class="ident">message</span>.<span class="ident">to_string</span>())
                 }
             }
         }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>StdError</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
-        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
-            <span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Account not found&quot;</span>,
-            <span class='ident'>Error</span>::<span class='ident'>VertexNotFound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Vertex does not exist&quot;</span>,
-            <span class='ident'>Error</span>::<span class='ident'>EdgeNotFound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Edge does not exist&quot;</span>,
-            <span class='ident'>Error</span>::<span class='ident'>MetadataNotFound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Metadata does not exist&quot;</span>,
-            <span class='ident'>Error</span>::<span class='ident'>Unauthorized</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Unauthorized&quot;</span>,
-            <span class='ident'>Error</span>::<span class='ident'>OutOfRange</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;Value out of range&quot;</span>,
-            <span class='ident'>Error</span>::<span class='ident'>Unexpected</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;Unexpected error&quot;</span>,
+<span class="kw">impl</span> <span class="ident">StdError</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+            <span class="ident">Error</span>::<span class="ident">AccountNotFound</span> <span class="op">=&gt;</span> <span class="string">&quot;Account not found&quot;</span>,
+            <span class="ident">Error</span>::<span class="ident">VertexNotFound</span> <span class="op">=&gt;</span> <span class="string">&quot;Vertex does not exist&quot;</span>,
+            <span class="ident">Error</span>::<span class="ident">EdgeNotFound</span> <span class="op">=&gt;</span> <span class="string">&quot;Edge does not exist&quot;</span>,
+            <span class="ident">Error</span>::<span class="ident">MetadataNotFound</span> <span class="op">=&gt;</span> <span class="string">&quot;Metadata does not exist&quot;</span>,
+            <span class="ident">Error</span>::<span class="ident">Unauthorized</span> <span class="op">=&gt;</span> <span class="string">&quot;Unauthorized&quot;</span>,
+            <span class="ident">Error</span>::<span class="ident">OutOfRange</span>(_) <span class="op">=&gt;</span> <span class="string">&quot;Value out of range&quot;</span>,
+            <span class="ident">Error</span>::<span class="ident">Unexpected</span>(_) <span class="op">=&gt;</span> <span class="string">&quot;Unexpected error&quot;</span>,
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>cause</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>StdError</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>None</span>
+    <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">StdError</span><span class="op">&gt;</span> {
+        <span class="prelude-val">None</span>
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
-            <span class='ident'>Error</span>::<span class='ident'>Unexpected</span>(<span class='kw-2'>ref</span> <span class='ident'>msg</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='ident'>msg</span>),
-            <span class='ident'>Error</span>::<span class='ident'>OutOfRange</span>(<span class='kw-2'>ref</span> <span class='ident'>name</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Value out of range: {}&quot;</span>, <span class='ident'>name</span>), 
-            _ <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='self'>self</span>.<span class='ident'>description</span>()),
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+            <span class="ident">Error</span>::<span class="ident">Unexpected</span>(<span class="kw-2">ref</span> <span class="ident">msg</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">msg</span>),
+            <span class="ident">Error</span>::<span class="ident">OutOfRange</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Value out of range: {}&quot;</span>, <span class="ident">name</span>), 
+            _ <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>()),
         }
     }
 }
 
-<span class='doccomment'>/// The error returned when there is an attempt to instantiate a model with an</span>
-<span class='doccomment'>/// invalid value.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ValidationError</span> {
-    <span class='doccomment'>/// A description of the error.</span>
-    <span class='ident'>description</span>: <span class='ident'>String</span>,
+<span class="doccomment">/// The error returned when there is an attempt to instantiate a model with an</span>
+<span class="doccomment">/// invalid value.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValidationError</span> {
+    <span class="doccomment">/// A description of the error.</span>
+    <span class="ident">description</span>: <span class="ident">String</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>ValidationError</span> {
-    <span class='doccomment'>/// Creates a new validation error.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `description` - A description of the error.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>description</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='ident'>ValidationError</span> {
-        <span class='ident'>ValidationError</span> { <span class='ident'>description</span>: <span class='ident'>description</span> }
+<span class="kw">impl</span> <span class="ident">ValidationError</span> {
+    <span class="doccomment">/// Creates a new validation error.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `description` - A description of the error.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">description</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="ident">ValidationError</span> {
+        <span class="ident">ValidationError</span> { <span class="ident">description</span>: <span class="ident">description</span> }
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>StdError</span> <span class='kw'>for</span> <span class='ident'>ValidationError</span> {
-    <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
-        <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>description</span>[..]
+<span class="kw">impl</span> <span class="ident">StdError</span> <span class="kw">for</span> <span class="ident">ValidationError</span> {
+    <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">description</span>[..]
     }
 
-    <span class='kw'>fn</span> <span class='ident'>cause</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>StdError</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>None</span>
+    <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">StdError</span><span class="op">&gt;</span> {
+        <span class="prelude-val">None</span>
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>ValidationError</span> {
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='self'>self</span>.<span class='ident'>description</span>)
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ValidationError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>)
     }
 }
 </pre>

@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -691,653 +691,653 @@
 <span id="646">646</span>
 <span id="647">647</span>
 <span id="648">648</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>r2d2_postgres</span>::{<span class='ident'>TlsMode</span>, <span class='ident'>PostgresConnectionManager</span>};
-<span class='kw'>use</span> <span class='ident'>r2d2</span>::{<span class='ident'>Config</span>, <span class='ident'>Pool</span>, <span class='ident'>PooledConnection</span>};
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::{<span class='ident'>Datastore</span>, <span class='ident'>Transaction</span>, <span class='ident'>VertexQuery</span>, <span class='ident'>EdgeQuery</span>, <span class='ident'>QueryTypeConverter</span>};
-<span class='kw'>use</span> <span class='ident'>models</span>;
-<span class='kw'>use</span> <span class='ident'>errors</span>::<span class='ident'>Error</span>;
-<span class='kw'>use</span> <span class='ident'>util</span>::{<span class='ident'>generate_random_secret</span>, <span class='ident'>get_salted_hash</span>, <span class='ident'>parent_uuid</span>, <span class='ident'>child_uuid</span>};
-<span class='kw'>use</span> <span class='ident'>postgres</span>;
-<span class='kw'>use</span> <span class='ident'>postgres</span>::<span class='ident'>rows</span>::<span class='ident'>Rows</span>;
-<span class='kw'>use</span> <span class='ident'>chrono</span>::{<span class='ident'>UTC</span>, <span class='ident'>DateTime</span>};
-<span class='kw'>use</span> <span class='ident'>serde_json</span>::<span class='ident'>Value</span> <span class='kw'>as</span> <span class='ident'>JsonValue</span>;
-<span class='kw'>use</span> <span class='ident'>num_cpus</span>;
-<span class='kw'>use</span> <span class='ident'>uuid</span>::<span class='ident'>Uuid</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>HashMap</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>i64</span>;
-<span class='kw'>use</span> <span class='ident'>postgres</span>::<span class='ident'>error</span> <span class='kw'>as</span> <span class='ident'>pg_error</span>;
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>util</span>::<span class='ident'>CTEQueryBuilder</span>;
-<span class='kw'>use</span> <span class='ident'>postgres</span>::<span class='ident'>types</span>::<span class='ident'>ToSql</span>;
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>schema</span>;
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="ident">r2d2_postgres</span>::{<span class="ident">TlsMode</span>, <span class="ident">PostgresConnectionManager</span>};
+<span class="kw">use</span> <span class="ident">r2d2</span>::{<span class="ident">Config</span>, <span class="ident">Pool</span>, <span class="ident">PooledConnection</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span>::{<span class="ident">Datastore</span>, <span class="ident">Transaction</span>, <span class="ident">VertexQuery</span>, <span class="ident">EdgeQuery</span>, <span class="ident">QueryTypeConverter</span>};
+<span class="kw">use</span> <span class="ident">models</span>;
+<span class="kw">use</span> <span class="ident">errors</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">util</span>::{<span class="ident">generate_random_secret</span>, <span class="ident">get_salted_hash</span>, <span class="ident">parent_uuid</span>, <span class="ident">child_uuid</span>};
+<span class="kw">use</span> <span class="ident">postgres</span>;
+<span class="kw">use</span> <span class="ident">postgres</span>::<span class="ident">rows</span>::<span class="ident">Rows</span>;
+<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">UTC</span>, <span class="ident">DateTime</span>};
+<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>;
+<span class="kw">use</span> <span class="ident">num_cpus</span>;
+<span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">i64</span>;
+<span class="kw">use</span> <span class="ident">postgres</span>::<span class="ident">error</span> <span class="kw">as</span> <span class="ident">pg_error</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">util</span>::<span class="ident">CTEQueryBuilder</span>;
+<span class="kw">use</span> <span class="ident">postgres</span>::<span class="ident">types</span>::<span class="ident">ToSql</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">schema</span>;
 
-<span class='doccomment'>/// A datastore that is backed by a postgres database.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PostgresDatastore</span> {
-    <span class='doccomment'>/// A database connection pool.</span>
-    <span class='ident'>pool</span>: <span class='ident'>Pool</span><span class='op'>&lt;</span><span class='ident'>PostgresConnectionManager</span><span class='op'>&gt;</span>,
-    <span class='doccomment'>/// A secret value, used as the pepper in hashing sensitive account data.</span>
-    <span class='ident'>secret</span>: <span class='ident'>String</span>,
-    <span class='doccomment'>/// Whether to use secure UUIDs.</span>
-    <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>
+<span class="doccomment">/// A datastore that is backed by a postgres database.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PostgresDatastore</span> {
+    <span class="doccomment">/// A database connection pool.</span>
+    <span class="ident">pool</span>: <span class="ident">Pool</span><span class="op">&lt;</span><span class="ident">PostgresConnectionManager</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A secret value, used as the pepper in hashing sensitive account data.</span>
+    <span class="ident">secret</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Whether to use secure UUIDs.</span>
+    <span class="ident">secure_uuids</span>: <span class="ident">bool</span>
 }
 
-<span class='kw'>impl</span> <span class='ident'>PostgresDatastore</span> {
-    <span class='doccomment'>/// Creates a new postgres-backed datastore.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `pool_size` - The maximum number of connections to maintain to</span>
-    <span class='doccomment'>///   postgres. If `None`, it defaults to twice the number of CPUs.</span>
-    <span class='doccomment'>/// * `connetion_string` - The postgres database connection string.</span>
-    <span class='doccomment'>/// * `secret` - A secret value. This is used as a pepper in hashing</span>
-    <span class='doccomment'>///   sensitive account data. </span>
-    <span class='doccomment'>/// * `secure_uuids` - If true, UUIDv4 will be used, which will result in</span>
-    <span class='doccomment'>///   difficult to guess UUIDs at the detriment of a more index-optimized</span>
-    <span class='doccomment'>///   (and thus faster) variant.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>pool_size</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>u32</span><span class='op'>&gt;</span>, <span class='ident'>connection_string</span>: <span class='ident'>String</span>, <span class='ident'>secret</span>: <span class='ident'>String</span>, <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='ident'>PostgresDatastore</span> {
-        <span class='kw'>let</span> <span class='ident'>unwrapped_pool_size</span>: <span class='ident'>u32</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>pool_size</span> {
-            <span class='prelude-val'>Some</span>(<span class='ident'>val</span>) <span class='op'>=&gt;</span> <span class='ident'>val</span>,
-            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>cpus</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='ident'>num_cpus</span>::<span class='ident'>get</span>();
-                <span class='kw'>if</span> <span class='ident'>cpus</span> <span class='op'>&gt;</span> <span class='number'>512</span> { <span class='number'>1024</span> } <span class='kw'>else</span> { <span class='ident'>cpus</span> <span class='kw'>as</span> <span class='ident'>u32</span> <span class='op'>*</span> <span class='number'>2</span> }
+<span class="kw">impl</span> <span class="ident">PostgresDatastore</span> {
+    <span class="doccomment">/// Creates a new postgres-backed datastore.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `pool_size` - The maximum number of connections to maintain to</span>
+    <span class="doccomment">///   postgres. If `None`, it defaults to twice the number of CPUs.</span>
+    <span class="doccomment">/// * `connetion_string` - The postgres database connection string.</span>
+    <span class="doccomment">/// * `secret` - A secret value. This is used as a pepper in hashing</span>
+    <span class="doccomment">///   sensitive account data. </span>
+    <span class="doccomment">/// * `secure_uuids` - If true, UUIDv4 will be used, which will result in</span>
+    <span class="doccomment">///   difficult to guess UUIDs at the detriment of a more index-optimized</span>
+    <span class="doccomment">///   (and thus faster) variant.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">pool_size</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>, <span class="ident">connection_string</span>: <span class="ident">String</span>, <span class="ident">secret</span>: <span class="ident">String</span>, <span class="ident">secure_uuids</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="ident">PostgresDatastore</span> {
+        <span class="kw">let</span> <span class="ident">unwrapped_pool_size</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">pool_size</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">val</span>) <span class="op">=&gt;</span> <span class="ident">val</span>,
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">cpus</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">num_cpus</span>::<span class="ident">get</span>();
+                <span class="kw">if</span> <span class="ident">cpus</span> <span class="op">&gt;</span> <span class="number">512</span> { <span class="number">1024</span> } <span class="kw">else</span> { <span class="ident">cpus</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">*</span> <span class="number">2</span> }
             }
         };
 
-        <span class='kw'>let</span> <span class='ident'>pool_config</span> <span class='op'>=</span> <span class='ident'>Config</span>::<span class='ident'>builder</span>().<span class='ident'>pool_size</span>(<span class='ident'>unwrapped_pool_size</span>).<span class='ident'>build</span>();
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>PostgresConnectionManager</span>::<span class='ident'>new</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='ident'>connection_string</span>, <span class='ident'>TlsMode</span>::<span class='prelude-val'>None</span>) {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>manager</span>) <span class='op'>=&gt;</span> <span class='ident'>manager</span>,
-            <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Could not connect to the postgres database: {}&quot;</span>, <span class='ident'>err</span>),
+        <span class="kw">let</span> <span class="ident">pool_config</span> <span class="op">=</span> <span class="ident">Config</span>::<span class="ident">builder</span>().<span class="ident">pool_size</span>(<span class="ident">unwrapped_pool_size</span>).<span class="ident">build</span>();
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">PostgresConnectionManager</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection_string</span>, <span class="ident">TlsMode</span>::<span class="prelude-val">None</span>) {
+            <span class="prelude-val">Ok</span>(<span class="ident">manager</span>) <span class="op">=&gt;</span> <span class="ident">manager</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Could not connect to the postgres database: {}&quot;</span>, <span class="ident">err</span>),
         };
 
-        <span class='ident'>PostgresDatastore</span> {
-            <span class='ident'>pool</span>: <span class='kw'>match</span> <span class='ident'>Pool</span>::<span class='ident'>new</span>(<span class='ident'>pool_config</span>, <span class='ident'>manager</span>) {
-                <span class='prelude-val'>Ok</span>(<span class='ident'>pool</span>) <span class='op'>=&gt;</span> <span class='ident'>pool</span>,
-                <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Could not initialize postgres database pool: {}&quot;</span>, <span class='ident'>err</span>),
+        <span class="ident">PostgresDatastore</span> {
+            <span class="ident">pool</span>: <span class="kw">match</span> <span class="ident">Pool</span>::<span class="ident">new</span>(<span class="ident">pool_config</span>, <span class="ident">manager</span>) {
+                <span class="prelude-val">Ok</span>(<span class="ident">pool</span>) <span class="op">=&gt;</span> <span class="ident">pool</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Could not initialize postgres database pool: {}&quot;</span>, <span class="ident">err</span>),
             },
-            <span class='ident'>secret</span>: <span class='ident'>secret</span>,
-            <span class='ident'>secure_uuids</span>: <span class='ident'>secure_uuids</span>,
+            <span class="ident">secret</span>: <span class="ident">secret</span>,
+            <span class="ident">secure_uuids</span>: <span class="ident">secure_uuids</span>,
         }
     }
 
-    <span class='doccomment'>/// Creates a new postgres-backed datastore.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `connetion_string` - The postgres database connection string.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>create_schema</span>(<span class='ident'>connection_string</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>conn</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>postgres</span>::<span class='ident'>Connection</span>::<span class='ident'>connect</span>(<span class='ident'>connection_string</span>, <span class='ident'>postgres</span>::<span class='ident'>TlsMode</span>::<span class='prelude-val'>None</span>) {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>conn</span>) <span class='op'>=&gt;</span> <span class='ident'>conn</span>,
-            <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>Unexpected</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Could not connect to the postgres database: {}&quot;</span>, <span class='ident'>err</span>)))
+    <span class="doccomment">/// Creates a new postgres-backed datastore.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `connetion_string` - The postgres database connection string.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_schema</span>(<span class="ident">connection_string</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">postgres</span>::<span class="ident">Connection</span>::<span class="ident">connect</span>(<span class="ident">connection_string</span>, <span class="ident">postgres</span>::<span class="ident">TlsMode</span>::<span class="prelude-val">None</span>) {
+            <span class="prelude-val">Ok</span>(<span class="ident">conn</span>) <span class="op">=&gt;</span> <span class="ident">conn</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Unexpected</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Could not connect to the postgres database: {}&quot;</span>, <span class="ident">err</span>)))
         };
 
-        <span class='kw'>for</span> <span class='ident'>statement</span> <span class='kw'>in</span> <span class='ident'>schema</span>::<span class='ident'>SCHEMA</span>.<span class='ident'>split</span>(<span class='string'>&quot;;&quot;</span>) {
-            <span class='ident'>conn</span>.<span class='ident'>execute</span>(<span class='ident'>statement</span>, <span class='kw-2'>&amp;</span><span class='macro'>vec</span><span class='macro'>!</span>[])<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">statement</span> <span class="kw">in</span> <span class="ident">schema</span>::<span class="ident">SCHEMA</span>.<span class="ident">split</span>(<span class="string">&quot;;&quot;</span>) {
+            <span class="ident">conn</span>.<span class="ident">execute</span>(<span class="ident">statement</span>, <span class="kw-2">&amp;</span><span class="macro">vec</span><span class="macro">!</span>[])<span class="question-mark">?</span>;
         }
 
-        <span class='prelude-val'>Ok</span>(())
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>Datastore</span><span class='op'>&lt;</span><span class='ident'>PostgresTransaction</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>PostgresDatastore</span> {
-    <span class='kw'>fn</span> <span class='ident'>has_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>bool</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>conn</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>pool</span>.<span class='ident'>get</span>()<span class='question-mark'>?</span>;
+<span class="kw">impl</span> <span class="ident">Datastore</span><span class="op">&lt;</span><span class="ident">PostgresTransaction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PostgresDatastore</span> {
+    <span class="kw">fn</span> <span class="ident">has_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">get</span>()<span class="question-mark">?</span>;
 
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='ident'>conn</span>.<span class='ident'>query</span>(<span class='string'>&quot;SELECT 1 FROM accounts WHERE id=$1&quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>account_id</span>])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(<span class='op'>!</span><span class='ident'>results</span>.<span class='ident'>is_empty</span>())
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">conn</span>.<span class="ident">query</span>(<span class="string">&quot;SELECT 1 FROM accounts WHERE id=$1&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">account_id</span>])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="op">!</span><span class="ident">results</span>.<span class="ident">is_empty</span>())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>create_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(<span class='ident'>Uuid</span>, <span class='ident'>String</span>), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>id</span> <span class='op'>=</span> <span class='ident'>parent_uuid</span>();
-        <span class='kw'>let</span> <span class='ident'>salt</span> <span class='op'>=</span> <span class='ident'>generate_random_secret</span>();
-        <span class='kw'>let</span> <span class='ident'>secret</span> <span class='op'>=</span> <span class='ident'>generate_random_secret</span>();
-        <span class='kw'>let</span> <span class='ident'>hash</span> <span class='op'>=</span> <span class='ident'>get_salted_hash</span>(<span class='kw-2'>&amp;</span><span class='ident'>salt</span>[..], <span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>secret</span>[..]), <span class='kw-2'>&amp;</span><span class='ident'>secret</span>[..]);
-        <span class='kw'>let</span> <span class='ident'>conn</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>pool</span>.<span class='ident'>get</span>()<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">create_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Uuid</span>, <span class="ident">String</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">parent_uuid</span>();
+        <span class="kw">let</span> <span class="ident">salt</span> <span class="op">=</span> <span class="ident">generate_random_secret</span>();
+        <span class="kw">let</span> <span class="ident">secret</span> <span class="op">=</span> <span class="ident">generate_random_secret</span>();
+        <span class="kw">let</span> <span class="ident">hash</span> <span class="op">=</span> <span class="ident">get_salted_hash</span>(<span class="kw-2">&amp;</span><span class="ident">salt</span>[..], <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">secret</span>[..]), <span class="kw-2">&amp;</span><span class="ident">secret</span>[..]);
+        <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">get</span>()<span class="question-mark">?</span>;
         
-        <span class='ident'>conn</span>.<span class='ident'>execute</span>(<span class='string'>&quot;
+        <span class="ident">conn</span>.<span class="ident">execute</span>(<span class="string">&quot;
             INSERT INTO accounts(id, salt, api_secret_hash)
             VALUES ($1, $2, $3)
-            &quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>salt</span>, <span class='kw-2'>&amp;</span><span class='ident'>hash</span>]
-        )<span class='question-mark'>?</span>;
+            &quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">salt</span>, <span class="kw-2">&amp;</span><span class="ident">hash</span>]
+        )<span class="question-mark">?</span>;
 
-        <span class='prelude-val'>Ok</span>((<span class='ident'>id</span>, <span class='ident'>secret</span>))
+        <span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">secret</span>))
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>conn</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>pool</span>.<span class='ident'>get</span>()<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">delete_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">get</span>()<span class="question-mark">?</span>;
         
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='ident'>conn</span>.<span class='ident'>query</span>(<span class='string'>&quot;DELETE FROM accounts WHERE id=$1 RETURNING 1&quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>account_id</span>])<span class='question-mark'>?</span>;
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">conn</span>.<span class="ident">query</span>(<span class="string">&quot;DELETE FROM accounts WHERE id=$1 RETURNING 1&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">account_id</span>])<span class="question-mark">?</span>;
 
-        <span class='kw'>if</span> <span class='ident'>results</span>.<span class='ident'>is_empty</span>() {
-            <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span>)
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>Ok</span>(())
+        <span class="kw">if</span> <span class="ident">results</span>.<span class="ident">is_empty</span>() {
+            <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">AccountNotFound</span>)
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Ok</span>(())
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>auth</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>secret</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>bool</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>conn</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>pool</span>.<span class='ident'>get</span>()<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">auth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">secret</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">get</span>()<span class="question-mark">?</span>;
 
-        <span class='kw'>let</span> <span class='ident'>get_salt_results</span> <span class='op'>=</span> <span class='ident'>conn</span>.<span class='ident'>query</span>(<span class='string'>&quot;SELECT salt, api_secret_hash FROM accounts WHERE id=$1&quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>account_id</span>])<span class='question-mark'>?</span>;
+        <span class="kw">let</span> <span class="ident">get_salt_results</span> <span class="op">=</span> <span class="ident">conn</span>.<span class="ident">query</span>(<span class="string">&quot;SELECT salt, api_secret_hash FROM accounts WHERE id=$1&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">account_id</span>])<span class="question-mark">?</span>;
 
-        <span class='kw'>for</span> <span class='ident'>row</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>get_salt_results</span> {
-            <span class='kw'>let</span> <span class='ident'>salt</span>: <span class='ident'>String</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>0</span>);
-            <span class='kw'>let</span> <span class='ident'>expected_hash</span>: <span class='ident'>String</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>1</span>);
-            <span class='kw'>let</span> <span class='ident'>actual_hash</span> <span class='op'>=</span> <span class='ident'>get_salted_hash</span>(<span class='kw-2'>&amp;</span><span class='ident'>salt</span>[..], <span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>secret</span>[..]), <span class='kw-2'>&amp;</span><span class='ident'>secret</span>[..]);
-            <span class='kw'>return</span> <span class='prelude-val'>Ok</span>(<span class='ident'>expected_hash</span> <span class='op'>==</span> <span class='ident'>actual_hash</span>);
+        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">get_salt_results</span> {
+            <span class="kw">let</span> <span class="ident">salt</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">expected_hash</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">actual_hash</span> <span class="op">=</span> <span class="ident">get_salted_hash</span>(<span class="kw-2">&amp;</span><span class="ident">salt</span>[..], <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">secret</span>[..]), <span class="kw-2">&amp;</span><span class="ident">secret</span>[..]);
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">expected_hash</span> <span class="op">==</span> <span class="ident">actual_hash</span>);
         }
 
-        <span class='comment'>// Calculate the hash anyways to prevent timing attacks</span>
-        <span class='ident'>get_salted_hash</span>(<span class='string'>&quot;&quot;</span>, <span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>secret</span>[..]), <span class='kw-2'>&amp;</span><span class='ident'>secret</span>[..]);
-        <span class='prelude-val'>Ok</span>(<span class='bool-val'>false</span>)
+        <span class="comment">// Calculate the hash anyways to prevent timing attacks</span>
+        <span class="ident">get_salted_hash</span>(<span class="string">&quot;&quot;</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">secret</span>[..]), <span class="kw-2">&amp;</span><span class="ident">secret</span>[..]);
+        <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>transaction</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>PostgresTransaction</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>conn</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>pool</span>.<span class='ident'>get</span>()<span class='question-mark'>?</span>;
-        <span class='kw'>let</span> <span class='ident'>trans</span> <span class='op'>=</span> <span class='ident'>PostgresTransaction</span>::<span class='ident'>new</span>(<span class='ident'>conn</span>, <span class='ident'>account_id</span>, <span class='self'>self</span>.<span class='ident'>secure_uuids</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(<span class='ident'>trans</span>)
+    <span class="kw">fn</span> <span class="ident">transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PostgresTransaction</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">get</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">trans</span> <span class="op">=</span> <span class="ident">PostgresTransaction</span>::<span class="ident">new</span>(<span class="ident">conn</span>, <span class="ident">account_id</span>, <span class="self">self</span>.<span class="ident">secure_uuids</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="ident">trans</span>)
     }
 }
 
-<span class='doccomment'>/// A postgres-backed datastore transaction.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PostgresTransaction</span> {
-    <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>,
-    <span class='ident'>trans</span>: <span class='ident'>postgres</span>::<span class='ident'>transaction</span>::<span class='ident'>Transaction</span><span class='op'>&lt;</span><span class='lifetime'>&#39;static</span><span class='op'>&gt;</span>,
-    <span class='ident'>conn</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>PooledConnection</span><span class='op'>&lt;</span><span class='ident'>PostgresConnectionManager</span><span class='op'>&gt;&gt;</span>,
-    <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>,
+<span class="doccomment">/// A postgres-backed datastore transaction.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PostgresTransaction</span> {
+    <span class="ident">account_id</span>: <span class="ident">Uuid</span>,
+    <span class="ident">trans</span>: <span class="ident">postgres</span>::<span class="ident">transaction</span>::<span class="ident">Transaction</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>,
+    <span class="ident">conn</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">PooledConnection</span><span class="op">&lt;</span><span class="ident">PostgresConnectionManager</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">secure_uuids</span>: <span class="ident">bool</span>,
 }
 
-<span class='kw'>impl</span> <span class='ident'>PostgresTransaction</span> {
-    <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>conn</span>: <span class='ident'>PooledConnection</span><span class='op'>&lt;</span><span class='ident'>PostgresConnectionManager</span><span class='op'>&gt;</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='self'>Self</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>conn</span> <span class='op'>=</span> <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>conn</span>);
+<span class="kw">impl</span> <span class="ident">PostgresTransaction</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">conn</span>: <span class="ident">PooledConnection</span><span class="op">&lt;</span><span class="ident">PostgresConnectionManager</span><span class="op">&gt;</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">secure_uuids</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">conn</span>);
 
-        <span class='kw'>let</span> <span class='ident'>trans</span> <span class='op'>=</span> <span class='kw'>unsafe</span> {
-            <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='kw'>match</span> <span class='ident'>conn</span>.<span class='ident'>transaction</span>() {
-                <span class='prelude-val'>Ok</span>(<span class='ident'>trans</span>) <span class='op'>=&gt;</span> <span class='ident'>trans</span>,
-                <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>Unexpected</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;Could not create transaction: {}&quot;</span>, <span class='ident'>err</span>)))
+        <span class="kw">let</span> <span class="ident">trans</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+            <span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="kw">match</span> <span class="ident">conn</span>.<span class="ident">transaction</span>() {
+                <span class="prelude-val">Ok</span>(<span class="ident">trans</span>) <span class="op">=&gt;</span> <span class="ident">trans</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Unexpected</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Could not create transaction: {}&quot;</span>, <span class="ident">err</span>)))
             })
         };
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>PostgresTransaction</span> {
-            <span class='ident'>account_id</span>: <span class='ident'>account_id</span>,
-            <span class='ident'>conn</span>: <span class='ident'>conn</span>,
-            <span class='ident'>trans</span>: <span class='ident'>trans</span>,
-            <span class='ident'>secure_uuids</span>: <span class='ident'>secure_uuids</span>,
+        <span class="prelude-val">Ok</span>(<span class="ident">PostgresTransaction</span> {
+            <span class="ident">account_id</span>: <span class="ident">account_id</span>,
+            <span class="ident">conn</span>: <span class="ident">conn</span>,
+            <span class="ident">trans</span>: <span class="ident">trans</span>,
+            <span class="ident">secure_uuids</span>: <span class="ident">secure_uuids</span>,
         })
     }
 
-    <span class='kw'>fn</span> <span class='ident'>handle_get_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>results</span>: <span class='ident'>Rows</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>JsonValue</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>for</span> <span class='ident'>row</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>results</span> {
-            <span class='kw'>let</span> <span class='ident'>value</span>: <span class='ident'>JsonValue</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>0</span>);
-            <span class='kw'>return</span> <span class='prelude-val'>Ok</span>(<span class='ident'>value</span>);
+    <span class="kw">fn</span> <span class="ident">handle_get_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">results</span>: <span class="ident">Rows</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JsonValue</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">results</span> {
+            <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">JsonValue</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">0</span>);
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">value</span>);
         }
 
-        <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>MetadataNotFound</span>)
+        <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">MetadataNotFound</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>handle_delete_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>results</span>: <span class='ident'>Rows</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='ident'>results</span>.<span class='ident'>is_empty</span>() {
-            <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>MetadataNotFound</span>)
-        } <span class='kw'>else</span> {
-            <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">handle_delete_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">results</span>: <span class="ident">Rows</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">results</span>.<span class="ident">is_empty</span>() {
+            <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">MetadataNotFound</span>)
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Ok</span>(())
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>handle_set_metadata_error</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>err</span>: <span class='ident'>pg_error</span>::<span class='ident'>Error</span>, <span class='ident'>foreign_key_err</span>: <span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='ident'>pg_error</span>::<span class='ident'>Error</span>::<span class='ident'>Db</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>) <span class='op'>=</span> <span class='ident'>err</span> {
-            <span class='kw'>if</span> <span class='ident'>err</span>.<span class='ident'>code</span> <span class='op'>==</span> <span class='ident'>pg_error</span>::<span class='ident'>SqlState</span>::<span class='ident'>ForeignKeyViolation</span> <span class='op'>||</span> <span class='ident'>err</span>.<span class='ident'>code</span> <span class='op'>==</span> <span class='ident'>pg_error</span>::<span class='ident'>SqlState</span>::<span class='ident'>NotNullViolation</span> {
-                <span class='comment'>// This should only happen when we couldn&#39;t get the</span>
-                <span class='comment'>// &quot;owning&quot; resource for the metadata</span>
-                <span class='kw'>return</span> <span class='ident'>foreign_key_err</span>;
+    <span class="kw">fn</span> <span class="ident">handle_set_metadata_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">err</span>: <span class="ident">pg_error</span>::<span class="ident">Error</span>, <span class="ident">foreign_key_err</span>: <span class="ident">Error</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">pg_error</span>::<span class="ident">Error</span>::<span class="ident">Db</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span> <span class="ident">err</span> {
+            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span> <span class="op">==</span> <span class="ident">pg_error</span>::<span class="ident">SqlState</span>::<span class="ident">ForeignKeyViolation</span> <span class="op">||</span> <span class="ident">err</span>.<span class="ident">code</span> <span class="op">==</span> <span class="ident">pg_error</span>::<span class="ident">SqlState</span>::<span class="ident">NotNullViolation</span> {
+                <span class="comment">// This should only happen when we couldn&#39;t get the</span>
+                <span class="comment">// &quot;owning&quot; resource for the metadata</span>
+                <span class="kw">return</span> <span class="ident">foreign_key_err</span>;
             }
         }
 
-        <span class='ident'>Error</span>::<span class='ident'>from</span>(<span class='ident'>err</span>)
+        <span class="ident">Error</span>::<span class="ident">from</span>(<span class="ident">err</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>vertex_query_to_sql</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>, <span class='ident'>sql_query_builder</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>CTEQueryBuilder</span>) {
-         <span class='kw'>match</span> <span class='ident'>q</span> {
-            <span class='ident'>VertexQuery</span>::<span class='ident'>All</span>(<span class='ident'>start_id</span>, <span class='ident'>limit</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>match</span> <span class='ident'>start_id</span> {
-                    <span class='prelude-val'>Some</span>(<span class='ident'>start_id</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>query_template</span> <span class='op'>=</span> <span class='string'>&quot;SELECT id, owner_id, type FROM %t WHERE id &gt; %p ORDER BY id LIMIT %p&quot;</span>;
-                        <span class='kw'>let</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>start_id</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>i64</span>)];
-                        <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='ident'>query_template</span>, <span class='string'>&quot;vertices&quot;</span>, <span class='ident'>params</span>);
+    <span class="kw">fn</span> <span class="ident">vertex_query_to_sql</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>, <span class="ident">sql_query_builder</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CTEQueryBuilder</span>) {
+         <span class="kw">match</span> <span class="ident">q</span> {
+            <span class="ident">VertexQuery</span>::<span class="ident">All</span>(<span class="ident">start_id</span>, <span class="ident">limit</span>) <span class="op">=&gt;</span> {
+                <span class="kw">match</span> <span class="ident">start_id</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">start_id</span>) <span class="op">=&gt;</span> {
+                        <span class="kw">let</span> <span class="ident">query_template</span> <span class="op">=</span> <span class="string">&quot;SELECT id, owner_id, type FROM %t WHERE id &gt; %p ORDER BY id LIMIT %p&quot;</span>;
+                        <span class="kw">let</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">start_id</span>), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">limit</span> <span class="kw">as</span> <span class="ident">i64</span>)];
+                        <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="ident">query_template</span>, <span class="string">&quot;vertices&quot;</span>, <span class="ident">params</span>);
                     },
-                    <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>query_template</span> <span class='op'>=</span> <span class='string'>&quot;SELECT id, owner_id, type FROM %t ORDER BY id LIMIT %p&quot;</span>;
-                        <span class='kw'>let</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>i64</span>)];
-                        <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='ident'>query_template</span>, <span class='string'>&quot;vertices&quot;</span>, <span class='ident'>params</span>);
+                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+                        <span class="kw">let</span> <span class="ident">query_template</span> <span class="op">=</span> <span class="string">&quot;SELECT id, owner_id, type FROM %t ORDER BY id LIMIT %p&quot;</span>;
+                        <span class="kw">let</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">limit</span> <span class="kw">as</span> <span class="ident">i64</span>)];
+                        <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="ident">query_template</span>, <span class="string">&quot;vertices&quot;</span>, <span class="ident">params</span>);
                     }
                 }
             },
-            <span class='ident'>VertexQuery</span>::<span class='ident'>Vertex</span>(<span class='ident'>id</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>query_template</span> <span class='op'>=</span> <span class='string'>&quot;SELECT id, owner_id, type FROM %t WHERE id=%p LIMIT 1&quot;</span>;
-                <span class='kw'>let</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>id</span>)];
-                <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='ident'>query_template</span>, <span class='string'>&quot;vertices&quot;</span>, <span class='ident'>params</span>);
+            <span class="ident">VertexQuery</span>::<span class="ident">Vertex</span>(<span class="ident">id</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">query_template</span> <span class="op">=</span> <span class="string">&quot;SELECT id, owner_id, type FROM %t WHERE id=%p LIMIT 1&quot;</span>;
+                <span class="kw">let</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">id</span>)];
+                <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="ident">query_template</span>, <span class="string">&quot;vertices&quot;</span>, <span class="ident">params</span>);
             },
-            <span class='ident'>VertexQuery</span>::<span class='ident'>Vertices</span>(<span class='ident'>vertices</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>params_template_builder</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
+            <span class="ident">VertexQuery</span>::<span class="ident">Vertices</span>(<span class="ident">vertices</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">params_template_builder</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
 
-                <span class='kw'>for</span> <span class='ident'>id</span> <span class='kw'>in</span> <span class='ident'>vertices</span> {
-                    <span class='ident'>params_template_builder</span>.<span class='ident'>push</span>(<span class='string'>&quot;%p&quot;</span>);
-                    <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>id</span>));
+                <span class="kw">for</span> <span class="ident">id</span> <span class="kw">in</span> <span class="ident">vertices</span> {
+                    <span class="ident">params_template_builder</span>.<span class="ident">push</span>(<span class="string">&quot;%p&quot;</span>);
+                    <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">id</span>));
                 }
 
-                <span class='kw'>let</span> <span class='ident'>query_template</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;SELECT id, owner_id, type FROM %t WHERE id IN ({}) ORDER BY id&quot;</span>, <span class='ident'>params_template_builder</span>.<span class='ident'>join</span>(<span class='string'>&quot;, &quot;</span>));
-                <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='ident'>query_template</span>[..], <span class='string'>&quot;vertices&quot;</span>, <span class='ident'>params</span>);
+                <span class="kw">let</span> <span class="ident">query_template</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;SELECT id, owner_id, type FROM %t WHERE id IN ({}) ORDER BY id&quot;</span>, <span class="ident">params_template_builder</span>.<span class="ident">join</span>(<span class="string">&quot;, &quot;</span>));
+                <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">query_template</span>[..], <span class="string">&quot;vertices&quot;</span>, <span class="ident">params</span>);
             },
-            <span class='ident'>VertexQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>edge_query</span>, <span class='ident'>converter</span>, <span class='ident'>limit</span>) <span class='op'>=&gt;</span> {
-                <span class='self'>self</span>.<span class='ident'>edge_query_to_sql</span>(<span class='kw-2'>*</span><span class='ident'>edge_query</span>, <span class='ident'>sql_query_builder</span>);
-                <span class='kw'>let</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>i64</span>)];
+            <span class="ident">VertexQuery</span>::<span class="ident">Pipe</span>(<span class="ident">edge_query</span>, <span class="ident">converter</span>, <span class="ident">limit</span>) <span class="op">=&gt;</span> {
+                <span class="self">self</span>.<span class="ident">edge_query_to_sql</span>(<span class="kw-2">*</span><span class="ident">edge_query</span>, <span class="ident">sql_query_builder</span>);
+                <span class="kw">let</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">limit</span> <span class="kw">as</span> <span class="ident">i64</span>)];
 
-                <span class='kw'>let</span> <span class='ident'>query_template</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>converter</span> {
-                    <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Outbound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;SELECT id, owner_id, type FROM vertices WHERE id IN (SELECT outbound_id FROM %t) ORDER BY id LIMIT %p&quot;</span>,
-                    <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Inbound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;SELECT id, owner_id, type FROM vertices WHERE id IN (SELECT inbound_id FROM %t) ORDER BY id LIMIT %p&quot;</span>
+                <span class="kw">let</span> <span class="ident">query_template</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">converter</span> {
+                    <span class="ident">QueryTypeConverter</span>::<span class="ident">Outbound</span> <span class="op">=&gt;</span> <span class="string">&quot;SELECT id, owner_id, type FROM vertices WHERE id IN (SELECT outbound_id FROM %t) ORDER BY id LIMIT %p&quot;</span>,
+                    <span class="ident">QueryTypeConverter</span>::<span class="ident">Inbound</span> <span class="op">=&gt;</span> <span class="string">&quot;SELECT id, owner_id, type FROM vertices WHERE id IN (SELECT inbound_id FROM %t) ORDER BY id LIMIT %p&quot;</span>
                 };
 
-                <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='ident'>query_template</span>, <span class='string'>&quot;&quot;</span>, <span class='ident'>params</span>);
+                <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="ident">query_template</span>, <span class="string">&quot;&quot;</span>, <span class="ident">params</span>);
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>edge_query_to_sql</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>, <span class='ident'>sql_query_builder</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>CTEQueryBuilder</span>) {
-        <span class='kw'>match</span> <span class='ident'>q</span> {
-            <span class='ident'>EdgeQuery</span>::<span class='ident'>Edge</span>(<span class='ident'>key</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>key</span>.<span class='ident'>outbound_id</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>key</span>.<span class='ident'>t</span>.<span class='number'>0</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>key</span>.<span class='ident'>inbound_id</span>)];
+    <span class="kw">fn</span> <span class="ident">edge_query_to_sql</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>, <span class="ident">sql_query_builder</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CTEQueryBuilder</span>) {
+        <span class="kw">match</span> <span class="ident">q</span> {
+            <span class="ident">EdgeQuery</span>::<span class="ident">Edge</span>(<span class="ident">key</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">key</span>.<span class="ident">outbound_id</span>), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">key</span>.<span class="ident">t</span>.<span class="number">0</span>), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">key</span>.<span class="ident">inbound_id</span>)];
 
-                <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(
-                    <span class='string'>&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM %t WHERE outbound_id=%p AND type=%p AND inbound_id=%p&quot;</span>,
-                    <span class='string'>&quot;edges&quot;</span>,
-                    <span class='ident'>params</span>
+                <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(
+                    <span class="string">&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM %t WHERE outbound_id=%p AND type=%p AND inbound_id=%p&quot;</span>,
+                    <span class="string">&quot;edges&quot;</span>,
+                    <span class="ident">params</span>
                 )
             },
-            <span class='ident'>EdgeQuery</span>::<span class='ident'>Edges</span>(<span class='ident'>edges</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>params_template_builder</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
+            <span class="ident">EdgeQuery</span>::<span class="ident">Edges</span>(<span class="ident">edges</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">params_template_builder</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
 
-                <span class='kw'>for</span> <span class='ident'>key</span> <span class='kw'>in</span> <span class='ident'>edges</span> {
-                    <span class='ident'>params_template_builder</span>.<span class='ident'>push</span>(<span class='string'>&quot;(%p, %p, %p)&quot;</span>);
-                    <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>key</span>.<span class='ident'>outbound_id</span>));
-                    <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>key</span>.<span class='ident'>t</span>.<span class='number'>0</span>));
-                    <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>key</span>.<span class='ident'>inbound_id</span>));
+                <span class="kw">for</span> <span class="ident">key</span> <span class="kw">in</span> <span class="ident">edges</span> {
+                    <span class="ident">params_template_builder</span>.<span class="ident">push</span>(<span class="string">&quot;(%p, %p, %p)&quot;</span>);
+                    <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">key</span>.<span class="ident">outbound_id</span>));
+                    <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">key</span>.<span class="ident">t</span>.<span class="number">0</span>));
+                    <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">key</span>.<span class="ident">inbound_id</span>));
                 }
 
-                <span class='kw'>let</span> <span class='ident'>query_template</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM %t WHERE (outbound_id, type, inbound_id) IN ({})&quot;</span>, <span class='ident'>params_template_builder</span>.<span class='ident'>join</span>(<span class='string'>&quot;, &quot;</span>));
-                <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='ident'>query_template</span>[..], <span class='string'>&quot;edges&quot;</span>, <span class='ident'>params</span>);
+                <span class="kw">let</span> <span class="ident">query_template</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM %t WHERE (outbound_id, type, inbound_id) IN ({})&quot;</span>, <span class="ident">params_template_builder</span>.<span class="ident">join</span>(<span class="string">&quot;, &quot;</span>));
+                <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">query_template</span>[..], <span class="string">&quot;edges&quot;</span>, <span class="ident">params</span>);
             },
-            <span class='ident'>EdgeQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>vertex_query</span>, <span class='ident'>converter</span>, <span class='ident'>t</span>, <span class='ident'>high</span>, <span class='ident'>low</span>, <span class='ident'>limit</span>) <span class='op'>=&gt;</span> {
-                <span class='self'>self</span>.<span class='ident'>vertex_query_to_sql</span>(<span class='kw-2'>*</span><span class='ident'>vertex_query</span>, <span class='ident'>sql_query_builder</span>);
+            <span class="ident">EdgeQuery</span>::<span class="ident">Pipe</span>(<span class="ident">vertex_query</span>, <span class="ident">converter</span>, <span class="ident">t</span>, <span class="ident">high</span>, <span class="ident">low</span>, <span class="ident">limit</span>) <span class="op">=&gt;</span> {
+                <span class="self">self</span>.<span class="ident">vertex_query_to_sql</span>(<span class="kw-2">*</span><span class="ident">vertex_query</span>, <span class="ident">sql_query_builder</span>);
 
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>where_clause_template_builder</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>params</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>ToSql</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">where_clause_template_builder</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ToSql</span><span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
 
-                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>t</span>) <span class='op'>=</span> <span class='ident'>t</span> {
-                    <span class='ident'>where_clause_template_builder</span>.<span class='ident'>push</span>(<span class='string'>&quot;type = %p&quot;</span>);
-                    <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>t</span>.<span class='number'>0</span>));
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">t</span>) <span class="op">=</span> <span class="ident">t</span> {
+                    <span class="ident">where_clause_template_builder</span>.<span class="ident">push</span>(<span class="string">&quot;type = %p&quot;</span>);
+                    <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">t</span>.<span class="number">0</span>));
                 }
 
-                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>high</span>) <span class='op'>=</span> <span class='ident'>high</span> {
-                    <span class='ident'>where_clause_template_builder</span>.<span class='ident'>push</span>(<span class='string'>&quot;update_timestamp &lt;= %p&quot;</span>);
-                    <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>high</span>));
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">high</span>) <span class="op">=</span> <span class="ident">high</span> {
+                    <span class="ident">where_clause_template_builder</span>.<span class="ident">push</span>(<span class="string">&quot;update_timestamp &lt;= %p&quot;</span>);
+                    <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">high</span>));
                 }
 
-                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>low</span>) <span class='op'>=</span> <span class='ident'>low</span> {
-                    <span class='ident'>where_clause_template_builder</span>.<span class='ident'>push</span>(<span class='string'>&quot;update_timestamp &gt;= %p&quot;</span>);
-                    <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>low</span>));
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">low</span>) <span class="op">=</span> <span class="ident">low</span> {
+                    <span class="ident">where_clause_template_builder</span>.<span class="ident">push</span>(<span class="string">&quot;update_timestamp &gt;= %p&quot;</span>);
+                    <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">low</span>));
                 }
 
-                <span class='ident'>params</span>.<span class='ident'>push</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>i64</span>));
-                <span class='kw'>let</span> <span class='ident'>where_clause</span> <span class='op'>=</span> <span class='ident'>where_clause_template_builder</span>.<span class='ident'>join</span>(<span class='string'>&quot; AND &quot;</span>);
+                <span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">limit</span> <span class="kw">as</span> <span class="ident">i64</span>));
+                <span class="kw">let</span> <span class="ident">where_clause</span> <span class="op">=</span> <span class="ident">where_clause_template_builder</span>.<span class="ident">join</span>(<span class="string">&quot; AND &quot;</span>);
 
-                <span class='kw'>let</span> <span class='ident'>query_template</span> <span class='op'>=</span> <span class='kw'>match</span> (<span class='ident'>converter</span>, <span class='ident'>where_clause</span>.<span class='ident'>len</span>()) {
-                    (<span class='ident'>QueryTypeConverter</span>::<span class='ident'>Outbound</span>, <span class='number'>0</span>) <span class='op'>=&gt;</span> {
-                        <span class='string'>&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE outbound_id IN (SELECT id FROM %t) ORDER BY update_timestamp DESC LIMIT %p&quot;</span>.<span class='ident'>to_string</span>()
+                <span class="kw">let</span> <span class="ident">query_template</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">converter</span>, <span class="ident">where_clause</span>.<span class="ident">len</span>()) {
+                    (<span class="ident">QueryTypeConverter</span>::<span class="ident">Outbound</span>, <span class="number">0</span>) <span class="op">=&gt;</span> {
+                        <span class="string">&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE outbound_id IN (SELECT id FROM %t) ORDER BY update_timestamp DESC LIMIT %p&quot;</span>.<span class="ident">to_string</span>()
                     },
-                    (<span class='ident'>QueryTypeConverter</span>::<span class='ident'>Outbound</span>, _) <span class='op'>=&gt;</span> {
-                        <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE outbound_id IN (SELECT id FROM %t) AND {} ORDER BY update_timestamp DESC LIMIT %p&quot;</span>, <span class='ident'>where_clause</span>)
+                    (<span class="ident">QueryTypeConverter</span>::<span class="ident">Outbound</span>, _) <span class="op">=&gt;</span> {
+                        <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE outbound_id IN (SELECT id FROM %t) AND {} ORDER BY update_timestamp DESC LIMIT %p&quot;</span>, <span class="ident">where_clause</span>)
                     },
-                    (<span class='ident'>QueryTypeConverter</span>::<span class='ident'>Inbound</span>, <span class='number'>0</span>) <span class='op'>=&gt;</span> {
-                        <span class='string'>&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE inbound_id IN (SELECT id FROM %t) ORDER BY update_timestamp DESC LIMIT %p&quot;</span>.<span class='ident'>to_string</span>()
+                    (<span class="ident">QueryTypeConverter</span>::<span class="ident">Inbound</span>, <span class="number">0</span>) <span class="op">=&gt;</span> {
+                        <span class="string">&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE inbound_id IN (SELECT id FROM %t) ORDER BY update_timestamp DESC LIMIT %p&quot;</span>.<span class="ident">to_string</span>()
                     },
-                    (<span class='ident'>QueryTypeConverter</span>::<span class='ident'>Inbound</span>, _) <span class='op'>=&gt;</span> {
-                        <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE inbound_id IN (SELECT id FROM %t) AND {} ORDER BY update_timestamp DESC LIMIT %p&quot;</span>, <span class='ident'>where_clause</span>)
+                    (<span class="ident">QueryTypeConverter</span>::<span class="ident">Inbound</span>, _) <span class="op">=&gt;</span> {
+                        <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;SELECT id, outbound_id, type, inbound_id, update_timestamp, weight FROM edges WHERE inbound_id IN (SELECT id FROM %t) AND {} ORDER BY update_timestamp DESC LIMIT %p&quot;</span>, <span class="ident">where_clause</span>)
                     }
                  };
                 
-                <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='kw-2'>&amp;</span><span class='ident'>query_template</span>[..], <span class='string'>&quot;&quot;</span>, <span class='ident'>params</span>);
+                <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">query_template</span>[..], <span class="string">&quot;&quot;</span>, <span class="ident">params</span>);
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>ensure_edges_are_owned_by_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>sql_query_builder</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>CTEQueryBuilder</span>) {
-        <span class='ident'>sql_query_builder</span>.<span class='ident'>push</span>(<span class='string'>&quot;SELECT %t.id FROM %t JOIN vertices ON %t.outbound_id=vertices.id WHERE vertices.owner_id=%p&quot;</span>, <span class='string'>&quot;vertices&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>account_id</span>)]);
+    <span class="kw">fn</span> <span class="ident">ensure_edges_are_owned_by_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sql_query_builder</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CTEQueryBuilder</span>) {
+        <span class="ident">sql_query_builder</span>.<span class="ident">push</span>(<span class="string">&quot;SELECT %t.id FROM %t JOIN vertices ON %t.outbound_id=vertices.id WHERE vertices.owner_id=%p&quot;</span>, <span class="string">&quot;vertices&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">account_id</span>)]);
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>Transaction</span> <span class='kw'>for</span> <span class='ident'>PostgresTransaction</span> {
-    <span class='kw'>fn</span> <span class='ident'>create_vertex</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>t</span>: <span class='ident'>models</span>::<span class='ident'>Type</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>id</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>secure_uuids</span> {
-            <span class='ident'>parent_uuid</span>()
-        } <span class='kw'>else</span> {
-            <span class='ident'>child_uuid</span>(<span class='self'>self</span>.<span class='ident'>account_id</span>)
+<span class="kw">impl</span> <span class="ident">Transaction</span> <span class="kw">for</span> <span class="ident">PostgresTransaction</span> {
+    <span class="kw">fn</span> <span class="ident">create_vertex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">t</span>: <span class="ident">models</span>::<span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">secure_uuids</span> {
+            <span class="ident">parent_uuid</span>()
+        } <span class="kw">else</span> {
+            <span class="ident">child_uuid</span>(<span class="self">self</span>.<span class="ident">account_id</span>)
         };
 
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>execute</span>(<span class='string'>&quot;INSERT INTO vertices (id, type, owner_id) VALUES ($1, $2, $3)&quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>t</span>.<span class='number'>0</span>, <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>account_id</span>])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(<span class='ident'>id</span>)
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">execute</span>(<span class="string">&quot;INSERT INTO vertices (id, type, owner_id) VALUES ($1, $2, $3)&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">account_id</span>])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="ident">id</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_vertices</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Vertex</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>vertex_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;SELECT id, type FROM %t&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
+    <span class="kw">fn</span> <span class="ident">get_vertices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Vertex</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">vertex_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;SELECT id, type FROM %t&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
 
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>vertices</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Vertex</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vertices</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Vertex</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
 
-        <span class='kw'>for</span> <span class='ident'>row</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>results</span> {
-            <span class='kw'>let</span> <span class='ident'>id</span>: <span class='ident'>Uuid</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>0</span>);
-            <span class='kw'>let</span> <span class='ident'>t_str</span>: <span class='ident'>String</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>1</span>);
-            <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Vertex</span>::<span class='ident'>new</span>(<span class='ident'>id</span>, <span class='ident'>models</span>::<span class='ident'>Type</span>::<span class='ident'>new</span>(<span class='ident'>t_str</span>).<span class='ident'>unwrap</span>());
-            <span class='ident'>vertices</span>.<span class='ident'>push</span>(<span class='ident'>v</span>);
+        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">results</span> {
+            <span class="kw">let</span> <span class="ident">id</span>: <span class="ident">Uuid</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">t_str</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">Vertex</span>::<span class="ident">new</span>(<span class="ident">id</span>, <span class="ident">models</span>::<span class="ident">Type</span>::<span class="ident">new</span>(<span class="ident">t_str</span>).<span class="ident">unwrap</span>());
+            <span class="ident">vertices</span>.<span class="ident">push</span>(<span class="ident">v</span>);
         }
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>vertices</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">vertices</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_vertices</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>vertex_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;DELETE FROM vertices WHERE id IN (SELECT id FROM %t WHERE owner_id=%p)&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>account_id</span>)]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>execute</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">delete_vertices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">vertex_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;DELETE FROM vertices WHERE id IN (SELECT id FROM %t WHERE owner_id=%p)&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">account_id</span>)]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>create_edge</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>key</span>: <span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>weight</span>: <span class='ident'>models</span>::<span class='ident'>Weight</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>id</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>secure_uuids</span> {
-            <span class='ident'>parent_uuid</span>()
-        } <span class='kw'>else</span> {
-            <span class='ident'>child_uuid</span>(<span class='ident'>key</span>.<span class='ident'>outbound_id</span>)
+    <span class="kw">fn</span> <span class="ident">create_edge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">weight</span>: <span class="ident">models</span>::<span class="ident">Weight</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">secure_uuids</span> {
+            <span class="ident">parent_uuid</span>()
+        } <span class="kw">else</span> {
+            <span class="ident">child_uuid</span>(<span class="ident">key</span>.<span class="ident">outbound_id</span>)
         };
 
-        <span class='comment'>// Because this command could fail, we need to set a savepoint to roll</span>
-        <span class='comment'>// back to, rather than spoiling the entire transaction</span>
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> {
-            <span class='kw'>let</span> <span class='ident'>trans</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>savepoint</span>(<span class='string'>&quot;set_edge&quot;</span>)<span class='question-mark'>?</span>;
-            <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='string'>&quot;
+        <span class="comment">// Because this command could fail, we need to set a savepoint to roll</span>
+        <span class="comment">// back to, rather than spoiling the entire transaction</span>
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> {
+            <span class="kw">let</span> <span class="ident">trans</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">savepoint</span>(<span class="string">&quot;set_edge&quot;</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">trans</span>.<span class="ident">query</span>(<span class="string">&quot;
                 INSERT INTO edges (id, outbound_id, type, inbound_id, weight, update_timestamp)
                 VALUES ($1, (SELECT id FROM vertices WHERE id=$2 AND owner_id=$3), $4, $5, $6, CLOCK_TIMESTAMP())
                 ON CONFLICT ON CONSTRAINT edges_outbound_id_type_inbound_id_ukey
                 DO UPDATE SET weight=$6, update_timestamp=CLOCK_TIMESTAMP()
-            &quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>key</span>.<span class='ident'>outbound_id</span>, <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>account_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>key</span>.<span class='ident'>t</span>.<span class='number'>0</span>, <span class='kw-2'>&amp;</span><span class='ident'>key</span>.<span class='ident'>inbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>weight</span>.<span class='number'>0</span>]);
+            &quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">outbound_id</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">account_id</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">t</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">inbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">weight</span>.<span class="number">0</span>]);
             
-            <span class='kw'>match</span> <span class='ident'>results</span> {
-                <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> {
-                    <span class='ident'>trans</span>.<span class='ident'>set_rollback</span>();
-                    <span class='prelude-val'>Err</span>(<span class='ident'>err</span>)
+            <span class="kw">match</span> <span class="ident">results</span> {
+                <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> {
+                    <span class="ident">trans</span>.<span class="ident">set_rollback</span>();
+                    <span class="prelude-val">Err</span>(<span class="ident">err</span>)
                 }
-                <span class='prelude-val'>Ok</span>(_) <span class='op'>=&gt;</span> {
-                    <span class='ident'>trans</span>.<span class='ident'>set_commit</span>();
-                    <span class='prelude-val'>Ok</span>(())
+                <span class="prelude-val">Ok</span>(_) <span class="op">=&gt;</span> {
+                    <span class="ident">trans</span>.<span class="ident">set_commit</span>();
+                    <span class="prelude-val">Ok</span>(())
                 }
             }
         };
         
-        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Err</span>(<span class='ident'>pg_error</span>::<span class='ident'>Error</span>::<span class='ident'>Db</span>(<span class='kw-2'>ref</span> <span class='ident'>err</span>)) <span class='op'>=</span> <span class='ident'>results</span> {
-            <span class='kw'>if</span> <span class='ident'>err</span>.<span class='ident'>code</span> <span class='op'>==</span> <span class='ident'>pg_error</span>::<span class='ident'>SqlState</span>::<span class='ident'>NotNullViolation</span> {
-                <span class='comment'>// This should only happen when the inner select fails</span>
-                <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>get_vertices</span>(<span class='ident'>VertexQuery</span>::<span class='ident'>Vertex</span>(<span class='ident'>key</span>.<span class='ident'>outbound_id</span>))<span class='question-mark'>?</span>;
-                <span class='kw'>if</span> <span class='ident'>v</span>.<span class='ident'>is_empty</span>() {
-                    <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>VertexNotFound</span>);
-                } <span class='kw'>else</span> {
-                    <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>Unauthorized</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">pg_error</span>::<span class="ident">Error</span>::<span class="ident">Db</span>(<span class="kw-2">ref</span> <span class="ident">err</span>)) <span class="op">=</span> <span class="ident">results</span> {
+            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span> <span class="op">==</span> <span class="ident">pg_error</span>::<span class="ident">SqlState</span>::<span class="ident">NotNullViolation</span> {
+                <span class="comment">// This should only happen when the inner select fails</span>
+                <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_vertices</span>(<span class="ident">VertexQuery</span>::<span class="ident">Vertex</span>(<span class="ident">key</span>.<span class="ident">outbound_id</span>))<span class="question-mark">?</span>;
+                <span class="kw">if</span> <span class="ident">v</span>.<span class="ident">is_empty</span>() {
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">VertexNotFound</span>);
+                } <span class="kw">else</span> {
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Unauthorized</span>);
                 }
-            } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>err</span>.<span class='ident'>code</span> <span class='op'>==</span> <span class='ident'>pg_error</span>::<span class='ident'>SqlState</span>::<span class='ident'>ForeignKeyViolation</span> {
-                <span class='comment'>// This should only happen when there is no vertex with id=inbound_id</span>
-                <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>VertexNotFound</span>);
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">code</span> <span class="op">==</span> <span class="ident">pg_error</span>::<span class="ident">SqlState</span>::<span class="ident">ForeignKeyViolation</span> {
+                <span class="comment">// This should only happen when there is no vertex with id=inbound_id</span>
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">VertexNotFound</span>);
             }
         }
         
-        <span class='prelude-val'>Ok</span>(())
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_edges</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Edge</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>edge_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;SELECT outbound_id, type, inbound_id, weight, update_timestamp FROM %t&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
+    <span class="kw">fn</span> <span class="ident">get_edges</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Edge</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">edge_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;SELECT outbound_id, type, inbound_id, weight, update_timestamp FROM %t&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
 
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>edges</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Edge</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">edges</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Edge</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
 
-        <span class='kw'>for</span> <span class='ident'>row</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>results</span> {
-            <span class='kw'>let</span> <span class='ident'>outbound_id</span>: <span class='ident'>Uuid</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>0</span>);
-            <span class='kw'>let</span> <span class='ident'>t_str</span>: <span class='ident'>String</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>1</span>);
-            <span class='kw'>let</span> <span class='ident'>inbound_id</span>: <span class='ident'>Uuid</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>2</span>);
-            <span class='kw'>let</span> <span class='ident'>weight_f32</span>: <span class='ident'>f32</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>3</span>);
-            <span class='kw'>let</span> <span class='ident'>weight</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Weight</span>::<span class='ident'>new</span>(<span class='ident'>weight_f32</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>update_datetime</span>: <span class='ident'>DateTime</span><span class='op'>&lt;</span><span class='ident'>UTC</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>4</span>);
-            <span class='kw'>let</span> <span class='ident'>key</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>EdgeKey</span>::<span class='ident'>new</span>(<span class='ident'>outbound_id</span>, <span class='ident'>models</span>::<span class='ident'>Type</span>::<span class='ident'>new</span>(<span class='ident'>t_str</span>).<span class='ident'>unwrap</span>(), <span class='ident'>inbound_id</span>);
-            <span class='kw'>let</span> <span class='ident'>edge</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Edge</span>::<span class='ident'>new</span>(<span class='ident'>key</span>, <span class='ident'>weight</span>, <span class='ident'>update_datetime</span>);
-            <span class='ident'>edges</span>.<span class='ident'>push</span>(<span class='ident'>edge</span>);
+        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">results</span> {
+            <span class="kw">let</span> <span class="ident">outbound_id</span>: <span class="ident">Uuid</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">t_str</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">inbound_id</span>: <span class="ident">Uuid</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">2</span>);
+            <span class="kw">let</span> <span class="ident">weight_f32</span>: <span class="ident">f32</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">3</span>);
+            <span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">Weight</span>::<span class="ident">new</span>(<span class="ident">weight_f32</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">update_datetime</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">UTC</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">4</span>);
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">EdgeKey</span>::<span class="ident">new</span>(<span class="ident">outbound_id</span>, <span class="ident">models</span>::<span class="ident">Type</span>::<span class="ident">new</span>(<span class="ident">t_str</span>).<span class="ident">unwrap</span>(), <span class="ident">inbound_id</span>);
+            <span class="kw">let</span> <span class="ident">edge</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">Edge</span>::<span class="ident">new</span>(<span class="ident">key</span>, <span class="ident">weight</span>, <span class="ident">update_datetime</span>);
+            <span class="ident">edges</span>.<span class="ident">push</span>(<span class="ident">edge</span>);
         }
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>edges</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">edges</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_edges</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>edge_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='self'>self</span>.<span class='ident'>ensure_edges_are_owned_by_account</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;DELETE FROM edges WHERE id IN (SELECT id FROM %t)&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>execute</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">delete_edges</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">edge_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="self">self</span>.<span class="ident">ensure_edges_are_owned_by_account</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;DELETE FROM edges WHERE id IN (SELECT id FROM %t)&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_edge_count</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>u64</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>edge_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;SELECT COUNT(id) FROM %t&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">get_edge_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">edge_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;SELECT COUNT(id) FROM %t&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
 
-        <span class='kw'>for</span> <span class='ident'>row</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>results</span> {
-            <span class='kw'>let</span> <span class='ident'>count</span>: <span class='ident'>i64</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>0</span>);
-            <span class='kw'>return</span> <span class='prelude-val'>Ok</span>(<span class='ident'>count</span> <span class='kw'>as</span> <span class='ident'>u64</span>);
+        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">results</span> {
+            <span class="kw">let</span> <span class="ident">count</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">0</span>);
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">count</span> <span class="kw">as</span> <span class="ident">u64</span>);
         }
 
-        <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Unreachable point hit&quot;</span>);
+        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unreachable point hit&quot;</span>);
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>JsonValue</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='string'>&quot;SELECT value FROM global_metadata WHERE name=$1&quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>name</span>])<span class='question-mark'>?</span>;
-        <span class='self'>self</span>.<span class='ident'>handle_get_metadata</span>(<span class='ident'>results</span>)
+    <span class="kw">fn</span> <span class="ident">get_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JsonValue</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(<span class="string">&quot;SELECT value FROM global_metadata WHERE name=$1&quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">name</span>])<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">handle_get_metadata</span>(<span class="ident">results</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='comment'>// Because this command could fail, we need to set a savepoint to roll</span>
-        <span class='comment'>// back to, rather than spoiling the entire transaction</span>
-        <span class='kw'>let</span> <span class='ident'>trans</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>savepoint</span>(<span class='string'>&quot;set_global_metadata&quot;</span>)<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">set_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="comment">// Because this command could fail, we need to set a savepoint to roll</span>
+        <span class="comment">// back to, rather than spoiling the entire transaction</span>
+        <span class="kw">let</span> <span class="ident">trans</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">savepoint</span>(<span class="string">&quot;set_global_metadata&quot;</span>)<span class="question-mark">?</span>;
 
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='string'>&quot;
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">trans</span>.<span class="ident">query</span>(<span class="string">&quot;
             INSERT INTO global_metadata (name, value)
             VALUES ($1, $2)
             ON CONFLICT ON CONSTRAINT global_metadata_pkey
             DO UPDATE SET value=$2
             RETURNING 1
-        &quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>name</span>, <span class='kw-2'>&amp;</span><span class='ident'>value</span>]);
+        &quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="ident">value</span>]);
         
-        <span class='kw'>match</span> <span class='ident'>results</span> {
-            <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> {
-                <span class='ident'>trans</span>.<span class='ident'>set_rollback</span>();
-                <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>handle_set_metadata_error</span>(<span class='ident'>err</span>, <span class='ident'>Error</span>::<span class='ident'>Unexpected</span>(<span class='string'>&quot;Unexpected error when setting global metadata&quot;</span>.<span class='ident'>to_string</span>())))
+        <span class="kw">match</span> <span class="ident">results</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> {
+                <span class="ident">trans</span>.<span class="ident">set_rollback</span>();
+                <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">handle_set_metadata_error</span>(<span class="ident">err</span>, <span class="ident">Error</span>::<span class="ident">Unexpected</span>(<span class="string">&quot;Unexpected error when setting global metadata&quot;</span>.<span class="ident">to_string</span>())))
             }
-            <span class='prelude-val'>Ok</span>(_) <span class='op'>=&gt;</span> {
-                <span class='ident'>trans</span>.<span class='ident'>set_commit</span>();
-                <span class='prelude-val'>Ok</span>(())
+            <span class="prelude-val">Ok</span>(_) <span class="op">=&gt;</span> {
+                <span class="ident">trans</span>.<span class="ident">set_commit</span>();
+                <span class="prelude-val">Ok</span>(())
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(
-            <span class='string'>&quot;DELETE FROM global_metadata WHERE name=$1 RETURNING 1&quot;</span>,
-            <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>name</span>]
-        )<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">delete_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(
+            <span class="string">&quot;DELETE FROM global_metadata WHERE name=$1 RETURNING 1&quot;</span>,
+            <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">name</span>]
+        )<span class="question-mark">?</span>;
 
-        <span class='self'>self</span>.<span class='ident'>handle_delete_metadata</span>(<span class='ident'>results</span>)
+        <span class="self">self</span>.<span class="ident">handle_delete_metadata</span>(<span class="ident">results</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>JsonValue</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(
-            <span class='string'>&quot;SELECT value FROM account_metadata WHERE owner_id=$1 AND name=$2&quot;</span>,
-            <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>owner_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>]
-        )<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">get_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">owner_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JsonValue</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(
+            <span class="string">&quot;SELECT value FROM account_metadata WHERE owner_id=$1 AND name=$2&quot;</span>,
+            <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">owner_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>]
+        )<span class="question-mark">?</span>;
 
-        <span class='self'>self</span>.<span class='ident'>handle_get_metadata</span>(<span class='ident'>results</span>)
+        <span class="self">self</span>.<span class="ident">handle_get_metadata</span>(<span class="ident">results</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='comment'>// Because this command could fail, we need to set a savepoint to roll</span>
-        <span class='comment'>// back to, rather than spoiling the entire transaction</span>
-        <span class='kw'>let</span> <span class='ident'>trans</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>savepoint</span>(<span class='string'>&quot;set_account_metadata&quot;</span>)<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">set_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">owner_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="comment">// Because this command could fail, we need to set a savepoint to roll</span>
+        <span class="comment">// back to, rather than spoiling the entire transaction</span>
+        <span class="kw">let</span> <span class="ident">trans</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">savepoint</span>(<span class="string">&quot;set_account_metadata&quot;</span>)<span class="question-mark">?</span>;
         
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='string'>&quot;
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">trans</span>.<span class="ident">query</span>(<span class="string">&quot;
             INSERT INTO account_metadata (owner_id, name, value)
             VALUES ($1, $2, $3)
             ON CONFLICT ON CONSTRAINT account_metadata_pkey
             DO UPDATE SET value=$3
             RETURNING 1
-        &quot;</span>, <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>owner_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>, <span class='kw-2'>&amp;</span><span class='ident'>value</span>]);
+        &quot;</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">owner_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="ident">value</span>]);
         
-        <span class='kw'>match</span> <span class='ident'>results</span> {
-            <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> {
-                <span class='ident'>trans</span>.<span class='ident'>set_rollback</span>();
-                <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>handle_set_metadata_error</span>(<span class='ident'>err</span>, <span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span>))
+        <span class="kw">match</span> <span class="ident">results</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> {
+                <span class="ident">trans</span>.<span class="ident">set_rollback</span>();
+                <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">handle_set_metadata_error</span>(<span class="ident">err</span>, <span class="ident">Error</span>::<span class="ident">AccountNotFound</span>))
             }
-            <span class='prelude-val'>Ok</span>(<span class='ident'>rows</span>) <span class='op'>=&gt;</span> {
-                <span class='ident'>trans</span>.<span class='ident'>set_commit</span>();
+            <span class="prelude-val">Ok</span>(<span class="ident">rows</span>) <span class="op">=&gt;</span> {
+                <span class="ident">trans</span>.<span class="ident">set_commit</span>();
 
-                <span class='kw'>if</span> <span class='ident'>rows</span>.<span class='ident'>is_empty</span>() {
-                    <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span>)
-                } <span class='kw'>else</span> {
-                    <span class='prelude-val'>Ok</span>(())
+                <span class="kw">if</span> <span class="ident">rows</span>.<span class="ident">is_empty</span>() {
+                    <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">AccountNotFound</span>)
+                } <span class="kw">else</span> {
+                    <span class="prelude-val">Ok</span>(())
                 }
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(
-            <span class='string'>&quot;DELETE FROM account_metadata WHERE owner_id=$1 AND name=$2 RETURNING 1&quot;</span>,
-            <span class='kw-2'>&amp;</span>[<span class='kw-2'>&amp;</span><span class='ident'>owner_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>]
-        )<span class='question-mark'>?</span>;
-        <span class='self'>self</span>.<span class='ident'>handle_delete_metadata</span>(<span class='ident'>results</span>)
+    <span class="kw">fn</span> <span class="ident">delete_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">owner_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(
+            <span class="string">&quot;DELETE FROM account_metadata WHERE owner_id=$1 AND name=$2 RETURNING 1&quot;</span>,
+            <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">owner_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>]
+        )<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">handle_delete_metadata</span>(<span class="ident">results</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>vertex_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;SELECT owner_id, value FROM vertex_metadata WHERE owner_id IN (SELECT id FROM %t) AND name=%p&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>name</span>)]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>metadata</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>HashMap</span>::<span class='ident'>new</span>();
+    <span class="kw">fn</span> <span class="ident">get_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">vertex_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;SELECT owner_id, value FROM vertex_metadata WHERE owner_id IN (SELECT id FROM %t) AND name=%p&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">name</span>)]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">metadata</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
 
-        <span class='kw'>for</span> <span class='ident'>row</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>results</span> {
-            <span class='kw'>let</span> <span class='ident'>id</span>: <span class='ident'>Uuid</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>0</span>);
-            <span class='kw'>let</span> <span class='ident'>value</span>: <span class='ident'>JsonValue</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>1</span>);
-            <span class='ident'>metadata</span>.<span class='ident'>insert</span>(<span class='ident'>id</span>, <span class='ident'>value</span>);
+        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">results</span> {
+            <span class="kw">let</span> <span class="ident">id</span>: <span class="ident">Uuid</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">JsonValue</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">1</span>);
+            <span class="ident">metadata</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">value</span>);
         }
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>metadata</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">metadata</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>vertex_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;
+    <span class="kw">fn</span> <span class="ident">set_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">vertex_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;
             INSERT INTO vertex_metadata (owner_id, name, value)
             SELECT id, %p, %p FROM %t
             ON CONFLICT ON CONSTRAINT vertex_metadata_pkey
             DO UPDATE SET value=%p
-        &quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>name</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>value</span>.<span class='ident'>clone</span>()), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>value</span>)]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>execute</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        &quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">name</span>), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">value</span>.<span class="ident">clone</span>()), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">value</span>)]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>vertex_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;DELETE FROM vertex_metadata WHERE owner_id IN (SELECT id FROM %t) AND name=%p&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>name</span>)]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>execute</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">delete_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">vertex_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;DELETE FROM vertex_metadata WHERE owner_id IN (SELECT id FROM %t) AND name=%p&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">name</span>)]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>edge_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
+    <span class="kw">fn</span> <span class="ident">get_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">edge_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
 
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;
             SELECT edges.outbound_id, edges.type, edges.inbound_id, edge_metadata.value
             FROM edge_metadata JOIN edges ON edge_metadata.owner_id=edges.id
             WHERE owner_id IN (SELECT id FROM %t) AND name=%p
-        &quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>name</span>)]);
+        &quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">name</span>)]);
         
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='kw'>let</span> <span class='ident'>results</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>query</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>metadata</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>HashMap</span>::<span class='ident'>new</span>();
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">metadata</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
 
-        <span class='kw'>for</span> <span class='ident'>row</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>results</span> {
-            <span class='kw'>let</span> <span class='ident'>outbound_id</span>: <span class='ident'>Uuid</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>0</span>);
-            <span class='kw'>let</span> <span class='ident'>t_str</span>: <span class='ident'>String</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>1</span>);
-            <span class='kw'>let</span> <span class='ident'>inbound_id</span>: <span class='ident'>Uuid</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>2</span>);
-            <span class='kw'>let</span> <span class='ident'>value</span>: <span class='ident'>JsonValue</span> <span class='op'>=</span> <span class='ident'>row</span>.<span class='ident'>get</span>(<span class='number'>3</span>);
-            <span class='kw'>let</span> <span class='ident'>key</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>EdgeKey</span>::<span class='ident'>new</span>(<span class='ident'>outbound_id</span>, <span class='ident'>models</span>::<span class='ident'>Type</span>::<span class='ident'>new</span>(<span class='ident'>t_str</span>).<span class='ident'>unwrap</span>(), <span class='ident'>inbound_id</span>);
-            <span class='ident'>metadata</span>.<span class='ident'>insert</span>(<span class='ident'>key</span>, <span class='ident'>value</span>);
+        <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">results</span> {
+            <span class="kw">let</span> <span class="ident">outbound_id</span>: <span class="ident">Uuid</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">t_str</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">inbound_id</span>: <span class="ident">Uuid</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">2</span>);
+            <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">JsonValue</span> <span class="op">=</span> <span class="ident">row</span>.<span class="ident">get</span>(<span class="number">3</span>);
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">EdgeKey</span>::<span class="ident">new</span>(<span class="ident">outbound_id</span>, <span class="ident">models</span>::<span class="ident">Type</span>::<span class="ident">new</span>(<span class="ident">t_str</span>).<span class="ident">unwrap</span>(), <span class="ident">inbound_id</span>);
+            <span class="ident">metadata</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">value</span>);
         }
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>metadata</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">metadata</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>edge_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;
+    <span class="kw">fn</span> <span class="ident">set_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">edge_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;
             INSERT INTO edge_metadata (owner_id, name, value)
             SELECT id, %p, %p FROM %t
             ON CONFLICT ON CONSTRAINT edge_metadata_pkey
             DO UPDATE SET value=%p
-        &quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>name</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>value</span>.<span class='ident'>clone</span>()), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>value</span>)]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>execute</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        &quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">name</span>), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">value</span>.<span class="ident">clone</span>()), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">value</span>)]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span> <span class='op'>=</span> <span class='ident'>CTEQueryBuilder</span>::<span class='ident'>new</span>();
-        <span class='self'>self</span>.<span class='ident'>edge_query_to_sql</span>(<span class='ident'>q</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>sql_query_builder</span>);
-        <span class='kw'>let</span> (<span class='ident'>query</span>, <span class='ident'>params</span>) <span class='op'>=</span> <span class='ident'>sql_query_builder</span>.<span class='ident'>into_query_payload</span>(<span class='string'>&quot;DELETE FROM edge_metadata WHERE owner_id IN (SELECT id FROM %t) AND name=%p&quot;</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>name</span>)]);
-        <span class='kw'>let</span> <span class='ident'>params_refs</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>ToSql</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>x</span>).<span class='ident'>collect</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>execute</span>(<span class='kw-2'>&amp;</span><span class='ident'>query</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>params_refs</span>[..])<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">delete_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sql_query_builder</span> <span class="op">=</span> <span class="ident">CTEQueryBuilder</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">edge_query_to_sql</span>(<span class="ident">q</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sql_query_builder</span>);
+        <span class="kw">let</span> (<span class="ident">query</span>, <span class="ident">params</span>) <span class="op">=</span> <span class="ident">sql_query_builder</span>.<span class="ident">into_query_payload</span>(<span class="string">&quot;DELETE FROM edge_metadata WHERE owner_id IN (SELECT id FROM %t) AND name=%p&quot;</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">name</span>)]);
+        <span class="kw">let</span> <span class="ident">params_refs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ToSql</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">x</span>).<span class="ident">collect</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">query</span>[..], <span class="kw-2">&amp;</span><span class="ident">params_refs</span>[..])<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>commit</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>set_commit</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>commit</span>()<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">commit</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">set_commit</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">commit</span>()<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>rollback</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>set_rollback</span>();
-        <span class='self'>self</span>.<span class='ident'>trans</span>.<span class='ident'>commit</span>()<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">rollback</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">set_rollback</span>();
+        <span class="self">self</span>.<span class="ident">trans</span>.<span class="ident">commit</span>()<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 }
 </pre>

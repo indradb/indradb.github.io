@@ -17,7 +17,7 @@
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc source">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -43,7 +43,7 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -640,602 +640,602 @@
 <span id="595">595</span>
 <span id="596">596</span>
 <span id="597">597</span>
-</pre><pre class='rust '>
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw'>super</span>::{<span class='ident'>Datastore</span>, <span class='ident'>Transaction</span>, <span class='ident'>VertexQuery</span>, <span class='ident'>EdgeQuery</span>, <span class='ident'>QueryTypeConverter</span>};
-<span class='kw'>use</span> <span class='ident'>models</span>;
-<span class='kw'>use</span> <span class='ident'>uuid</span>::<span class='ident'>Uuid</span>;
-<span class='kw'>use</span> <span class='ident'>errors</span>::<span class='ident'>Error</span>;
-<span class='kw'>use</span> <span class='ident'>util</span>::{<span class='ident'>get_salted_hash</span>, <span class='ident'>next_uuid</span>};
-<span class='kw'>use</span> <span class='ident'>serde_json</span>::<span class='ident'>Value</span> <span class='kw'>as</span> <span class='ident'>JsonValue</span>;
-<span class='kw'>use</span> <span class='ident'>chrono</span>::{<span class='ident'>UTC</span>};
-<span class='kw'>use</span> <span class='ident'>rocksdb</span>::{<span class='ident'>DB</span>, <span class='ident'>Options</span>, <span class='ident'>WriteBatch</span>, <span class='ident'>DBCompactionStyle</span>};
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>sync</span>::<span class='ident'>Arc</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>usize</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>i32</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>u64</span>;
-<span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>managers</span>::<span class='kw-2'>*</span>;
-<span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>fmt</span>::<span class='ident'>Debug</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>HashMap</span>;
+</pre><pre class="rust ">
+<span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span>::{<span class="ident">Datastore</span>, <span class="ident">Transaction</span>, <span class="ident">VertexQuery</span>, <span class="ident">EdgeQuery</span>, <span class="ident">QueryTypeConverter</span>};
+<span class="kw">use</span> <span class="ident">models</span>;
+<span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
+<span class="kw">use</span> <span class="ident">errors</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">util</span>::{<span class="ident">get_salted_hash</span>, <span class="ident">next_uuid</span>};
+<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">Value</span> <span class="kw">as</span> <span class="ident">JsonValue</span>;
+<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">UTC</span>};
+<span class="kw">use</span> <span class="ident">rocksdb</span>::{<span class="ident">DB</span>, <span class="ident">Options</span>, <span class="ident">WriteBatch</span>, <span class="ident">DBCompactionStyle</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">usize</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">i32</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">u64</span>;
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">managers</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 
-<span class='kw'>const</span> <span class='ident'>CF_NAMES</span>: [<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;static</span> <span class='ident'>str</span>; <span class='number'>9</span>] <span class='op'>=</span> [
-    <span class='string'>&quot;accounts:v1&quot;</span>,
-    <span class='string'>&quot;vertices:v1&quot;</span>,
-    <span class='string'>&quot;edges:v1&quot;</span>,
-    <span class='string'>&quot;edge_ranges:v1&quot;</span>,
-    <span class='string'>&quot;reversed_edge_ranges:v1&quot;</span>,
-    <span class='string'>&quot;global_metadata:v1&quot;</span>,
-    <span class='string'>&quot;account_metadata:v1&quot;</span>,
-    <span class='string'>&quot;vertex_metadata:v1&quot;</span>,
-    <span class='string'>&quot;edge_metadata:v1&quot;</span>
+<span class="kw">const</span> <span class="ident">CF_NAMES</span>: [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>; <span class="number">9</span>] <span class="op">=</span> [
+    <span class="string">&quot;accounts:v1&quot;</span>,
+    <span class="string">&quot;vertices:v1&quot;</span>,
+    <span class="string">&quot;edges:v1&quot;</span>,
+    <span class="string">&quot;edge_ranges:v1&quot;</span>,
+    <span class="string">&quot;reversed_edge_ranges:v1&quot;</span>,
+    <span class="string">&quot;global_metadata:v1&quot;</span>,
+    <span class="string">&quot;account_metadata:v1&quot;</span>,
+    <span class="string">&quot;vertex_metadata:v1&quot;</span>,
+    <span class="string">&quot;edge_metadata:v1&quot;</span>
 ];
 
-<span class='kw'>fn</span> <span class='ident'>get_options</span>(<span class='ident'>max_open_files</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Options</span> {
-    <span class='comment'>// Current tuning based off of the total ordered example, flash</span>
-    <span class='comment'>// storage example on</span>
-    <span class='comment'>// https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide</span>
-    <span class='comment'>// Some of the options for it were not available</span>
-    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>opts</span> <span class='op'>=</span> <span class='ident'>Options</span>::<span class='ident'>default</span>();
-    <span class='ident'>opts</span>.<span class='ident'>create_if_missing</span>(<span class='bool-val'>true</span>);
-    <span class='ident'>opts</span>.<span class='ident'>set_compaction_style</span>(<span class='ident'>DBCompactionStyle</span>::<span class='ident'>Level</span>);
-    <span class='ident'>opts</span>.<span class='ident'>set_write_buffer_size</span>(<span class='number'>67108864</span>); <span class='comment'>//64mb</span>
-    <span class='ident'>opts</span>.<span class='ident'>set_max_write_buffer_number</span>(<span class='number'>3</span>);
-    <span class='ident'>opts</span>.<span class='ident'>set_target_file_size_base</span>(<span class='number'>67108864</span>); <span class='comment'>//64mb</span>
-    <span class='ident'>opts</span>.<span class='ident'>set_max_background_compactions</span>(<span class='number'>4</span>);
-    <span class='ident'>opts</span>.<span class='ident'>set_level_zero_slowdown_writes_trigger</span>(<span class='number'>17</span>);
-    <span class='ident'>opts</span>.<span class='ident'>set_level_zero_stop_writes_trigger</span>(<span class='number'>24</span>);
+<span class="kw">fn</span> <span class="ident">get_options</span>(<span class="ident">max_open_files</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Options</span> {
+    <span class="comment">// Current tuning based off of the total ordered example, flash</span>
+    <span class="comment">// storage example on</span>
+    <span class="comment">// https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide</span>
+    <span class="comment">// Some of the options for it were not available</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">opts</span> <span class="op">=</span> <span class="ident">Options</span>::<span class="ident">default</span>();
+    <span class="ident">opts</span>.<span class="ident">create_if_missing</span>(<span class="bool-val">true</span>);
+    <span class="ident">opts</span>.<span class="ident">set_compaction_style</span>(<span class="ident">DBCompactionStyle</span>::<span class="ident">Level</span>);
+    <span class="ident">opts</span>.<span class="ident">set_write_buffer_size</span>(<span class="number">67108864</span>); <span class="comment">//64mb</span>
+    <span class="ident">opts</span>.<span class="ident">set_max_write_buffer_number</span>(<span class="number">3</span>);
+    <span class="ident">opts</span>.<span class="ident">set_target_file_size_base</span>(<span class="number">67108864</span>); <span class="comment">//64mb</span>
+    <span class="ident">opts</span>.<span class="ident">set_max_background_compactions</span>(<span class="number">4</span>);
+    <span class="ident">opts</span>.<span class="ident">set_level_zero_slowdown_writes_trigger</span>(<span class="number">17</span>);
+    <span class="ident">opts</span>.<span class="ident">set_level_zero_stop_writes_trigger</span>(<span class="number">24</span>);
 
-    <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>max_open_files</span>) <span class='op'>=</span> <span class='ident'>max_open_files</span> {
-        <span class='ident'>opts</span>.<span class='ident'>set_max_open_files</span>(<span class='ident'>max_open_files</span>);
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">max_open_files</span>) <span class="op">=</span> <span class="ident">max_open_files</span> {
+        <span class="ident">opts</span>.<span class="ident">set_max_open_files</span>(<span class="ident">max_open_files</span>);
     }
 
-    <span class='ident'>opts</span>
+    <span class="ident">opts</span>
 }
 
-<span class='doccomment'>/// A datastore that is backed by rocksdb.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>RocksdbDatastore</span> {
-    <span class='doccomment'>/// A reference to the rocksdb database.</span>
-    <span class='ident'>db</span>: <span class='ident'>Arc</span><span class='op'>&lt;</span><span class='ident'>DB</span><span class='op'>&gt;</span>,
-    <span class='doccomment'>/// Whether to use secure UUIDs.</span>
-    <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>
+<span class="doccomment">/// A datastore that is backed by rocksdb.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RocksdbDatastore</span> {
+    <span class="doccomment">/// A reference to the rocksdb database.</span>
+    <span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Whether to use secure UUIDs.</span>
+    <span class="ident">secure_uuids</span>: <span class="ident">bool</span>
 }
 
-<span class='kw'>impl</span> <span class='ident'>RocksdbDatastore</span> {
-    <span class='doccomment'>/// Creates a new rocksdb datastore.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `path` - The file path to the rocksdb database.</span>
-    <span class='doccomment'>/// * `max_open_files` - The maximum number of open files to have. If</span>
-    <span class='doccomment'>///   `None`, the default will be used.</span>
-    <span class='doccomment'>/// * `secure_uuids` - If true, UUIDv4 will be used, which will result in</span>
-    <span class='doccomment'>///   difficult to guess UUIDs at the detriment of a more index-optimized</span>
-    <span class='doccomment'>///   (and thus faster) variant.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>path</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>max_open_files</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>, <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>RocksdbDatastore</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>opts</span> <span class='op'>=</span> <span class='ident'>get_options</span>(<span class='ident'>max_open_files</span>);
+<span class="kw">impl</span> <span class="ident">RocksdbDatastore</span> {
+    <span class="doccomment">/// Creates a new rocksdb datastore.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `path` - The file path to the rocksdb database.</span>
+    <span class="doccomment">/// * `max_open_files` - The maximum number of open files to have. If</span>
+    <span class="doccomment">///   `None`, the default will be used.</span>
+    <span class="doccomment">/// * `secure_uuids` - If true, UUIDv4 will be used, which will result in</span>
+    <span class="doccomment">///   difficult to guess UUIDs at the detriment of a more index-optimized</span>
+    <span class="doccomment">///   (and thus faster) variant.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">max_open_files</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>, <span class="ident">secure_uuids</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocksdbDatastore</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">opts</span> <span class="op">=</span> <span class="ident">get_options</span>(<span class="ident">max_open_files</span>);
 
-        <span class='kw'>let</span> <span class='ident'>db</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>DB</span>::<span class='ident'>open_cf</span>(<span class='kw-2'>&amp;</span><span class='ident'>opts</span>, <span class='ident'>path</span>, <span class='kw-2'>&amp;</span><span class='ident'>CF_NAMES</span>) {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>db</span>) <span class='op'>=&gt;</span> <span class='ident'>db</span>,
-            <span class='prelude-val'>Err</span>(_) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>db</span> <span class='op'>=</span> <span class='ident'>DB</span>::<span class='ident'>open</span>(<span class='kw-2'>&amp;</span><span class='ident'>opts</span>, <span class='ident'>path</span>)<span class='question-mark'>?</span>;
+        <span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">DB</span>::<span class="ident">open_cf</span>(<span class="kw-2">&amp;</span><span class="ident">opts</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="ident">CF_NAMES</span>) {
+            <span class="prelude-val">Ok</span>(<span class="ident">db</span>) <span class="op">=&gt;</span> <span class="ident">db</span>,
+            <span class="prelude-val">Err</span>(_) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">DB</span>::<span class="ident">open</span>(<span class="kw-2">&amp;</span><span class="ident">opts</span>, <span class="ident">path</span>)<span class="question-mark">?</span>;
 
-                <span class='kw'>for</span> <span class='ident'>cf_name</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='ident'>CF_NAMES</span> {
-                    <span class='ident'>db</span>.<span class='ident'>create_cf</span>(<span class='ident'>cf_name</span>, <span class='kw-2'>&amp;</span><span class='ident'>opts</span>)<span class='question-mark'>?</span>;
+                <span class="kw">for</span> <span class="ident">cf_name</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">CF_NAMES</span> {
+                    <span class="ident">db</span>.<span class="ident">create_cf</span>(<span class="ident">cf_name</span>, <span class="kw-2">&amp;</span><span class="ident">opts</span>)<span class="question-mark">?</span>;
                 }
 
-                <span class='ident'>db</span>
+                <span class="ident">db</span>
             }
         };
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>RocksdbDatastore</span> {
-            <span class='ident'>db</span>: <span class='ident'>Arc</span>::<span class='ident'>new</span>(<span class='ident'>db</span>),
-            <span class='ident'>secure_uuids</span>: <span class='ident'>secure_uuids</span>
+        <span class="prelude-val">Ok</span>(<span class="ident">RocksdbDatastore</span> {
+            <span class="ident">db</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">db</span>),
+            <span class="ident">secure_uuids</span>: <span class="ident">secure_uuids</span>
         })
     }
 
-    <span class='doccomment'>/// Runs a repair operation on the rocksdb database.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Arguments</span>
-    <span class='doccomment'>/// * `path` - The file path to the rocksdb database.</span>
-    <span class='doccomment'>/// * `max_open_files` - The maximum number of open files to have. If</span>
-    <span class='doccomment'>///   `None`, the default will be used.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>repair</span>(<span class='ident'>path</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>max_open_files</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>opts</span> <span class='op'>=</span> <span class='ident'>get_options</span>(<span class='ident'>max_open_files</span>);
-        <span class='ident'>DB</span>::<span class='ident'>repair</span>(<span class='ident'>opts</span>, <span class='ident'>path</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="doccomment">/// Runs a repair operation on the rocksdb database.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Arguments</span>
+    <span class="doccomment">/// * `path` - The file path to the rocksdb database.</span>
+    <span class="doccomment">/// * `max_open_files` - The maximum number of open files to have. If</span>
+    <span class="doccomment">///   `None`, the default will be used.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repair</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">max_open_files</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">opts</span> <span class="op">=</span> <span class="ident">get_options</span>(<span class="ident">max_open_files</span>);
+        <span class="ident">DB</span>::<span class="ident">repair</span>(<span class="ident">opts</span>, <span class="ident">path</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>Datastore</span><span class='op'>&lt;</span><span class='ident'>RocksdbTransaction</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>RocksdbDatastore</span> {
-    <span class='kw'>fn</span> <span class='ident'>has_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>bool</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='ident'>AccountManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>).<span class='ident'>exists</span>(<span class='ident'>account_id</span>)
+<span class="kw">impl</span> <span class="ident">Datastore</span><span class="op">&lt;</span><span class="ident">RocksdbTransaction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RocksdbDatastore</span> {
+    <span class="kw">fn</span> <span class="ident">has_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="ident">AccountManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>).<span class="ident">exists</span>(<span class="ident">account_id</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>create_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(<span class='ident'>Uuid</span>, <span class='ident'>String</span>), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='ident'>AccountManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>).<span class='ident'>create</span>()
+    <span class="kw">fn</span> <span class="ident">create_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Uuid</span>, <span class="ident">String</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="ident">AccountManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>).<span class="ident">create</span>()
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_account</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>AccountManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>);
+    <span class="kw">fn</span> <span class="ident">delete_account</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">AccountManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>);
 
-        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>manager</span>.<span class='ident'>exists</span>(<span class='ident'>account_id</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span>);
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">manager</span>.<span class="ident">exists</span>(<span class="ident">account_id</span>)<span class="question-mark">?</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">AccountNotFound</span>);
         }
 
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
-        <span class='ident'>manager</span>.<span class='ident'>delete</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>account_id</span>)<span class='question-mark'>?</span>;
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
+        <span class="ident">manager</span>.<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">account_id</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>auth</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>secret</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>bool</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='ident'>AccountManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>).<span class='ident'>get</span>(<span class='ident'>account_id</span>)<span class='question-mark'>?</span> {
-            <span class='prelude-val'>Some</span>(<span class='ident'>value</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>expected_hash</span> <span class='op'>=</span> <span class='ident'>get_salted_hash</span>(<span class='kw-2'>&amp;</span><span class='ident'>value</span>.<span class='ident'>salt</span>[..], <span class='prelude-val'>None</span>, <span class='kw-2'>&amp;</span><span class='ident'>secret</span>[..]);
-                <span class='prelude-val'>Ok</span>(<span class='ident'>expected_hash</span> <span class='op'>==</span> <span class='ident'>value</span>.<span class='ident'>hash</span>)
+    <span class="kw">fn</span> <span class="ident">auth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">secret</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">AccountManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>).<span class="ident">get</span>(<span class="ident">account_id</span>)<span class="question-mark">?</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">expected_hash</span> <span class="op">=</span> <span class="ident">get_salted_hash</span>(<span class="kw-2">&amp;</span><span class="ident">value</span>.<span class="ident">salt</span>[..], <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">secret</span>[..]);
+                <span class="prelude-val">Ok</span>(<span class="ident">expected_hash</span> <span class="op">==</span> <span class="ident">value</span>.<span class="ident">hash</span>)
             }
-            _ <span class='op'>=&gt;</span> {
-                <span class='comment'>// Calculate the hash anyways to prevent a timing attack</span>
-                <span class='ident'>get_salted_hash</span>(<span class='string'>&quot;&quot;</span>, <span class='prelude-val'>None</span>, <span class='kw-2'>&amp;</span><span class='ident'>secret</span>[..]);
-                <span class='prelude-val'>Ok</span>(<span class='bool-val'>false</span>)
+            _ <span class="op">=&gt;</span> {
+                <span class="comment">// Calculate the hash anyways to prevent a timing attack</span>
+                <span class="ident">get_salted_hash</span>(<span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">secret</span>[..]);
+                <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>transaction</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>RocksdbTransaction</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='ident'>RocksdbTransaction</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='ident'>account_id</span>, <span class='self'>self</span>.<span class='ident'>secure_uuids</span>)
+    <span class="kw">fn</span> <span class="ident">transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocksdbTransaction</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="ident">RocksdbTransaction</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="ident">account_id</span>, <span class="self">self</span>.<span class="ident">secure_uuids</span>)
     }
 }
 
-<span class='doccomment'>/// A transaction that is backed by rocksdb.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>RocksdbTransaction</span> {
-    <span class='doccomment'>/// A reference to the rocksdb database.</span>
-    <span class='ident'>db</span>: <span class='ident'>Arc</span><span class='op'>&lt;</span><span class='ident'>DB</span><span class='op'>&gt;</span>,
-    <span class='doccomment'>/// The ID of the account that&#39;s triggering this transaction.</span>
-    <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>,
-    <span class='doccomment'>/// Whether to use secure UUIDs.</span>
-    <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>
+<span class="doccomment">/// A transaction that is backed by rocksdb.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RocksdbTransaction</span> {
+    <span class="doccomment">/// A reference to the rocksdb database.</span>
+    <span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The ID of the account that&#39;s triggering this transaction.</span>
+    <span class="ident">account_id</span>: <span class="ident">Uuid</span>,
+    <span class="doccomment">/// Whether to use secure UUIDs.</span>
+    <span class="ident">secure_uuids</span>: <span class="ident">bool</span>
 }
 
-<span class='kw'>impl</span> <span class='ident'>RocksdbTransaction</span> {
-    <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>db</span>: <span class='ident'>Arc</span><span class='op'>&lt;</span><span class='ident'>DB</span><span class='op'>&gt;</span>, <span class='ident'>account_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>secure_uuids</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='self'>Self</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Ok</span>(<span class='ident'>RocksdbTransaction</span> {
-            <span class='ident'>db</span>: <span class='ident'>db</span>,
-            <span class='ident'>account_id</span>: <span class='ident'>account_id</span>,
-            <span class='ident'>secure_uuids</span>: <span class='ident'>secure_uuids</span>
+<span class="kw">impl</span> <span class="ident">RocksdbTransaction</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>, <span class="ident">account_id</span>: <span class="ident">Uuid</span>, <span class="ident">secure_uuids</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">RocksdbTransaction</span> {
+            <span class="ident">db</span>: <span class="ident">db</span>,
+            <span class="ident">account_id</span>: <span class="ident">account_id</span>,
+            <span class="ident">secure_uuids</span>: <span class="ident">secure_uuids</span>
         })
     }
 
-    <span class='kw'>fn</span> <span class='ident'>check_write_permissions</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>id</span>: <span class='ident'>Uuid</span>, <span class='ident'>not_found_err</span>: <span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>vertex_manager</span> <span class='op'>=</span> <span class='ident'>VertexManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>);
-        <span class='kw'>let</span> <span class='ident'>vertex_value</span> <span class='op'>=</span> <span class='ident'>vertex_manager</span>.<span class='ident'>get</span>(<span class='ident'>id</span>)<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">check_write_permissions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">Uuid</span>, <span class="ident">not_found_err</span>: <span class="ident">Error</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">vertex_manager</span> <span class="op">=</span> <span class="ident">VertexManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>);
+        <span class="kw">let</span> <span class="ident">vertex_value</span> <span class="op">=</span> <span class="ident">vertex_manager</span>.<span class="ident">get</span>(<span class="ident">id</span>)<span class="question-mark">?</span>;
 
-        <span class='kw'>match</span> <span class='ident'>vertex_value</span> {
-            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>not_found_err</span>),
-            <span class='prelude-val'>Some</span>(<span class='ident'>vertex_value</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>if</span> <span class='ident'>vertex_value</span>.<span class='ident'>owner_id</span> <span class='op'>!=</span> <span class='self'>self</span>.<span class='ident'>account_id</span> {
-                    <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>Unauthorized</span>)
-                } <span class='kw'>else</span> {
-                    <span class='prelude-val'>Ok</span>(())
+        <span class="kw">match</span> <span class="ident">vertex_value</span> {
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">not_found_err</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">vertex_value</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="ident">vertex_value</span>.<span class="ident">owner_id</span> <span class="op">!=</span> <span class="self">self</span>.<span class="ident">account_id</span> {
+                    <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Unauthorized</span>)
+                } <span class="kw">else</span> {
+                    <span class="prelude-val">Ok</span>(())
                 }
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>vertex_query_to_iterator</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>VertexItem</span><span class='op'>&gt;&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>vertex_manager</span> <span class='op'>=</span> <span class='ident'>VertexManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>);
+    <span class="kw">fn</span> <span class="ident">vertex_query_to_iterator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">VertexItem</span><span class="op">&gt;&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">vertex_manager</span> <span class="op">=</span> <span class="ident">VertexManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>);
 
-        <span class='kw'>match</span> <span class='ident'>q</span> {
-            <span class='ident'>VertexQuery</span>::<span class='ident'>All</span>(<span class='ident'>start_id</span>, <span class='ident'>limit</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>next_uuid</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>start_id</span> {
-                    <span class='prelude-val'>Some</span>(<span class='ident'>start_id</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>match</span> <span class='ident'>next_uuid</span>(<span class='ident'>start_id</span>) {
-                            <span class='prelude-val'>Ok</span>(<span class='ident'>next_uuid</span>) <span class='op'>=&gt;</span> <span class='ident'>next_uuid</span>,
-                            <span class='comment'>// If we get an error back, it&#39;s because</span>
-                            <span class='comment'>// `start_id` is the maximum possible value. We</span>
-                            <span class='comment'>// know that no vertices exist whose ID is greater</span>
-                            <span class='comment'>// than the maximum possible value, so just return</span>
-                            <span class='comment'>// an empty list.</span>
-                            <span class='prelude-val'>Err</span>(_) <span class='op'>=&gt;</span> {
-                                <span class='kw'>return</span> <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro'>vec</span><span class='macro'>!</span>[].<span class='ident'>into_iter</span>()))
+        <span class="kw">match</span> <span class="ident">q</span> {
+            <span class="ident">VertexQuery</span>::<span class="ident">All</span>(<span class="ident">start_id</span>, <span class="ident">limit</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">next_uuid</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">start_id</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">start_id</span>) <span class="op">=&gt;</span> {
+                        <span class="kw">match</span> <span class="ident">next_uuid</span>(<span class="ident">start_id</span>) {
+                            <span class="prelude-val">Ok</span>(<span class="ident">next_uuid</span>) <span class="op">=&gt;</span> <span class="ident">next_uuid</span>,
+                            <span class="comment">// If we get an error back, it&#39;s because</span>
+                            <span class="comment">// `start_id` is the maximum possible value. We</span>
+                            <span class="comment">// know that no vertices exist whose ID is greater</span>
+                            <span class="comment">// than the maximum possible value, so just return</span>
+                            <span class="comment">// an empty list.</span>
+                            <span class="prelude-val">Err</span>(_) <span class="op">=&gt;</span> {
+                                <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[].<span class="ident">into_iter</span>()))
                             }
                         }
                     },
-                    <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='ident'>Uuid</span>::<span class='ident'>default</span>()
+                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Uuid</span>::<span class="ident">default</span>()
                 };
 
-                <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='ident'>vertex_manager</span>.<span class='ident'>iterate_for_range</span>(<span class='ident'>next_uuid</span>)<span class='question-mark'>?</span>;
-                <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>iterator</span>.<span class='ident'>take</span>(<span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>usize</span>)))
+                <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="ident">vertex_manager</span>.<span class="ident">iterate_for_range</span>(<span class="ident">next_uuid</span>)<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">iterator</span>.<span class="ident">take</span>(<span class="ident">limit</span> <span class="kw">as</span> <span class="ident">usize</span>)))
             },
-            <span class='ident'>VertexQuery</span>::<span class='ident'>Vertex</span>(<span class='ident'>id</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>match</span> <span class='ident'>vertex_manager</span>.<span class='ident'>get</span>(<span class='ident'>id</span>)<span class='question-mark'>?</span> {
-                    <span class='prelude-val'>Some</span>(<span class='ident'>value</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Ok</span>((<span class='ident'>id</span>, <span class='ident'>value</span>))].<span class='ident'>into_iter</span>())),
-                    <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro'>vec</span><span class='macro'>!</span>[].<span class='ident'>into_iter</span>()))
+            <span class="ident">VertexQuery</span>::<span class="ident">Vertex</span>(<span class="ident">id</span>) <span class="op">=&gt;</span> {
+                <span class="kw">match</span> <span class="ident">vertex_manager</span>.<span class="ident">get</span>(<span class="ident">id</span>)<span class="question-mark">?</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">value</span>))].<span class="ident">into_iter</span>())),
+                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[].<span class="ident">into_iter</span>()))
                 }
             },
-            <span class='ident'>VertexQuery</span>::<span class='ident'>Vertices</span>(<span class='ident'>vertices</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>vertices</span>.<span class='ident'>into_iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>item</span><span class='op'>|</span> {
-                    <span class='prelude-val'>Ok</span>(<span class='ident'>item</span>)
+            <span class="ident">VertexQuery</span>::<span class="ident">Vertices</span>(<span class="ident">vertices</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">vertices</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">item</span>)
                 }));
 
-                <span class='prelude-val'>Ok</span>(<span class='self'>self</span>.<span class='ident'>handle_vertex_id_iterator</span>(<span class='ident'>iterator</span>))
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">handle_vertex_id_iterator</span>(<span class="ident">iterator</span>))
             },
-            <span class='ident'>VertexQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>edge_query</span>, <span class='ident'>converter</span>, <span class='ident'>limit</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>edge_iterator</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>edge_query_to_iterator</span>(<span class='kw-2'>*</span><span class='ident'>edge_query</span>)<span class='question-mark'>?</span>;
+            <span class="ident">VertexQuery</span>::<span class="ident">Pipe</span>(<span class="ident">edge_query</span>, <span class="ident">converter</span>, <span class="ident">limit</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">edge_iterator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">edge_query_to_iterator</span>(<span class="kw-2">*</span><span class="ident">edge_query</span>)<span class="question-mark">?</span>;
 
-                <span class='kw'>let</span> <span class='ident'>vertex_id_iterator</span> <span class='op'>=</span> <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>edge_iterator</span>.<span class='ident'>map</span>(<span class='kw'>move</span> <span class='op'>|</span><span class='ident'>item</span><span class='op'>|</span> {
-                    <span class='kw'>let</span> ((<span class='ident'>outbound_id</span>, _, _, <span class='ident'>inbound_id</span>), _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
+                <span class="kw">let</span> <span class="ident">vertex_id_iterator</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">edge_iterator</span>.<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
+                    <span class="kw">let</span> ((<span class="ident">outbound_id</span>, _, _, <span class="ident">inbound_id</span>), _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
 
-                    <span class='kw'>match</span> <span class='ident'>converter</span> {
-                        <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Outbound</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>outbound_id</span>),
-                        <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Inbound</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>inbound_id</span>)
+                    <span class="kw">match</span> <span class="ident">converter</span> {
+                        <span class="ident">QueryTypeConverter</span>::<span class="ident">Outbound</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">outbound_id</span>),
+                        <span class="ident">QueryTypeConverter</span>::<span class="ident">Inbound</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">inbound_id</span>)
                     }
                 }));
 
-                <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>handle_vertex_id_iterator</span>(<span class='ident'>vertex_id_iterator</span>).<span class='ident'>take</span>(<span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>usize</span>)))
+                <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">handle_vertex_id_iterator</span>(<span class="ident">vertex_id_iterator</span>).<span class="ident">take</span>(<span class="ident">limit</span> <span class="kw">as</span> <span class="ident">usize</span>)))
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>edge_query_to_iterator</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>EdgeRangeItem</span><span class='op'>&gt;&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='ident'>q</span> {
-            <span class='ident'>EdgeQuery</span>::<span class='ident'>Edge</span>(<span class='ident'>key</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>edge_manager</span> <span class='op'>=</span> <span class='ident'>EdgeManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
+    <span class="kw">fn</span> <span class="ident">edge_query_to_iterator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">EdgeRangeItem</span><span class="op">&gt;&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">q</span> {
+            <span class="ident">EdgeQuery</span>::<span class="ident">Edge</span>(<span class="ident">key</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">edge_manager</span> <span class="op">=</span> <span class="ident">EdgeManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
 
-                <span class='kw'>match</span> <span class='ident'>edge_manager</span>.<span class='ident'>get</span>(<span class='ident'>key</span>.<span class='ident'>outbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>key</span>.<span class='ident'>t</span>, <span class='ident'>key</span>.<span class='ident'>inbound_id</span>)<span class='question-mark'>?</span> {
-                    <span class='prelude-val'>Some</span>(<span class='ident'>value</span>) <span class='op'>=&gt;</span> {
-                        <span class='kw'>let</span> <span class='ident'>item</span> <span class='op'>=</span> <span class='prelude-val'>Ok</span>(((<span class='ident'>key</span>.<span class='ident'>outbound_id</span>, <span class='ident'>key</span>.<span class='ident'>t</span>, <span class='ident'>value</span>.<span class='ident'>update_datetime</span>, <span class='ident'>key</span>.<span class='ident'>inbound_id</span>), <span class='ident'>value</span>.<span class='ident'>weight</span>));
-                        <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>item</span>].<span class='ident'>into_iter</span>()))
+                <span class="kw">match</span> <span class="ident">edge_manager</span>.<span class="ident">get</span>(<span class="ident">key</span>.<span class="ident">outbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">t</span>, <span class="ident">key</span>.<span class="ident">inbound_id</span>)<span class="question-mark">?</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> {
+                        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="prelude-val">Ok</span>(((<span class="ident">key</span>.<span class="ident">outbound_id</span>, <span class="ident">key</span>.<span class="ident">t</span>, <span class="ident">value</span>.<span class="ident">update_datetime</span>, <span class="ident">key</span>.<span class="ident">inbound_id</span>), <span class="ident">value</span>.<span class="ident">weight</span>));
+                        <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">item</span>].<span class="ident">into_iter</span>()))
                     },
-                    <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='macro'>vec</span><span class='macro'>!</span>[].<span class='ident'>into_iter</span>()))
+                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[].<span class="ident">into_iter</span>()))
                 }
             },
-            <span class='ident'>EdgeQuery</span>::<span class='ident'>Edges</span>(<span class='ident'>edges</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>edge_manager</span> <span class='op'>=</span> <span class='ident'>EdgeManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
+            <span class="ident">EdgeQuery</span>::<span class="ident">Edges</span>(<span class="ident">edges</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">edge_manager</span> <span class="op">=</span> <span class="ident">EdgeManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
 
-                <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='ident'>edges</span>.<span class='ident'>into_iter</span>().<span class='ident'>map</span>(<span class='kw'>move</span> <span class='op'>|</span><span class='ident'>key</span><span class='op'>|</span> {
-                    <span class='kw'>match</span> <span class='ident'>edge_manager</span>.<span class='ident'>get</span>(<span class='ident'>key</span>.<span class='ident'>outbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>key</span>.<span class='ident'>t</span>, <span class='ident'>key</span>.<span class='ident'>inbound_id</span>)<span class='question-mark'>?</span> {
-                        <span class='prelude-val'>Some</span>(<span class='ident'>value</span>) <span class='op'>=&gt;</span> {
-                            <span class='prelude-val'>Ok</span>(<span class='prelude-val'>Some</span>(((<span class='ident'>key</span>.<span class='ident'>outbound_id</span>, <span class='ident'>key</span>.<span class='ident'>t</span>, <span class='ident'>value</span>.<span class='ident'>update_datetime</span>, <span class='ident'>key</span>.<span class='ident'>inbound_id</span>), <span class='ident'>value</span>.<span class='ident'>weight</span>)))
+                <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="ident">edges</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">key</span><span class="op">|</span> {
+                    <span class="kw">match</span> <span class="ident">edge_manager</span>.<span class="ident">get</span>(<span class="ident">key</span>.<span class="ident">outbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">t</span>, <span class="ident">key</span>.<span class="ident">inbound_id</span>)<span class="question-mark">?</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> {
+                            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(((<span class="ident">key</span>.<span class="ident">outbound_id</span>, <span class="ident">key</span>.<span class="ident">t</span>, <span class="ident">value</span>.<span class="ident">update_datetime</span>, <span class="ident">key</span>.<span class="ident">inbound_id</span>), <span class="ident">value</span>.<span class="ident">weight</span>)))
                         },
-                        <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='prelude-val'>None</span>)
+                        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
                     }
                 });
 
-                <span class='prelude-val'>Ok</span>(<span class='self'>self</span>.<span class='ident'>remove_nones_from_iterator</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>iterator</span>)))
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">remove_nones_from_iterator</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">iterator</span>)))
             },
-            <span class='ident'>EdgeQuery</span>::<span class='ident'>Pipe</span>(<span class='ident'>vertex_query</span>, <span class='ident'>converter</span>, <span class='ident'>t</span>, <span class='ident'>high</span>, <span class='ident'>low</span>, <span class='ident'>limit</span>) <span class='op'>=&gt;</span> {
-                <span class='kw'>let</span> <span class='ident'>vertex_iterator</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>vertex_query_to_iterator</span>(<span class='kw-2'>*</span><span class='ident'>vertex_query</span>)<span class='question-mark'>?</span>;
+            <span class="ident">EdgeQuery</span>::<span class="ident">Pipe</span>(<span class="ident">vertex_query</span>, <span class="ident">converter</span>, <span class="ident">t</span>, <span class="ident">high</span>, <span class="ident">low</span>, <span class="ident">limit</span>) <span class="op">=&gt;</span> {
+                <span class="kw">let</span> <span class="ident">vertex_iterator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vertex_query_to_iterator</span>(<span class="kw-2">*</span><span class="ident">vertex_query</span>)<span class="question-mark">?</span>;
 
-                <span class='kw'>let</span> <span class='ident'>edge_range_manager</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>converter</span> {
-                    <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Outbound</span> <span class='op'>=&gt;</span> <span class='ident'>EdgeRangeManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>()),
-                    <span class='ident'>QueryTypeConverter</span>::<span class='ident'>Inbound</span> <span class='op'>=&gt;</span> <span class='ident'>EdgeRangeManager</span>::<span class='ident'>new_reversed</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>())
+                <span class="kw">let</span> <span class="ident">edge_range_manager</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">converter</span> {
+                    <span class="ident">QueryTypeConverter</span>::<span class="ident">Outbound</span> <span class="op">=&gt;</span> <span class="ident">EdgeRangeManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>()),
+                    <span class="ident">QueryTypeConverter</span>::<span class="ident">Inbound</span> <span class="op">=&gt;</span> <span class="ident">EdgeRangeManager</span>::<span class="ident">new_reversed</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>())
                 };
 
-                <span class='comment'>// Ideally we&#39;d use iterators all the way down, but things</span>
-                <span class='comment'>// start breaking apart due to conditional expressions not</span>
-                <span class='comment'>// returning the same type signature, issues with `Result`s</span>
-                <span class='comment'>// and some of the iterators, etc. So at this point, we&#39;ll</span>
-                <span class='comment'>// just resort to building a vector.</span>
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>edges</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>EdgeRangeItem</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
+                <span class="comment">// Ideally we&#39;d use iterators all the way down, but things</span>
+                <span class="comment">// start breaking apart due to conditional expressions not</span>
+                <span class="comment">// returning the same type signature, issues with `Result`s</span>
+                <span class="comment">// and some of the iterators, etc. So at this point, we&#39;ll</span>
+                <span class="comment">// just resort to building a vector.</span>
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">edges</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">EdgeRangeItem</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
 
-                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>low</span>) <span class='op'>=</span> <span class='ident'>low</span> {
-                    <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='ident'>vertex_iterator</span> {
-                        <span class='kw'>let</span> (<span class='ident'>id</span>, _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-                        <span class='kw'>let</span> <span class='ident'>edge_iterator</span> <span class='op'>=</span> <span class='ident'>edge_range_manager</span>.<span class='ident'>iterate_for_range</span>(<span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>t</span>, <span class='ident'>high</span>)<span class='question-mark'>?</span>;
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">low</span>) <span class="op">=</span> <span class="ident">low</span> {
+                    <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">vertex_iterator</span> {
+                        <span class="kw">let</span> (<span class="ident">id</span>, _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+                        <span class="kw">let</span> <span class="ident">edge_iterator</span> <span class="op">=</span> <span class="ident">edge_range_manager</span>.<span class="ident">iterate_for_range</span>(<span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>, <span class="ident">high</span>)<span class="question-mark">?</span>;
 
-                        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='ident'>edge_iterator</span> {
-                            <span class='kw'>match</span> <span class='ident'>item</span> {
-                                <span class='prelude-val'>Ok</span>(((_, _, <span class='ident'>edge_range_update_datetime</span>, _), _)) <span class='op'>=&gt;</span> {
-                                    <span class='kw'>if</span> <span class='ident'>edge_range_update_datetime</span> <span class='op'>&gt;=</span> <span class='ident'>low</span> {
-                                        <span class='ident'>edges</span>.<span class='ident'>push</span>(<span class='ident'>item</span>);
-                                    } <span class='kw'>else</span> {
-                                        <span class='kw'>break</span>;
+                        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">edge_iterator</span> {
+                            <span class="kw">match</span> <span class="ident">item</span> {
+                                <span class="prelude-val">Ok</span>(((_, _, <span class="ident">edge_range_update_datetime</span>, _), _)) <span class="op">=&gt;</span> {
+                                    <span class="kw">if</span> <span class="ident">edge_range_update_datetime</span> <span class="op">&gt;=</span> <span class="ident">low</span> {
+                                        <span class="ident">edges</span>.<span class="ident">push</span>(<span class="ident">item</span>);
+                                    } <span class="kw">else</span> {
+                                        <span class="kw">break</span>;
                                     }
                                 },
-                                <span class='prelude-val'>Err</span>(_) <span class='op'>=&gt;</span> <span class='ident'>edges</span>.<span class='ident'>push</span>(<span class='ident'>item</span>)
+                                <span class="prelude-val">Err</span>(_) <span class="op">=&gt;</span> <span class="ident">edges</span>.<span class="ident">push</span>(<span class="ident">item</span>)
                             }
 
-                            <span class='kw'>if</span> <span class='ident'>edges</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>usize</span> {
-                                <span class='kw'>break</span>;
+                            <span class="kw">if</span> <span class="ident">edges</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">limit</span> <span class="kw">as</span> <span class="ident">usize</span> {
+                                <span class="kw">break</span>;
                             }
                         }
                     }
-                } <span class='kw'>else</span> {
-                    <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='ident'>vertex_iterator</span> {
-                        <span class='kw'>let</span> (<span class='ident'>id</span>, _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-                        <span class='kw'>let</span> <span class='ident'>edge_iterator</span> <span class='op'>=</span> <span class='ident'>edge_range_manager</span>.<span class='ident'>iterate_for_range</span>(<span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>t</span>, <span class='ident'>high</span>)<span class='question-mark'>?</span>;
+                } <span class="kw">else</span> {
+                    <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">vertex_iterator</span> {
+                        <span class="kw">let</span> (<span class="ident">id</span>, _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+                        <span class="kw">let</span> <span class="ident">edge_iterator</span> <span class="op">=</span> <span class="ident">edge_range_manager</span>.<span class="ident">iterate_for_range</span>(<span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>, <span class="ident">high</span>)<span class="question-mark">?</span>;
 
-                        <span class='kw'>for</span> <span class='ident'>edge</span> <span class='kw'>in</span> <span class='ident'>edge_iterator</span> {
-                            <span class='ident'>edges</span>.<span class='ident'>push</span>(<span class='ident'>edge</span>);
+                        <span class="kw">for</span> <span class="ident">edge</span> <span class="kw">in</span> <span class="ident">edge_iterator</span> {
+                            <span class="ident">edges</span>.<span class="ident">push</span>(<span class="ident">edge</span>);
 
-                            <span class='kw'>if</span> <span class='ident'>edges</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>usize</span> {
-                                <span class='kw'>break</span>;
+                            <span class="kw">if</span> <span class="ident">edges</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">limit</span> <span class="kw">as</span> <span class="ident">usize</span> {
+                                <span class="kw">break</span>;
                             }
                         }
 
-                        <span class='kw'>if</span> <span class='ident'>edges</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='ident'>limit</span> <span class='kw'>as</span> <span class='ident'>usize</span> {
-                            <span class='kw'>break</span>;
+                        <span class="kw">if</span> <span class="ident">edges</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">limit</span> <span class="kw">as</span> <span class="ident">usize</span> {
+                            <span class="kw">break</span>;
                         }
                     }
                 }
 
-                <span class='prelude-val'>Ok</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>edges</span>.<span class='ident'>into_iter</span>()))
+                <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">edges</span>.<span class="ident">into_iter</span>()))
             }
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>remove_nones_from_iterator</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='ident'>Debug</span> <span class='op'>+</span> <span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>iterator</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>Error</span><span class='op'>&gt;&gt;</span> <span class='op'>+</span> <span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>filtered</span> <span class='op'>=</span> <span class='ident'>iterator</span>.<span class='ident'>filter</span>(<span class='op'>|</span><span class='ident'>item</span><span class='op'>|</span> {
-            <span class='kw'>match</span> <span class='kw-2'>*</span><span class='ident'>item</span> {
-                <span class='prelude-val'>Err</span>(_) <span class='op'>|</span> <span class='prelude-val'>Ok</span>(<span class='prelude-val'>Some</span>(_)) <span class='op'>=&gt;</span> <span class='bool-val'>true</span>,
-                _ <span class='op'>=&gt;</span> <span class='bool-val'>false</span>
+    <span class="kw">fn</span> <span class="ident">remove_nones_from_iterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">iterator</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">filtered</span> <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
+            <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">item</span> {
+                <span class="prelude-val">Err</span>(_) <span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(_)) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+                _ <span class="op">=&gt;</span> <span class="bool-val">false</span>
             }
         });
 
-        <span class='kw'>let</span> <span class='ident'>mapped</span> <span class='op'>=</span> <span class='ident'>filtered</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>item</span><span class='op'>|</span> {
-            <span class='kw'>match</span> <span class='ident'>item</span> {
-                <span class='prelude-val'>Ok</span>(<span class='prelude-val'>Some</span>(<span class='ident'>value</span>)) <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>value</span>),
-                <span class='prelude-val'>Err</span>(<span class='ident'>err</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>err</span>),
-                _ <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Unexpected item: {:?}&quot;</span>, <span class='ident'>item</span>)
+        <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">filtered</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
+            <span class="kw">match</span> <span class="ident">item</span> {
+                <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">value</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">value</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                _ <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected item: {:?}&quot;</span>, <span class="ident">item</span>)
             }
         });
 
-        <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mapped</span>)
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">mapped</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>handle_vertex_id_iterator</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>iterator</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>Error</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>VertexItem</span><span class='op'>&gt;&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>vertex_manager</span> <span class='op'>=</span> <span class='ident'>VertexManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>);
+    <span class="kw">fn</span> <span class="ident">handle_vertex_id_iterator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">iterator</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">Error</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">VertexItem</span><span class="op">&gt;&gt;</span> {
+        <span class="kw">let</span> <span class="ident">vertex_manager</span> <span class="op">=</span> <span class="ident">VertexManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>);
 
-        <span class='kw'>let</span> <span class='ident'>mapped</span> <span class='op'>=</span> <span class='ident'>iterator</span>.<span class='ident'>map</span>(<span class='kw'>move</span> <span class='op'>|</span><span class='ident'>item</span><span class='op'>|</span> {
-            <span class='kw'>let</span> <span class='ident'>id</span> <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>vertex_manager</span>.<span class='ident'>get</span>(<span class='ident'>id</span>)<span class='question-mark'>?</span>;
+        <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">vertex_manager</span>.<span class="ident">get</span>(<span class="ident">id</span>)<span class="question-mark">?</span>;
 
-            <span class='kw'>match</span> <span class='ident'>value</span> {
-                <span class='prelude-val'>Some</span>(<span class='ident'>value</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='prelude-val'>Some</span>((<span class='ident'>id</span>, <span class='ident'>value</span>))),
-                <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='prelude-val'>None</span>)
+            <span class="kw">match</span> <span class="ident">value</span> {
+                <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>((<span class="ident">id</span>, <span class="ident">value</span>))),
+                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
             }
         });
 
-        <span class='self'>self</span>.<span class='ident'>remove_nones_from_iterator</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mapped</span>))
+        <span class="self">self</span>.<span class="ident">remove_nones_from_iterator</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">mapped</span>))
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>Transaction</span> <span class='kw'>for</span> <span class='ident'>RocksdbTransaction</span> {
-    <span class='kw'>fn</span> <span class='ident'>create_vertex</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>t</span>: <span class='ident'>models</span>::<span class='ident'>Type</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='ident'>VertexManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>).<span class='ident'>create</span>(<span class='ident'>t</span>, <span class='self'>self</span>.<span class='ident'>account_id</span>)
+<span class="kw">impl</span> <span class="ident">Transaction</span> <span class="kw">for</span> <span class="ident">RocksdbTransaction</span> {
+    <span class="kw">fn</span> <span class="ident">create_vertex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">t</span>: <span class="ident">models</span>::<span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="ident">VertexManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>).<span class="ident">create</span>(<span class="ident">t</span>, <span class="self">self</span>.<span class="ident">account_id</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_vertices</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Vertex</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>vertex_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">get_vertices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Vertex</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vertex_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span>;
 
-        <span class='kw'>let</span> <span class='ident'>mapped</span> <span class='op'>=</span> <span class='ident'>iterator</span>.<span class='ident'>map</span>(<span class='kw'>move</span> <span class='op'>|</span><span class='ident'>item</span><span class='op'>|</span> {
-            <span class='kw'>let</span> (<span class='ident'>id</span>, <span class='ident'>value</span>) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='kw'>let</span> <span class='ident'>vertex</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Vertex</span>::<span class='ident'>new</span>(<span class='ident'>id</span>, <span class='ident'>value</span>.<span class='ident'>t</span>);
-            <span class='prelude-val'>Ok</span>(<span class='ident'>vertex</span>)
+        <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
+            <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">value</span>) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">vertex</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">Vertex</span>::<span class="ident">new</span>(<span class="ident">id</span>, <span class="ident">value</span>.<span class="ident">t</span>);
+            <span class="prelude-val">Ok</span>(<span class="ident">vertex</span>)
         });
 
-        <span class='ident'>mapped</span>.<span class='ident'>collect</span>()
+        <span class="ident">mapped</span>.<span class="ident">collect</span>()
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_vertices</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>vertex_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span>;
-        <span class='kw'>let</span> <span class='ident'>vertex_manager</span> <span class='op'>=</span> <span class='ident'>VertexManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>);
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
+    <span class="kw">fn</span> <span class="ident">delete_vertices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vertex_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">vertex_manager</span> <span class="op">=</span> <span class="ident">VertexManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='ident'>iterator</span> {
-            <span class='kw'>let</span> (<span class='ident'>id</span>, <span class='ident'>old_value</span>) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">iterator</span> {
+            <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">old_value</span>) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
 
-            <span class='kw'>if</span> <span class='ident'>old_value</span>.<span class='ident'>owner_id</span> <span class='op'>!=</span> <span class='self'>self</span>.<span class='ident'>account_id</span> {
-                <span class='kw'>continue</span>;
+            <span class="kw">if</span> <span class="ident">old_value</span>.<span class="ident">owner_id</span> <span class="op">!=</span> <span class="self">self</span>.<span class="ident">account_id</span> {
+                <span class="kw">continue</span>;
             }
 
-            <span class='ident'>vertex_manager</span>.<span class='ident'>delete</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>id</span>)<span class='question-mark'>?</span>;
+            <span class="ident">vertex_manager</span>.<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">id</span>)<span class="question-mark">?</span>;
         }
 
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>create_edge</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>key</span>: <span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>weight</span>: <span class='ident'>models</span>::<span class='ident'>Weight</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='comment'>// Verify that the vertices exist and that we own the vertex with the outbound ID</span>
-        <span class='self'>self</span>.<span class='ident'>check_write_permissions</span>(<span class='ident'>key</span>.<span class='ident'>outbound_id</span>, <span class='ident'>Error</span>::<span class='ident'>VertexNotFound</span>)<span class='question-mark'>?</span>;
-        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>VertexManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>).<span class='ident'>exists</span>(<span class='ident'>key</span>.<span class='ident'>inbound_id</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>VertexNotFound</span>);
+    <span class="kw">fn</span> <span class="ident">create_edge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">weight</span>: <span class="ident">models</span>::<span class="ident">Weight</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="comment">// Verify that the vertices exist and that we own the vertex with the outbound ID</span>
+        <span class="self">self</span>.<span class="ident">check_write_permissions</span>(<span class="ident">key</span>.<span class="ident">outbound_id</span>, <span class="ident">Error</span>::<span class="ident">VertexNotFound</span>)<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">VertexManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>).<span class="ident">exists</span>(<span class="ident">key</span>.<span class="ident">inbound_id</span>)<span class="question-mark">?</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">VertexNotFound</span>);
         }
 
-        <span class='kw'>let</span> <span class='ident'>new_update_datetime</span> <span class='op'>=</span> <span class='ident'>UTC</span>::<span class='ident'>now</span>();
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
-        <span class='ident'>EdgeManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>()).<span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>,
-                                                   <span class='ident'>key</span>.<span class='ident'>outbound_id</span>,
-                                                   <span class='kw-2'>&amp;</span><span class='ident'>key</span>.<span class='ident'>t</span>,
-                                                   <span class='ident'>key</span>.<span class='ident'>inbound_id</span>,
-                                                   <span class='ident'>new_update_datetime</span>,
-                                                   <span class='ident'>weight</span>)<span class='question-mark'>?</span>;
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="kw">let</span> <span class="ident">new_update_datetime</span> <span class="op">=</span> <span class="ident">UTC</span>::<span class="ident">now</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
+        <span class="ident">EdgeManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>()).<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>,
+                                                   <span class="ident">key</span>.<span class="ident">outbound_id</span>,
+                                                   <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">t</span>,
+                                                   <span class="ident">key</span>.<span class="ident">inbound_id</span>,
+                                                   <span class="ident">new_update_datetime</span>,
+                                                   <span class="ident">weight</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_edges</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>Edge</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>edge_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span>;
+    <span class="kw">fn</span> <span class="ident">get_edges</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">Edge</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">edge_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span>;
 
-        <span class='kw'>let</span> <span class='ident'>mapped</span> <span class='op'>=</span> <span class='ident'>iterator</span>.<span class='ident'>map</span>(<span class='kw'>move</span> <span class='op'>|</span><span class='ident'>item</span><span class='op'>|</span> {
-            <span class='kw'>let</span> ((<span class='ident'>outbound_id</span>, <span class='ident'>t</span>, <span class='ident'>update_datetime</span>, <span class='ident'>inbound_id</span>), <span class='ident'>weight</span>) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='kw'>let</span> <span class='ident'>key</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>EdgeKey</span>::<span class='ident'>new</span>(<span class='ident'>outbound_id</span>, <span class='ident'>t</span>, <span class='ident'>inbound_id</span>);
-            <span class='kw'>let</span> <span class='ident'>edge</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>Edge</span>::<span class='ident'>new</span>(<span class='ident'>key</span>, <span class='ident'>weight</span>, <span class='ident'>update_datetime</span>);
-            <span class='prelude-val'>Ok</span>(<span class='ident'>edge</span>)
+        <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
+            <span class="kw">let</span> ((<span class="ident">outbound_id</span>, <span class="ident">t</span>, <span class="ident">update_datetime</span>, <span class="ident">inbound_id</span>), <span class="ident">weight</span>) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">EdgeKey</span>::<span class="ident">new</span>(<span class="ident">outbound_id</span>, <span class="ident">t</span>, <span class="ident">inbound_id</span>);
+            <span class="kw">let</span> <span class="ident">edge</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">Edge</span>::<span class="ident">new</span>(<span class="ident">key</span>, <span class="ident">weight</span>, <span class="ident">update_datetime</span>);
+            <span class="prelude-val">Ok</span>(<span class="ident">edge</span>)
         });
 
-        <span class='ident'>mapped</span>.<span class='ident'>collect</span>()
+        <span class="ident">mapped</span>.<span class="ident">collect</span>()
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_edges</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>edge_manager</span> <span class='op'>=</span> <span class='ident'>EdgeManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='kw'>let</span> <span class='ident'>vertex_manager</span> <span class='op'>=</span> <span class='ident'>VertexManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>);
-        <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>edge_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span>;
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
+    <span class="kw">fn</span> <span class="ident">delete_edges</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">edge_manager</span> <span class="op">=</span> <span class="ident">EdgeManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="ident">vertex_manager</span> <span class="op">=</span> <span class="ident">VertexManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>);
+        <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">edge_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='ident'>iterator</span> {
-            <span class='kw'>let</span> ((<span class='ident'>outbound_id</span>, <span class='ident'>t</span>, <span class='ident'>update_datetime</span>, <span class='ident'>inbound_id</span>), _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">iterator</span> {
+            <span class="kw">let</span> ((<span class="ident">outbound_id</span>, <span class="ident">t</span>, <span class="ident">update_datetime</span>, <span class="ident">inbound_id</span>), _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
 
-            <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>vertex_value</span>) <span class='op'>=</span> <span class='ident'>vertex_manager</span>.<span class='ident'>get</span>(<span class='ident'>outbound_id</span>)<span class='question-mark'>?</span> {
-                <span class='kw'>if</span> <span class='ident'>vertex_value</span>.<span class='ident'>owner_id</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>account_id</span> {
-                    <span class='ident'>edge_manager</span>.<span class='ident'>delete</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>outbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>t</span>, <span class='ident'>inbound_id</span>, <span class='ident'>update_datetime</span>)<span class='question-mark'>?</span>;
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">vertex_value</span>) <span class="op">=</span> <span class="ident">vertex_manager</span>.<span class="ident">get</span>(<span class="ident">outbound_id</span>)<span class="question-mark">?</span> {
+                <span class="kw">if</span> <span class="ident">vertex_value</span>.<span class="ident">owner_id</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">account_id</span> {
+                    <span class="ident">edge_manager</span>.<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">outbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>, <span class="ident">inbound_id</span>, <span class="ident">update_datetime</span>)<span class="question-mark">?</span>;
                 }
             };
         }
 
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_edge_count</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>u64</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>iterator</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>edge_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(<span class='ident'>iterator</span>.<span class='ident'>count</span>() <span class='kw'>as</span> <span class='ident'>u64</span>)
+    <span class="kw">fn</span> <span class="ident">get_edge_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">edge_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="ident">iterator</span>.<span class="ident">count</span>() <span class="kw">as</span> <span class="ident">u64</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>JsonValue</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>GlobalMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='ident'>manager</span>.<span class='ident'>get</span>(<span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>.<span class='ident'>ok_or_else</span>(<span class='op'>||</span> <span class='ident'>Error</span>::<span class='ident'>MetadataNotFound</span>)
+    <span class="kw">fn</span> <span class="ident">get_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JsonValue</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">GlobalMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="ident">manager</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>.<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="ident">Error</span>::<span class="ident">MetadataNotFound</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>GlobalMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='ident'>manager</span>.<span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='ident'>name</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>value</span>)
+    <span class="kw">fn</span> <span class="ident">set_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">GlobalMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="ident">manager</span>.<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>[..], <span class="kw-2">&amp;</span><span class="ident">value</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_global_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
-        <span class='ident'>GlobalMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>()).<span class='ident'>delete</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>;
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">delete_global_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
+        <span class="ident">GlobalMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>()).<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>JsonValue</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>AccountManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>).<span class='ident'>exists</span>(<span class='ident'>owner_id</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span>);
+    <span class="kw">fn</span> <span class="ident">get_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">owner_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JsonValue</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">AccountManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>).<span class="ident">exists</span>(<span class="ident">owner_id</span>)<span class="question-mark">?</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">AccountNotFound</span>);
         }
 
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>AccountMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='ident'>manager</span>.<span class='ident'>get</span>(<span class='ident'>owner_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>.<span class='ident'>ok_or_else</span>(<span class='op'>||</span> <span class='ident'>Error</span>::<span class='ident'>MetadataNotFound</span>)
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">AccountMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="ident">manager</span>.<span class="ident">get</span>(<span class="ident">owner_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>.<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="ident">Error</span>::<span class="ident">MetadataNotFound</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>AccountManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>secure_uuids</span>).<span class='ident'>exists</span>(<span class='ident'>owner_id</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>AccountNotFound</span>);
+    <span class="kw">fn</span> <span class="ident">set_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">owner_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">AccountManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">secure_uuids</span>).<span class="ident">exists</span>(<span class="ident">owner_id</span>)<span class="question-mark">?</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">AccountNotFound</span>);
         }
 
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>AccountMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='ident'>manager</span>.<span class='ident'>set</span>(<span class='ident'>owner_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>value</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">AccountMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="ident">manager</span>.<span class="ident">set</span>(<span class="ident">owner_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..], <span class="kw-2">&amp;</span><span class="ident">value</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_account_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>owner_id</span>: <span class='ident'>Uuid</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>AccountMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
+    <span class="kw">fn</span> <span class="ident">delete_account_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">owner_id</span>: <span class="ident">Uuid</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">AccountMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
 
-        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>manager</span>.<span class='ident'>exists</span>(<span class='ident'>owner_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>MetadataNotFound</span>);
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">manager</span>.<span class="ident">exists</span>(<span class="ident">owner_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>)<span class="question-mark">?</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">MetadataNotFound</span>);
         }
 
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
-        <span class='ident'>manager</span>.<span class='ident'>delete</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>owner_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>;
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
+        <span class="ident">manager</span>.<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">owner_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>VertexMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>metadata</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>Uuid</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>HashMap</span>::<span class='ident'>new</span>();
+    <span class="kw">fn</span> <span class="ident">get_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">VertexMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">metadata</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">Uuid</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>vertex_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>let</span> (<span class='ident'>id</span>, _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>manager</span>.<span class='ident'>get</span>(<span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">vertex_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> (<span class="ident">id</span>, _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">manager</span>.<span class="ident">get</span>(<span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>;
 
-            <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>value</span>) <span class='op'>=</span> <span class='ident'>value</span> {
-                <span class='ident'>metadata</span>.<span class='ident'>insert</span>(<span class='ident'>id</span>, <span class='ident'>value</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value</span> {
+                <span class="ident">metadata</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">value</span>);
             }
         }
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>metadata</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">metadata</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>VertexMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
+    <span class="kw">fn</span> <span class="ident">set_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">VertexMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>vertex_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>let</span> (<span class='ident'>id</span>, _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='ident'>manager</span>.<span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>value</span>)<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">vertex_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> (<span class="ident">id</span>, _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="ident">manager</span>.<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..], <span class="kw-2">&amp;</span><span class="ident">value</span>)<span class="question-mark">?</span>;
         }
 
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_vertex_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>VertexQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>VertexMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
+    <span class="kw">fn</span> <span class="ident">delete_vertex_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">VertexQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">VertexMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>vertex_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>let</span> (<span class='ident'>id</span>, _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='ident'>manager</span>.<span class='ident'>delete</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">vertex_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> (<span class="ident">id</span>, _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="ident">manager</span>.<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>;
         }
 
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>get_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>EdgeMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>metadata</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>models</span>::<span class='ident'>EdgeKey</span>, <span class='ident'>JsonValue</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>HashMap</span>::<span class='ident'>new</span>();
+    <span class="kw">fn</span> <span class="ident">get_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">EdgeMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">metadata</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">models</span>::<span class="ident">EdgeKey</span>, <span class="ident">JsonValue</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>edge_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>let</span> ((<span class='ident'>outbound_id</span>, <span class='ident'>t</span>, _, <span class='ident'>inbound_id</span>), _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='kw'>let</span> <span class='ident'>value</span> <span class='op'>=</span> <span class='ident'>manager</span>.<span class='ident'>get</span>(<span class='ident'>outbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>t</span>, <span class='ident'>inbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">edge_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> ((<span class="ident">outbound_id</span>, <span class="ident">t</span>, _, <span class="ident">inbound_id</span>), _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">manager</span>.<span class="ident">get</span>(<span class="ident">outbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>, <span class="ident">inbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>;
 
-            <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>value</span>) <span class='op'>=</span> <span class='ident'>value</span> {
-                <span class='kw'>let</span> <span class='ident'>key</span> <span class='op'>=</span> <span class='ident'>models</span>::<span class='ident'>EdgeKey</span>::<span class='ident'>new</span>(<span class='ident'>outbound_id</span>, <span class='ident'>t</span>, <span class='ident'>inbound_id</span>);
-                <span class='ident'>metadata</span>.<span class='ident'>insert</span>(<span class='ident'>key</span>, <span class='ident'>value</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value</span> {
+                <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">models</span>::<span class="ident">EdgeKey</span>::<span class="ident">new</span>(<span class="ident">outbound_id</span>, <span class="ident">t</span>, <span class="ident">inbound_id</span>);
+                <span class="ident">metadata</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">value</span>);
             }
         }
 
-        <span class='prelude-val'>Ok</span>(<span class='ident'>metadata</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">metadata</span>)
     }
 
-    <span class='kw'>fn</span> <span class='ident'>set_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>, <span class='ident'>value</span>: <span class='ident'>JsonValue</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>EdgeMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
+    <span class="kw">fn</span> <span class="ident">set_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">JsonValue</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">EdgeMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>edge_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>let</span> ((<span class='ident'>outbound_id</span>, <span class='ident'>t</span>, _, <span class='ident'>inbound_id</span>), _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='ident'>manager</span>.<span class='ident'>set</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>outbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>t</span>, <span class='ident'>inbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..], <span class='kw-2'>&amp;</span><span class='ident'>value</span>)<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">edge_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> ((<span class="ident">outbound_id</span>, <span class="ident">t</span>, _, <span class="ident">inbound_id</span>), _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="ident">manager</span>.<span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">outbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>, <span class="ident">inbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..], <span class="kw-2">&amp;</span><span class="ident">value</span>)<span class="question-mark">?</span>;
         }
 
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>delete_edge_metadata</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>q</span>: <span class='ident'>EdgeQuery</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>manager</span> <span class='op'>=</span> <span class='ident'>EdgeMetadataManager</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>clone</span>());
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>batch</span> <span class='op'>=</span> <span class='ident'>WriteBatch</span>::<span class='ident'>default</span>();
+    <span class="kw">fn</span> <span class="ident">delete_edge_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">q</span>: <span class="ident">EdgeQuery</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">EdgeMetadataManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">db</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batch</span> <span class="op">=</span> <span class="ident">WriteBatch</span>::<span class="ident">default</span>();
 
-        <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>edge_query_to_iterator</span>(<span class='ident'>q</span>)<span class='question-mark'>?</span> {
-            <span class='kw'>let</span> ((<span class='ident'>outbound_id</span>, <span class='ident'>t</span>, _, <span class='ident'>inbound_id</span>), _) <span class='op'>=</span> <span class='ident'>item</span><span class='question-mark'>?</span>;
-            <span class='ident'>manager</span>.<span class='ident'>delete</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>batch</span>, <span class='ident'>outbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>t</span>, <span class='ident'>inbound_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..])<span class='question-mark'>?</span>;
+        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">edge_query_to_iterator</span>(<span class="ident">q</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> ((<span class="ident">outbound_id</span>, <span class="ident">t</span>, _, <span class="ident">inbound_id</span>), _) <span class="op">=</span> <span class="ident">item</span><span class="question-mark">?</span>;
+            <span class="ident">manager</span>.<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">batch</span>, <span class="ident">outbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>, <span class="ident">inbound_id</span>, <span class="kw-2">&amp;</span><span class="ident">name</span>[..])<span class="question-mark">?</span>;
         }
 
-        <span class='self'>self</span>.<span class='ident'>db</span>.<span class='ident'>write</span>(<span class='ident'>batch</span>)<span class='question-mark'>?</span>;
-        <span class='prelude-val'>Ok</span>(())
+        <span class="self">self</span>.<span class="ident">db</span>.<span class="ident">write</span>(<span class="ident">batch</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>commit</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">commit</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class='kw'>fn</span> <span class='ident'>rollback</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>Unexpected</span>(
-            <span class='string'>&quot;Transactions cannot be rolled back in the rocksdb datastore implementation&quot;</span>
-        .<span class='ident'>to_string</span>()))
+    <span class="kw">fn</span> <span class="ident">rollback</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Unexpected</span>(
+            <span class="string">&quot;Transactions cannot be rolled back in the rocksdb datastore implementation&quot;</span>
+        .<span class="ident">to_string</span>()))
     }
 }
 </pre>
