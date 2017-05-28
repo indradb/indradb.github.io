@@ -20,33 +20,32 @@
 
                     <h2><a id="Vertices_0"></a>Vertices</h2>
                     <p>Vertices represent things, and have types and UUIDs. Example:</p>
-                    <pre><code class="language-json">{"<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-string">"e148f973-cb90-48f8-8070-192b6928a613"</span></span>, "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"user"</span></span>}</code></pre>
+                    <pre><code>{"id": "e148f973-cb90-48f8-8070-192b6928a613", "type": "user"}</code></pre>
 
                     <h2><a id="Edges_7"></a>Edges</h2>
                     <p>
                         Edges represent relationships between things, and have types, weights, and when they were last
                         created/updated. Example:
-                    </p>
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">key</span>": <span class="hljs-value">{
-        "<span class="hljs-attribute">outbound_id</span>": <span class="hljs-value"><span class="hljs-string">"e148f973-cb90-48f8-8070-192b6928a613"</span></span>,
-        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"likes"</span></span>,
-        "<span class="hljs-attribute">inbound_id</span>": <span class="hljs-value"><span class="hljs-string">"a086155e-e2f9-4bd1-86a3-bd3d7169ba03"</span>
-    </span>}</span>,
-    "<span class="hljs-attribute">weight</span>": <span class="hljs-value"><span class="hljs-number">1.0</span></span>,
-    "<span class="hljs-attribute">update_datetime</span>": <span class="hljs-value"><span class="hljs-string">"2014-11-28 12:00:09"</span>
-</span>}
+<pre><code>{
+    "key": {
+        "outbound_id": "e148f973-cb90-48f8-8070-192b6928a613",
+        "type": "likes",
+        "inbound_id": "a086155e-e2f9-4bd1-86a3-bd3d7169ba03"
+    },
+    "weight": 1.0,
+    "update_datetime": "2014-11-28 12:00:09"
+}
 </code></pre>
 
                     <h2><a id="EdgeKeys"></a>Edge Keys</h2>
                     <p>
                         Edge keys represent unique identifiers for edges. Example:
                     </p>
-<pre><code class="language-json"><span class="hljs-value">{
-    "<span class="hljs-attribute">outbound_id</span>": <span class="hljs-value"><span class="hljs-string">"e148f973-cb90-48f8-8070-192b6928a613"</span></span>,
-    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"likes"</span></span>,
-    "<span class="hljs-attribute">inbound_id</span>": <span class="hljs-value"><span class="hljs-string">"a086155e-e2f9-4bd1-86a3-bd3d7169ba03"</span>
-</span>}
+<pre><code>{
+    "outbound_id": "e148f973-cb90-48f8-8070-192b6928a613",
+    "type": "likes",
+    "inbound_id": "a086155e-e2f9-4bd1-86a3-bd3d7169ba03"
+}
 </code></pre>
 
                     <h2><a id="Accounts_23"></a>Accounts</h2>
@@ -112,12 +111,12 @@
                             <li>
                                 Get all vertices ordered by UUID, starting from the beginning, and limited to up to
                                 1000 vertices:
-                                <pre><code class="language-json">{"<span class="hljs-attribute">all</span>": <span class="hljs-value">[<span class="hljs-literal">null</span>, <span class="hljs-number">1000</span>]</span>}</code></pre>
+                                <pre><code>{"all": [null, 1000]}</code></pre>
                             </li>
                             <li>
                                 Get all vertices ordered by UUID, starting after the UUID
                                 <code>22c6bbfe-a89d-4e51-96f9-cbf176aed23e</code>, and limited to up to 1000 vertices:
-                                <pre><code class="language-json">{"<span class="hljs-attribute">all</span>": <span class="hljs-value">[<span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span>, <span class="hljs-number">1000</span>]</span>}</code></pre>
+                                <pre><code>{"all": ["22c6bbfe-a89d-4e51-96f9-cbf176aed23e", 1000]}</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -136,7 +135,7 @@
                         <ul>
                             <li>
                                 Get a specific vertex:
-                                <pre><code class="language-json">{"<span class="hljs-attribute">vertex</span>": <span class="hljs-value"><span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span></span>}</code></pre>
+                                <pre><code>{"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"}</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -154,14 +153,13 @@
                         <p>Examples:</p>
                         <ul>
                             <li>Get a set of specific vertices:
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">vertices</span>": <span class="hljs-value">[
-        <span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span>,
-        <span class="hljs-string">"a4caa313-b9ec-4d44-99c9-d22084cf9889"</span>,
-        <span class="hljs-string">"f5c25812-d178-4d89-908c-2679db17f82a"</span>
+<pre><code>{
+    "vertices": [
+        "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
+        "a4caa313-b9ec-4d44-99c9-d22084cf9889",
+        "f5c25812-d178-4d89-908c-2679db17f82a"
     ]
-</span>}
-</code></pre>
+}</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -189,17 +187,17 @@
                         <ul>
                             <li>
                                 Get the outbound vertex associated with an edge, and limited to up to 1 vertex:
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">pipe</span>": <span class="hljs-value">[{
-        "<span class="hljs-attribute">edge</span>": <span class="hljs-value">{
-            "<span class="hljs-attribute">outbound_id</span>": <span class="hljs-value"><span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span></span>,
-            "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"foo"</span></span>,
-            "<span class="hljs-attribute">inbound_id</span>": <span class="hljs-value"><span class="hljs-string">"f5c25812-d178-4d89-908c-2679db17f82a"</span>
-        </span>}
-    </span>},
-    <span class="hljs-string">"outbound"</span>,
-    <span class="hljs-number">1</span>
-]</span>}
+<pre><code>{
+    "pipe": [
+        "edge": {
+            "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
+            "type": "foo",
+            "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
+        },
+        "outbound",
+        1
+    ]
+}
 </code></pre>
                             </li>
                         </ul>
@@ -224,13 +222,13 @@
                         <p>Examples:</p>
                         <ul>
                             <li>Get a specific edge:
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">edge</span>": <span class="hljs-value">{
-        "<span class="hljs-attribute">outbound_id</span>": <span class="hljs-value"><span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span></span>,
-        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"foo"</span></span>,
-        "<span class="hljs-attribute">inbound_id</span>": <span class="hljs-value"><span class="hljs-string">"f5c25812-d178-4d89-908c-2679db17f82a"</span>
-    </span>}
-</span>}
+<pre><code>{
+    "edge": {
+        "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
+        "type": "foo",
+        "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
+    }
+}
 </code></pre>
                             </li>
                         </ul>
@@ -248,23 +246,22 @@
 
                         <p>Examples:</p>
                         <ul>
-                            <li>Get a specific edge:
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">edges</span>": <span class="hljs-value">[{
-        "<span class="hljs-attribute">outbound_id</span>": <span class="hljs-value"><span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span></span>,
-        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"foo"</span></span>,
-        "<span class="hljs-attribute">inbound_id</span>": <span class="hljs-value"><span class="hljs-string">"f5c25812-d178-4d89-908c-2679db17f82a"</span>
-    </span>}, {
-        "<span class="hljs-attribute">outbound_id</span>": <span class="hljs-value"><span class="hljs-string">"8b986253-3033-46f0-bc0e-d3115b22b857"</span></span>,
-        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"foo"</span></span>,
-        "<span class="hljs-attribute">inbound_id</span>": <span class="hljs-value"><span class="hljs-string">"1d92355b-93c9-424f-8b42-995da6bd2cb7"</span>
-    </span>}, {
-        "<span class="hljs-attribute">outbound_id</span>": <span class="hljs-value"><span class="hljs-string">"1b485269-5235-4071-bdb8-5ef7ed2a76ca"</span></span>,
-        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"foo"</span></span>,
-        "<span class="hljs-attribute">inbound_id</span>": <span class="hljs-value"><span class="hljs-string">"1dfde93f-8a2f-41c0-949d-97a2ca671d77"</span>
-    </span>}]
-</span>}
-</code></pre>
+                            <li>Get a specific set of edges:
+<pre><code>{
+    "edges": [{
+        "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
+        "type": "foo",
+        "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
+    }, {
+        "outbound_id": "8b986253-3033-46f0-bc0e-d3115b22b857",
+        "type": "foo",
+        "inbound_id": "1d92355b-93c9-424f-8b42-995da6bd2cb7"
+    }, {
+        "outbound_id": "1b485269-5235-4071-bdb8-5ef7ed2a76ca",
+        "type": "foo",
+        "inbound_id": "1dfde93f-8a2f-41c0-949d-97a2ca671d77"
+    }]
+}</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -304,47 +301,44 @@
                             <li>
                                 Get the edges with a specified inbound UUID, and type <code>foo</code>, and limited to
                                 up to 1000 edges:
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">pipe</span>": <span class="hljs-value">[
-        {"<span class="hljs-attribute">vertex</span>": <span class="hljs-value"><span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span></span>},
-        <span class="hljs-string">"inbound"</span>,
-        <span class="hljs-string">"foo"</span>,
-        <span class="hljs-literal">null</span>,
-        <span class="hljs-literal">null</span>,
-        <span class="hljs-number">1000</span>
+<pre><code>{
+    "pipe": [
+        {"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"},
+        "inbound",
+        "foo",
+        null,
+        null,
+        1000
     ]
-</span>}
-</code></pre>
+}</code></pre>
                             </li>
                             <li>
                                 Get the edges with a specified inbound UUID, and that were last updated before or at
                                 <code>2014-11-28 12:00:09</code>, and limited to up to 1000 edges:
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">pipe</span>": <span class="hljs-value">[
-        {"<span class="hljs-attribute">vertex</span>": <span class="hljs-value"><span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span></span>},
-        <span class="hljs-string">"inbound"</span>,
-        <span class="hljs-literal">null</span>,
-        <span class="hljs-string">"2014-11-28 12:00:09"</span>,
-        <span class="hljs-literal">null</span>,
-        <span class="hljs-number">1000</span>
+<pre><code>{
+    "pipe": [
+        {"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"},
+        "inbound",
+        null,
+        "2014-11-28 12:00:09",
+        null,
+        1000
     ]
-</span>}
-</code></pre>
+}</code></pre>
                             </li>
                             <li>
                                 Get the edges with a specified inbound UUID, and that were last updated after or at
                                 <code>2014-11-28 12:00:09</code>, and limited to up to 1000 edges:
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">pipe</span>": <span class="hljs-value">[
-        {"<span class="hljs-attribute">vertex</span>": <span class="hljs-value"><span class="hljs-string">"22c6bbfe-a89d-4e51-96f9-cbf176aed23e"</span></span>},
-        <span class="hljs-string">"inbound"</span>,
-        <span class="hljs-literal">null</span>,
-        <span class="hljs-literal">null</span>,
-        <span class="hljs-string">"2014-11-28 12:00:09"</span>,
-        <span class="hljs-number">1000</span>
+<pre><code>{
+    "pipe": [
+        {"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"},
+        "inbound",
+        null,
+        null,
+        "2014-11-28 12:00:09",
+        1000
     ]
-</span>}
-</code></pre>
+}</code></pre>
                             </li>
                         </ul>
                     </div>
