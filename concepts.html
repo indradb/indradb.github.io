@@ -87,8 +87,8 @@
                     
                     <h3><a id="Vertex_queries_39"></a>Vertex queries</h3>
                     <p>
-                        Vertex queries are objects, with a key specifying the type of query, and an array value
-                        specifying the arguments for that type of query.
+                        Vertex queries are used for methods that get and manipulate vertices. The various types of
+                        vertex queries are outlined below.
                     </p>
 
                     <div class="card">
@@ -97,7 +97,7 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
-                                <code>offset_id</code> - Only return vertices whose UUID starts after this value. This
+                                <code>start_id</code> - Only return vertices whose UUID starts after this value. This
                                 is useful for pagination.
                             </li>
                             <li>
@@ -111,12 +111,12 @@
                             <li>
                                 Get all vertices ordered by UUID, starting from the beginning, and limited to up to
                                 1000 vertices:
-                                <pre><code>{"all": [null, 1000]}</code></pre>
+                                <pre><code>{"type": "all", "start_id": null, "limit": 1000}</code></pre>
                             </li>
                             <li>
                                 Get all vertices ordered by UUID, starting after the UUID
                                 <code>22c6bbfe-a89d-4e51-96f9-cbf176aed23e</code>, and limited to up to 1000 vertices:
-                                <pre><code>{"all": ["22c6bbfe-a89d-4e51-96f9-cbf176aed23e", 1000]}</code></pre>
+                                <pre><code>{"type": "all", "start_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e", "limit": 1000}</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -135,7 +135,7 @@
                         <ul>
                             <li>
                                 Get a specific vertex:
-                                <pre><code>{"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"}</code></pre>
+                                <pre><code>{"type": "vertex", "id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"}</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -146,7 +146,7 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
-                                <code>vertices</code> - An array of the vertex UUIDs to get.
+                                <code>ids</code> - An array of the vertex UUIDs to get.
                             </li>
                         </ol>
 
@@ -154,7 +154,7 @@
                         <ul>
                             <li>Get a set of specific vertices:
 <pre><code>{
-    "vertices": [
+    "type": "vertices", "ids": [
         "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "a4caa313-b9ec-4d44-99c9-d22084cf9889",
         "f5c25812-d178-4d89-908c-2679db17f82a"
@@ -172,9 +172,9 @@
 
                         <p>Arguments:</p>
                         <ol>
-                            <li><code>query</code> - The edge query.</li>
+                            <li><code>edge_query</code> - The edge query.</li>
                             <li>
-                                <code>query_type_converter</code> - Either <code>outbound</code> or
+                                <code>converter</code> - Either <code>outbound</code> or
                                 <code>inbound</code> to signify which end of vertices to get from the query.
                             </li>
                             <li>
@@ -188,15 +188,14 @@
                             <li>
                                 Get the outbound vertex associated with an edge, and limited to up to 1 vertex:
 <pre><code>{
-    "pipe": [
-        "edge": {
+    "type": "pipe", "converter": "outbound", "limit": 1, "edge_query": {
+        "type": "edge",
+        "key": {
             "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
             "type": "foo",
             "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
-        },
-        "outbound",
-        1
-    ]
+        }
+    }
 }
 </code></pre>
                             </li>
@@ -205,8 +204,8 @@
 
                     <h3><a id="Edge_queries_84"></a>Edge queries</h3>
                     <p>
-                        Edge queries are objects, with a key specifying the type of query, and an array value
-                        specifying the arguments for that type of query.
+                        Edge queries are used for methods that get and manipulate edges. The various types of
+                        edge queries are outlined below.
                     </p>
 
                     <div class="card">
@@ -223,7 +222,7 @@
                         <ul>
                             <li>Get a specific edge:
 <pre><code>{
-    "edge": {
+    "type": "edge", "key": {
         "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "type": "foo",
         "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
@@ -248,7 +247,7 @@
                         <ul>
                             <li>Get a specific set of edges:
 <pre><code>{
-    "edges": [{
+    "type", "edges", "keys": [{
         "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "type": "foo",
         "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
@@ -275,18 +274,18 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
-                                <code>keys</code> - An array of the edge keys specifying which edges to get.
+                                <code>vertex_query</code> - The vertex query.
                                 <li>
-                                    <code>query_type_converter</code> - Either <code>outbound</code> or
+                                    <code>converter</code> - Either <code>outbound</code> or
                                     <code>inbound</code> to signify which end of edges to get from the query.
                                 </li>
-                                <li><code>type</code> - Filters the edges to only ones with a specific type.</li>
+                                <li><code>type_filter</code> - Filters the edges to only ones with a specific type.</li>
                                 <li>
-                                    <code>high</code> - Filters the edges to only ones updates at or before this ISO
+                                    <code>high_filter</code> - Filters the edges to only ones updates at or before this ISO
                                     8601-foramtted datetime.
                                 </li>
                                 <li>
-                                    <code>low</code> - Filters the edges to only ones updates at or after this ISO
+                                    <code>low_filter</code> - Filters the edges to only ones updates at or after this ISO
                                     8601-foramtted datetime.
                                 </li>
                                 <li>
@@ -302,42 +301,48 @@
                                 Get the edges with a specified inbound UUID, and type <code>foo</code>, and limited to
                                 up to 1000 edges:
 <pre><code>{
-    "pipe": [
-        {"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"},
-        "inbound",
-        "foo",
-        null,
-        null,
-        1000
-    ]
+    "type": "pipe",
+    "vertex_query": {
+        "type": "vertex",
+        "id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"
+    }
+    "converter": "inbound",
+    "type_filter": "foo",
+    "high_filter": null,
+    "low_filter": null,
+    "limit": 1000
 }</code></pre>
                             </li>
                             <li>
                                 Get the edges with a specified inbound UUID, and that were last updated before or at
                                 <code>2014-11-28 12:00:09</code>, and limited to up to 1000 edges:
 <pre><code>{
-    "pipe": [
-        {"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"},
-        "inbound",
-        null,
-        "2014-11-28 12:00:09",
-        null,
-        1000
-    ]
+    "type": "pipe",
+    "vertex_query": {
+        "type": "vertex",
+        "id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"
+    },
+    "converter": "inbound",
+    "type_filter": null,
+    "high_filter": "2014-11-28 12:00:09",
+    "low_filter": null,
+    "limit": 1000
 }</code></pre>
                             </li>
                             <li>
                                 Get the edges with a specified inbound UUID, and that were last updated after or at
                                 <code>2014-11-28 12:00:09</code>, and limited to up to 1000 edges:
 <pre><code>{
-    "pipe": [
-        {"vertex": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"},
-        "inbound",
-        null,
-        null,
-        "2014-11-28 12:00:09",
-        1000
-    ]
+    "type": "pipe",
+    "vertex_query": {
+        "type": "vertex",
+        "id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"
+    },
+    "converter": "inbound",
+    "type_filter": null,
+    "high_filter": null,
+    "low_filter": "2014-11-28 12:00:09",
+    "limit": 1000
 }</code></pre>
                             </li>
                         </ul>
