@@ -154,7 +154,8 @@
                         <ul>
                             <li>Get a set of specific vertices:
 <pre><code>{
-    "type": "vertices", "ids": [
+    "type": "vertices", 
+    "ids": [
         "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "a4caa313-b9ec-4d44-99c9-d22084cf9889",
         "f5c25812-d178-4d89-908c-2679db17f82a"
@@ -188,7 +189,10 @@
                             <li>
                                 Get the outbound vertex associated with an edge, and limited to up to 1 vertex:
 <pre><code>{
-    "type": "pipe", "converter": "outbound", "limit": 1, "edge_query": {
+    "type": "pipe", 
+    "converter": "outbound", 
+    "limit": 1, 
+    "edge_query": {
         "type": "edge",
         "key": {
             "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
@@ -222,7 +226,8 @@
                         <ul>
                             <li>Get a specific edge:
 <pre><code>{
-    "type": "edge", "key": {
+    "type": "edge", 
+    "key": {
         "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "type": "foo",
         "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
@@ -281,12 +286,12 @@
                                 </li>
                                 <li><code>type_filter</code> - Filters the edges to only ones with a specific type.</li>
                                 <li>
-                                    <code>high_filter</code> - Filters the edges to only ones updates at or before this ISO
-                                    8601-foramtted datetime.
+                                    <code>high_filter</code> - Filters the edges to only ones updated at or before this ISO
+                                    8601-formatted datetime.
                                 </li>
                                 <li>
-                                    <code>low_filter</code> - Filters the edges to only ones updates at or after this ISO
-                                    8601-foramtted datetime.
+                                    <code>low_filter</code> - Filters the edges to only ones updated at or after this ISO
+                                    8601-formatted datetime.
                                 </li>
                                 <li>
                                     <code>limit</code> - Limits the number of edges returned. Must be between 0 and
