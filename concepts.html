@@ -20,7 +20,11 @@
 
                     <h2><a id="Vertices_0"></a>Vertices</h2>
                     <p>Vertices represent things, and have types and UUIDs. Example:</p>
-                    <pre><code>{"id": "e148f973-cb90-48f8-8070-192b6928a613", "type": "user"}</code></pre>
+<pre><code>{
+  "id": "e148f973-cb90-48f8-8070-192b6928a613",
+  "type": "user"
+}
+</code></pre>
 
                     <h2><a id="Edges_7"></a>Edges</h2>
                     <p>
@@ -72,8 +76,8 @@
                     <p>
                         Metadata isn’t directly available via the HTTP API, and isn’t subject to any sort of
                         permissions checking. It’s generally used by scripts to store data that isn’t directly
-                        representable by the graph. For example, you may have a script that, in the background, is
-                        determining the nearest neighbors for vertices; you can cache the results in metadata.
+                        representable by the graph. For example, you may have a background script that determines
+                        the nearest neighbors for vertices; you can cache the results in metadata.
                     </p>
 
                     <h2><a id="Queries_35"></a>Queries</h2>
@@ -84,7 +88,7 @@
                         chained together via pipes, so that an edge query can build off the results of a vertex query
                         and vice-versa. Here are some examples.
                     </p>
-                    
+
                     <h3><a id="Vertex_queries_39"></a>Vertex queries</h3>
                     <p>
                         Vertex queries are used for methods that get and manipulate vertices. The various types of
@@ -111,12 +115,22 @@
                             <li>
                                 Get all vertices ordered by UUID, starting from the beginning, and limited to up to
                                 1000 vertices:
-                                <pre><code>{"type": "all", "start_id": null, "limit": 1000}</code></pre>
+<pre><code>{
+  "type": "all",
+  "start_id": null,
+  "limit": 1000
+}
+</code></pre>
                             </li>
                             <li>
                                 Get all vertices ordered by UUID, starting after the UUID
                                 <code>22c6bbfe-a89d-4e51-96f9-cbf176aed23e</code>, and limited to up to 1000 vertices:
-                                <pre><code>{"type": "all", "start_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e", "limit": 1000}</code></pre>
+<pre><code>{
+  "type": "all",
+  "start_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
+  "limit": 1000
+}
+</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -135,7 +149,11 @@
                         <ul>
                             <li>
                                 Get a specific vertex:
-                                <pre><code>{"type": "vertex", "id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"}</code></pre>
+<pre><code>{
+  "type": "vertex",
+  "id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"
+}
+</code></pre>
                             </li>
                         </ul>
                     </div>
@@ -154,7 +172,7 @@
                         <ul>
                             <li>Get a set of specific vertices:
 <pre><code>{
-    "type": "vertices", 
+    "type": "vertices",
     "ids": [
         "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "a4caa313-b9ec-4d44-99c9-d22084cf9889",
@@ -189,9 +207,9 @@
                             <li>
                                 Get the outbound vertex associated with an edge, and limited to up to 1 vertex:
 <pre><code>{
-    "type": "pipe", 
-    "converter": "outbound", 
-    "limit": 1, 
+    "type": "pipe",
+    "converter": "outbound",
+    "limit": 1,
     "edge_query": {
         "type": "edge",
         "key": {
@@ -226,7 +244,7 @@
                         <ul>
                             <li>Get a specific edge:
 <pre><code>{
-    "type": "edge", 
+    "type": "edge",
     "key": {
         "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "type": "foo",
@@ -269,7 +287,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="card">
                         <p>
                             <strong>pipe</strong>: Get either the outbound or the inbound edges associated with a
