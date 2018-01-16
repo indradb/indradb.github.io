@@ -2,7 +2,7 @@
 <html lang="en">
         <head>
         <meta charset="utf-8">
-        <title>braid / concepts</title>
+        <title>IndraDB / concepts</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="lib/skeleton-2.0.4/css/normalize.css">
@@ -13,12 +13,12 @@
         <div class="container">
             <div class="row">
                 <div class="column" style="margin-top: 50px">
-                    <img src="braid.png" alt="" width="50" height="50" style="float: left" />
+                    <img src="logo.png" alt="" width="50" height="50" style="float: left" />
                     <h1 style="position: relative; left: 10px; top: 5px;">
-                        <a href="/index.html">braid</a> / concepts
+                        <a href="index.html">IndraDB</a> / concepts
                     </h1>
 
-                    <h2><a id="Vertices_0"></a>Vertices</h2>
+                    <h2><a id="vertices"></a>Vertices</h2>
                     <p>Vertices represent things, and have types and UUIDs. Example:</p>
 <pre><code>{
   "id": "e148f973-cb90-48f8-8070-192b6928a613",
@@ -26,7 +26,7 @@
 }
 </code></pre>
 
-                    <h2><a id="Edges_7"></a>Edges</h2>
+                    <h2><a id="edges"></a>Edges</h2>
                     <p>
                         Edges represent relationships between things, and have types, weights, and when they were last
                         created/updated. Example:
@@ -41,7 +41,7 @@
 }
 </code></pre>
 
-                    <h2><a id="EdgeKeys"></a>Edge Keys</h2>
+                    <h2><a id="edge-keys"></a>Edge Keys</h2>
                     <p>
                         Edge keys represent unique identifiers for edges. Example:
                     </p>
@@ -52,17 +52,14 @@
 }
 </code></pre>
 
-                    <h2><a id="Accounts_23"></a>Accounts</h2>
+                    <h2><a id="accounts"></a>Accounts</h2>
                     <p>
-                        All vertices are owned by an account. Accounts can view all data and create an arbitrary number
-                        of vertices, but they can only create edges where the outbound UUID is a vertex that they own.
-                        This facilitates sharing data between accounts in the same way the web does: you can view any
-                        page, and you can link to any page, but cannot make a page link back to you. Of course, you can
+                        All vertices are owned by an account. An account owner can view all data (including other account owners' data), but they can only change or delete their own data. Account owners can also link to unowned vertices, but cannot link from unowned vertices. This facilitates sharing data between accounts in the same way the web does: you can view any page, and you can link to any page, but cannot make a page link back to you. Of course, you can
                         always have just one account that owns all graph data if this is not necessary, and can always
-                        create separate instances of braid servers to have completely isolated accounts.
+                        create separate instances of IndraDB servers to have completely isolated accounts.
                     </p>
 
-                    <h2><a id="Metadata_27"></a>Metadata</h2>
+                    <h2><a id="metadata"></a>Metadata</h2>
                     <p>
                         Metadata are JSON-based key/value items. They can be global (i.e. tied to nothing), or tied to
                         a vertex, edge, or account. When a vertex, edge or account is deleted, its respective metadata
@@ -80,16 +77,16 @@
                         the nearest neighbors for vertices; you can cache the results in metadata.
                     </p>
 
-                    <h2><a id="Queries_35"></a>Queries</h2>
+                    <h2><a id="queries"></a>Queries</h2>
                     <p>
-                        Braid offers rich query semantics for working with vertices and edges, inspired by
+                        IndraDB offers rich query semantics for working with vertices and edges, inspired by
                         <a href="https://github.com/tinkerpop/gremlin/wiki">Gremlin</a> and
                         <a href="https://github.com/cayleygraph/cayley">Cayley</a>. Vertex and edge queries can be
                         chained together via pipes, so that an edge query can build off the results of a vertex query
                         and vice-versa. Here are some examples.
                     </p>
 
-                    <h3><a id="Vertex_queries_39"></a>Vertex queries</h3>
+                    <h3><a id="vertex-queries"></a>Vertex queries</h3>
                     <p>
                         Vertex queries are used for methods that get and manipulate vertices. The various types of
                         vertex queries are outlined below.
@@ -129,29 +126,6 @@
   "type": "all",
   "start_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
   "limit": 1000
-}
-</code></pre>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <p><strong>vertex</strong>: Get a specific vertex.</p>
-
-                        <p>Arguments:</p>
-                        <ol>
-                            <li>
-                                <code>id</code> - Return the vertex with this UUID.
-                            </li>
-                        </ol>
-
-                        <p>Examples:</p>
-                        <ul>
-                            <li>
-                                Get a specific vertex:
-<pre><code>{
-  "type": "vertex",
-  "id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e"
 }
 </code></pre>
                             </li>
@@ -224,37 +198,11 @@
                         </ul>
                     </div>
 
-                    <h3><a id="Edge_queries_84"></a>Edge queries</h3>
+                    <h3><a id="edge-queries"></a>Edge queries</h3>
                     <p>
                         Edge queries are used for methods that get and manipulate edges. The various types of
                         edge queries are outlined below.
                     </p>
-
-                    <div class="card">
-                        <p><strong>edge</strong>: Get a specific edge.</p>
-
-                        <p>Arguments:</p>
-                        <ol>
-                            <li>
-                                <code>key</code> - The edge key specifying which edge to get.
-                            </li>
-                        </ol>
-
-                        <p>Examples:</p>
-                        <ul>
-                            <li>Get a specific edge:
-<pre><code>{
-    "type": "edge",
-    "key": {
-        "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
-        "type": "foo",
-        "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"
-    }
-}
-</code></pre>
-                            </li>
-                        </ul>
-                    </div>
 
                     <div class="card">
                         <p><strong>edges</strong>: Get a specific set of edges.</p>
@@ -270,7 +218,8 @@
                         <ul>
                             <li>Get a specific set of edges:
 <pre><code>{
-    "type", "edges", "keys": [{
+    "type": "edges",
+    "keys": [{
         "outbound_id": "22c6bbfe-a89d-4e51-96f9-cbf176aed23e",
         "type": "foo",
         "inbound_id": "f5c25812-d178-4d89-908c-2679db17f82a"

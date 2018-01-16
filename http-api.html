@@ -2,7 +2,7 @@
 <html lang="en">
         <head>
         <meta charset="utf-8">
-        <title>braid / http api</title>
+        <title>IndraDB / http api</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="lib/skeleton-2.0.4/css/normalize.css">
@@ -13,18 +13,18 @@
         <div class="container">
             <div class="row">
                 <div class="column" style="margin-top: 50px">
-                    <img src="braid.png" alt="" width="50" height="50" style="float: left" />
+                    <img src="logo.png" alt="" width="50" height="50" style="float: left" />
                     <h1 style="position: relative; left: 10px; top: 5px;">
-                        <a href="/index.html">braid</a> / http api
+                        <a href="index.html">IndraDB</a> / http api
                     </h1>
 
-                    <h2><a id="HTTP_authentication_17"></a>Authentication</h2>
+                    <h2><a id="http-authentication"></a>Authentication</h2>
                     <p>
                         The HTTP API uses basic authentication. The username is the user UUID, and the password is the
-                        secret. These are returned by <code>braid-user</code> when you add a new user.
+                        secret. These are returned by <code>indradb-user</code> when you add a new user.
                     </p>
                     
-                    <h2><a id="HTTP_status_messages_21"></a>HTTP status messages</h2>
+                    <h2><a id="http-status-messages"></a>HTTP status messages</h2>
                     <p>The HTTP API uses these return status codes:</p>
                     <ul>
                         <li><code>200</code> - If the request went through fine.</li>
@@ -36,7 +36,7 @@
                         <li><code>500</code> - When a server error occurs.</li>
                     </ul>
 
-                    <h2><a id="HTTP_endpoints_30"></a>Endpoints</h2>
+                    <h2><a id="http-endpoints"></a>Endpoints</h2>
 
                     <div class="card">
                         <p>
@@ -60,7 +60,7 @@
                         <p><code>GET /edge?q=:query</code>: Gets the edges that match the query.</p>
                         <p>Query parameters:</p>
                         <ul>
-                            <li><code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query JSON</a>.</li>
+                            <li><code>query</code> - The <a href="concepts.html#edge-queries">edge query JSON</a>.</li>
                         </ul>
                         <p>Returns a JSON array of edges that match the query.</p>
                     </div>
@@ -72,7 +72,7 @@
                         </p>
                         <p>Query parameters:</p>
                         <ul>
-                            <li><code>query</code> - <a href="/concepts.html#Edge_queries_84">edge query JSON</a>.</li>
+                            <li><code>query</code> - <a href="concepts.html#edge-queries">edge query JSON</a>.</li>
                         </ul>
                         <p>Returns the number of edges that match the query.</p>
                     </div>
@@ -81,7 +81,7 @@
                         <p><code>DELETE /edge?q=:query</code>: Deletes edges that match the query.</p>
                         <p>Query parameters:</p>
                         <ul>
-                            <li><code>query</code> - <a href="/concepts.html#Edge_queries_84">edge query JSON</a>.</li>
+                            <li><code>query</code> - <a href="concepts.html#edge-queries">edge query JSON</a>.</li>
                         </ul>
                         <p>Returns nothing.</p>
                     </div>
@@ -90,7 +90,7 @@
                         <p><code>GET /vertex?q=:query</code>: Get vertices that match a query.</p>
                         <p>Query parameters:</p>
                         <ul>
-                            <li><code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query JSON</a>.</li>
+                            <li><code>query</code> - The <a href="concepts.html#vertex-queries">vertex query JSON</a>.</li>
                         </ul>
                         <p>Returns a JSON array of the vertices.</p>
                     </div>
@@ -111,7 +111,7 @@
                         <p><code>DELETE /vertex?q=:query</code>: Deletes vertices that match a query.</p>
                         <p>Query parameters:</p>
                         <ul>
-                        <li><code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query JSON</a>.</li>
+                        <li><code>query</code> - The <a href="concepts.html#vertex-queries">vertex query JSON</a>.</li>
                         </ul>
                         <p>Returns nothing.</p>
                     </div>
@@ -156,7 +156,7 @@
                             <p>Arguments:</p>
                             <ul>
                                 <li>
-                                    <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                    <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
                                     use.
                                 </li>
                             </ul>
@@ -170,7 +170,7 @@
                             <p>Arguments:</p>
                             <ul>
                                 <li>
-                                    <code>query</code> - The <a href="/concepts.html#Vertex_queries_39">vertex query</a> to
+                                    <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
                                     use.
                                 </li>
                             </ul>
@@ -184,7 +184,7 @@
                             <p>Arguments:</p>
                             <ul>
                                 <li>
-                                    <code>key</code> - The <a href="/concepts.html#EdgeKeys">edge key</a> that identifies
+                                    <code>key</code> - The <a href="concepts.html#edge-keys">edge key</a> that identifies
                                     the edge.
                                 </li>
                                 <li>
@@ -201,7 +201,7 @@
                             <p>Arguments:</p>
                             <ul>
                                 <li>
-                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                     use.
                                 </li>
                             </ul>
@@ -215,7 +215,7 @@
                             <p>Arguments:</p>
                             <ul>
                                 <li>
-                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                     use.
                                 </li>
                             </ul>
@@ -229,7 +229,7 @@
                             <p>Arguments:</p>
                             <ul>
                                 <li>
-                                    <code>query</code> - The <a href="/concepts.html#Edge_queries_84">edge query</a> to
+                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                     use.
                                 </li>
                             </ul>
