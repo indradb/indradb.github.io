@@ -35,6 +35,7 @@
                     <ul>
                         <li><code>account_id</code> - The UUID of the account that is executing the script.</li>
                         <li><code>arg</code> - The JSON body of the request that called the script.</li>
+                        <li><code>trans</code> - A reference to the current script's transaction. Always passed as the first argument into transaction methods.</li>
                     </ul>
 
                     <p>
@@ -47,6 +48,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>type</code> - The vertex type. Must be less than 256 characters long, and can
                                 only contain letters, numbers, dashes, and underscores.
@@ -62,6 +66,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
                                 use.
                             </li>
@@ -76,6 +83,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
                                 use.
                             </li>
@@ -89,6 +99,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>key</code> - The <a href="concepts.html#edge-keys">edge key</a> that identifies
                                 the edge.
@@ -107,6 +120,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                 use.
                             </li>
@@ -121,6 +137,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                 use.
                             </li>
@@ -134,6 +153,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                 use.
@@ -152,6 +174,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>name</code> - The name of the metadata variable.
                             </li>
                         </ol>
@@ -167,6 +192,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>name</code> - The name of the metadata variable.
                             </li>
@@ -187,6 +215,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>name</code> - The name of the metadata variable.
                             </li>
                         </ol>
@@ -202,6 +233,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>account_id</code> - The ID of the account that the metadata is tied to.
                             </li>
@@ -221,6 +255,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>account_id</code> - The ID of the account that the metadata is tied to.
                             </li>
@@ -244,6 +281,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>account_id</code> - The ID of the account that the metadata is tied to.
                             </li>
                             <li>
@@ -263,6 +303,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to run.
                             </li>
                             <li>
@@ -281,6 +324,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to run.
                             </li>
@@ -304,6 +350,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to run.
                             </li>
                             <li>
@@ -323,6 +372,9 @@
                         <p>Arguments:</p>
                         <ol>
                             <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
+                            <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to run.
                             </li>
                             <li>
@@ -341,6 +393,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to run.
                             </li>
@@ -363,6 +418,9 @@
 
                         <p>Arguments:</p>
                         <ol>
+                            <li>
+                                <code>trans</code> - A reference to the current transaction.
+                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to run.
                             </li>
