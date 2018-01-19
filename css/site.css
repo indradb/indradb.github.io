@@ -1,8 +1,8 @@
-ul {
+.index-links {
     list-style-type: none;
 }
 
-li {
+.index-links li {
     padding-left: 1em;
 }
 
