@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <title>IndraDB / motivation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="lib/skeleton-2.0.4/css/normalize.css">
+        <link rel="stylesheet" href="lib/skeleton-2.0.4/css/skeleton.css">
+        <link rel="stylesheet" href="css/site.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="column" style="margin-top: 50px">
+                    <img src="logo-mini.png" alt="" width="50" height="50" style="float: left" />
+                    <h1 style="position: relative; left: 10px; top: 5px;">
+                        <a href="index.html">IndraDB</a> / motivation
+                    </h1>
+
+                    <p>
+                        Companies like Amazon have a wealth of data for building personalization algorithms. They have used this to better their product. Smaller companies are massively disadvantaged, because they have less data to work with, and because they don't have an army of data scientists constantly experimenting with new algorithms.
+                    </p>
+                    <p>
+                        IndraDB is designed to help level the playing the field. It is a graph database that can store massive amounts of data and facilitate the rapid development of algorithms that leverage that data.
+                    </p>
+                    <p>
+                        Graphs provide a very natural way of modeling and exploring datasets. In an ecommerce setting, you would represent both users and items as vertices, and purchases as edges between vertices. You might also represent, for example, reviews of products as another type of edge. Graphs are flexible though in that they can accomodate all kinds of use cases - not just ecommerce.
+                    </p>
+                    <p>
+                        Graphs also provide a very natural way of building advanced algorithms. Collaborative filtering and nearest neighbor-based recommendation algorithms can be built simply by walking the graph. And Google's great innovation in search was to rank results based off of centrality analysis of the graph of how websites link to each other.
+                    </p>
+                    <p>
+                        Graph databases, are, of course, not a panacea. No type of database is. But graph databases do help tremendously in certain kinds of analytics-heavy use cases.
+                    </p>
+                    
+                    <h2 id="why-haven-t-graph-databases-taken-off-">Why haven't graph databases taken off?</h2>
+                    <p>
+                        Despite these use cases, and despite the plethora of options, graph databases are rarely utilized outside of large companies. This is slowly changing, but the slow uptake has a few broad reasons:
+                    </p>
+                    <ul>
+                        <li>
+                            They're frequently employed for the wrong use cases, leading to disappointment. Given the current state of things, it rarely makes sense to use graph databases as a single source of truth; rather, they should be used as a way of remodeling data that's already stored in other databases. Graph databases also shouldn't be used, for example, for a CRUD-heavy application, where an RDBMS would do a better job.
+                        </li>
+                        <li>
+                            Current solutions require a great deal of niche knowledge. This is most commonly reflected in their query languages, where the flexibility of graphs makes it tempting to make very complex query languages. But it also reflects in operational complexity, where it's sometimes overly-complicated to get started or maintain uptime. The latter risk factor is multiplied if the graph database is being used as a single source of truth, and its uptime is paramount.
+                        </li>
+                        <li>
+                            Graph databases are usually designed to strictly model the relationships between things and not much else. Consequently, to use it in a practical setting, you generally need to stand up another type of database alongside for whatever doesn't fit. For example, very few graph databases have a notion of edge weights; if you want to represent something like user ratings, you need to store those ratings in an entirely different database.
+                        </li>
+                    </ul>
+
+                    <h2 id="how-is-indradb-different-">How is IndraDB different?</h2>
+                    <p>
+                        Like many graph databases, IndraDB is built to store directed and typed graphs. Graphs are directed because an edge from vertex A to vertex B does not imply that there's an edge from vertex B to vertex A. Graphs are typed because each edge and node has a type (a short string) that identifies what &quot;class&quot; it's a part of. In an ecommerce setting, the vertex types might be &quot;user&quot; and &quot;product&quot;, and the edge types might be &quot;purchased&quot; and &quot;reviewed&quot;.
+                    </p>
+                    <p>
+                        Also not uncommon among graph databases is IndraDB's support for pluggable datastores, which allow you to make different trade-offs in how the data is stored. If persistence doesn't matter, you can use the in-memory-only datastore. If you want to avoid as much network overhead as possible, you can use the RocksDB implementation. If you want to make it easy to poke around the data from different angles, or run multiple instances of IndraDB, you can use the postgres implementation.
+                    </p>
+                    <p>
+                        Beyond that, though, there are a number of features IndraDB has that are uncommon among graph databases:
+                    </p>
+                    <ul>
+                        <li>
+                            Edge weights, which are helpful for certain kinds of edges - in particular, for user reviews. Although one of the most common use cases of graph databases is for facilitating recommendation algorithms, most implementations do not support edge weights, and therefore cannot adequately represent user reviews.
+                        </li>
+                        <li>
+                            Metadata, which is key/value data tied to the graph data itself. The most common use case of this is to store the results of some offline analysis. For example, centrality analysis is helpful for all sorts of use cases, but because it is computationally expensive, it needs to be done offline. Through metadata, you can store data about the centrality of each vertex as vertex metadata.
+                        </li>
+                        <li>
+                            Support for multitenancy, such that data from multiple accounts can coexist within the same database. IndraDB enforces a security model much like the web's: while you can link to other accounts' vertices, you cannot coerce other accounts to link to your vertices. This is useful when not all data is owned by a single company or individual.
+                        </li>
+                        <li>
+                            Ease of extensibility. There are a variety of ways to plug into IndraDB such that you're not restricted to just using it as a library, or just using it through an HTTP API. These methods provide tradeoffs in ease of use versus performance. The simplest but least performant way to integrate with IndraDB is through its HTTP API. At a level below that, you can compose lua scripts that are callable from the HTTP API, but can combine many graph queries together while avoiding network overhead. At the lowest level, you can integrate directly with the IndraDB library. This provides maximal performance by avoiding all overhead at the cost of needing to write lower-level rust code. All methods of integration build off of the same API and query language, so the knowledge you build integrating in one way is portable to the other ways.
+                        </li>
+                    </ul>
+                    <p>
+                        Philosophically, IndraDB diverges a bit from other graph databases as well. The query language and API is made to be dead-simple. Some advanced features (e.g. multi-hop traversals) are supported, but it's certainly not as rich as, e.g. <a href="https://github.com/cayleygraph/cayley/blob/master/docs/GizmoAPI.md">Ceyley's</a>. This substantially lowers the barrier to entry for end-users and for people writing clients and datastores in IndraDB. But it comes at the cost of making it more cumbersome to perform richer queries. IndraDB's simplicty is also done in anticipation of storing very large graphs, including ones that may be realistically too large for complete graph processing. By simplifying the implementation, it will be easier in the future to ensure IndraDB instances can remain reliable and performant in the face of very large datasets.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
