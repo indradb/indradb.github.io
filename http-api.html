@@ -18,17 +18,10 @@
                         <a href="index.html">IndraDB</a> / http api
                     </h1>
 
-                    <h2><a id="http-authentication"></a>Authentication</h2>
-                    <p>
-                        The HTTP API uses basic authentication. The username is the user UUID, and the password is the
-                        secret. These are returned by <code>indradb-user</code> when you add a new user.
-                    </p>
-                    
                     <h2><a id="http-status-messages"></a>HTTP status messages</h2>
                     <p>The HTTP API uses these return status codes:</p>
                     <ul>
                         <li><code>200</code> - If the request went through fine.</li>
-                        <li><code>401</code> - If authentication failed.</li>
                         <li>
                             <code>404</code> - If the endpoint was not found. Note that, due to a current shortcoming
                             in the routing library, this is used in place <code>405</code> as well.
@@ -38,84 +31,6 @@
 
                     <h2><a id="http-endpoints"></a>Endpoints</h2>
 
-                    <div class="card">
-                        <p>
-                            <code>PUT /edge/:outbound_id/:type/:inbound_id?weight=:weight</code>: Creates a new edge,
-                            or updates an existing one.
-                        </p>
-                        <p>URL parameters:</p>
-                        <ul>
-                            <li><code>outbound_id</code> - The vertex UUID from which the edge is outbounding.</li>
-                            <li><code>type</code> - The edge type.</li>
-                            <li><code>inbound_id</code> - The vertex UUID into which the edge is inbounding.</li>
-                        </ul>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li><code>weight</code> - The edge weight, which must be between -1.0 and 1.0.</li>
-                        </ul>
-                        <p>Returns nothing.</p>
-                    </div>
-                    
-                    <div class="card">
-                        <p><code>GET /edge?q=:query</code>: Gets the edges that match the query.</p>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li><code>query</code> - The <a href="concepts.html#edge-queries">edge query JSON</a>.</li>
-                        </ul>
-                        <p>Returns a JSON array of edges that match the query.</p>
-                    </div>
-
-                    <div class="card">                        
-                        <p>
-                            <code>GET /edge?action=count&amp;q=:query</code>: Gets the number of edges that match the
-                            query.
-                        </p>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li><code>query</code> - <a href="concepts.html#edge-queries">edge query JSON</a>.</li>
-                        </ul>
-                        <p>Returns the number of edges that match the query.</p>
-                    </div>
-
-                    <div class="card">
-                        <p><code>DELETE /edge?q=:query</code>: Deletes edges that match the query.</p>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li><code>query</code> - <a href="concepts.html#edge-queries">edge query JSON</a>.</li>
-                        </ul>
-                        <p>Returns nothing.</p>
-                    </div>
-                    
-                    <div class="card">
-                        <p><code>GET /vertex?q=:query</code>: Get vertices that match a query.</p>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li><code>query</code> - The <a href="concepts.html#vertex-queries">vertex query JSON</a>.</li>
-                        </ul>
-                        <p>Returns a JSON array of the vertices.</p>
-                    </div>
-
-                    <div class="card">                      
-                        <p><code>POST /vertex?type=:type</code> - Creates a new vertex with the given type.</p>
-                        <p>Query parameters:</p>
-                        <ul>
-                            <li>
-                                <code>type</code> - The type of the vertex. Must be less than 256 characters long, and
-                                can only contain letters, numbers, dashes, and underscores.
-                            </li>
-                        </ul>
-                        <p>Returns the vertex UUID.</p>
-                    </div>
-                    
-                    <div class="card">
-                        <p><code>DELETE /vertex?q=:query</code>: Deletes vertices that match a query.</p>
-                        <p>Query parameters:</p>
-                        <ul>
-                        <li><code>query</code> - The <a href="concepts.html#vertex-queries">vertex query JSON</a>.</li>
-                        </ul>
-                        <p>Returns nothing.</p>
-                    </div>
-                    
                     <div class="card">
                         <p><code>POST /script/:filename</code>: Runs a script with the given filename.</p>
                         <p>URL parameters:</p>
@@ -210,20 +125,6 @@
                         </div>
 
                         <div class="card">
-                            <p><code>get_edge_count</code> - Gets the number of edges that match a given query.
-
-                            <p>Arguments:</p>
-                            <ul>
-                                <li>
-                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
-                                    use.
-                                </li>
-                            </ul>
-
-                            <p>Returns the number of edges that match the query.</p>
-                        </div>
-
-                        <div class="card">
                             <p><code>delete_edges</code> - Deletes edges by a given query.
 
                             <p>Arguments:</p>
@@ -238,18 +139,173 @@
                         </div>
 
                         <div class="card">
-                            <p><code>run_script</code> - Executes a lua script.
+                            <p><code>get_edge_count</code> - Gets the number of edges that match a given query.
 
                             <p>Arguments:</p>
                             <ul>
                                 <li>
-                                    <code>name</code> - The name of the lua script, which should be in the server's script
-                                    root directory. It should include the `.lua` extension of the file.
-                                </li>
-                                <li>
-                                    <code>payload</code> - A JSON-serializable payload to send to the script.
+                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
+                                    use.
                                 </li>
                             </ul>
+
+                            <p>Returns the number of edges that match the query.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>get_global_metadata</code> - Gets a global metadata value.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>name</code> - The name of the value to get.
+                                </li>
+                            </ul>
+
+                            <p>Returns the metadata value as JSON.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>set_global_metadata</code> - Sets a global metadata value.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>name</code> - The name of the value to set.
+                                </li>
+                                <li>
+                                    <code>value</code> - The new value as JSON.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>delete_global_metadata</code> - Deletes a global metadata value.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>name</code> - The name of the value to delete.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>get_vertex_metadata</code> - Gets vertex metadata values.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>name</code> - The name of the metadata to get.
+                                </li>
+                            </ul>
+
+                            <p>
+                                Returns a list of objects, each of which contains the vertex <code>id</code> and
+                                metadata <code>value</code>.
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>set_vertex_metadata</code> - Sets vertex metadata values.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>name</code> - The name of the metadata to set.
+                                </li>
+                                <li>
+                                    <code>value</code> - The new value as JSON.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>delete_vertex_metadata</code> - Deletes vertex metadata.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>name</code> - The name of the value to delete.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>get_edge_metadata</code> - Gets edge metadata values.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>name</code> - The name of the metadata to get.
+                                </li>
+                            </ul>
+
+                            <p>
+                                Returns a list of objects, each of which contains the edge <code>key</code> and
+                                metadata <code>value</code>.
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>set_edge_metadata</code> - Sets edge metadata values.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>name</code> - The name of the metadata to set.
+                                </li>
+                                <li>
+                                    <code>value</code> - The new value as JSON.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
+                        </div>
+
+                        <div class="card">
+                            <p><code>delete_edge_metadata</code> - Deletes edge metadata.
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
+                                    use.
+                                </li>
+                                <li>
+                                    <code>name</code> - The name of the value to delete.
+                                </li>
+                            </ul>
+
+                            <p>Returns nothing.</p>
                         </div>
                     </div>
                 </div>

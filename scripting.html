@@ -33,14 +33,12 @@
 
                     <p>Scripts have access to these globals:</p>
                     <ul>
-                        <li><code>account_id</code> - The UUID of the account that is executing the script.</li>
                         <li><code>arg</code> - The JSON body of the request that called the script.</li>
-                        <li><code>trans</code> - A reference to the current script's transaction. Always passed as the first argument into transaction methods.</li>
+                        <li><code>trans</code> - A reference to the current script's transaction.
                     </ul>
 
                     <p>
-                        Furthermore, you have access to all of the transaction methods. All requests are run through a
-                        single transaction, and are committed after the script ends. Here are the transaction methods:
+                        The script transaction has the following methods:
                     </p>
 
                     <div class="card">
@@ -227,75 +225,6 @@
 
                     <div class="card">
                         <p>
-                            <code>get_account_metadata</code> - Gets an account
-                            <a href="concepts.html#metadata">metadata</a> value.
-                        </p>
-
-                        <p>Arguments:</p>
-                        <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
-                            <li>
-                                <code>account_id</code> - The ID of the account that the metadata is tied to.
-                            </li>
-                            <li>
-                                <code>name</code> - The name of the metadata variable.
-                            </li>
-                        </ol>
-
-                        <p>Returns the metadata value.</p>
-                    </div>
-
-                    <div class="card">
-                        <p>
-                            <code>set_account_metadata</code> - Sets an account
-                            <a href="concepts.html#metadata">metadata</a> value.
-                        </p>
-
-                        <p>Arguments:</p>
-                        <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
-                            <li>
-                                <code>account_id</code> - The ID of the account that the metadata is tied to.
-                            </li>
-                            <li>
-                                <code>name</code> - The name of the metadata variable.
-                            </li>
-                            <li>
-                                <code>value</code> - The metadata value.
-                            </li>
-                        </ol>
-
-                        <p>Returns nothing.</p>
-                    </div>
-
-                    <div class="card">
-                        <p>
-                            <code>delete_account_metadata</code> - Deletes an account
-                            <a href="concepts.html#metadata">metadata</a> value.
-                        </p>
-
-                        <p>Arguments:</p>
-                        <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
-                            <li>
-                                <code>account_id</code> - The ID of the account that the metadata is tied to.
-                            </li>
-                            <li>
-                                <code>name</code> - The name of the metadata variable.
-                            </li>
-                        </ol>
-
-                        <p>Returns nothing.</p>
-                    </div>
-
-                    <div class="card">
-                        <p>
                             <code>get_vertex_metadata</code> - Gets vertex
                             <a href="concepts.html#metadata">metadata</a> values by a vertex query.
                         </p>
@@ -313,7 +242,10 @@
                             </li>
                         </ol>
 
-                        <p>Returns a mapping of vertex IDs to metadata values.</p>
+                        <p>
+                            Returns a list of objects, each of which contains the vertex <code>id</code> and
+                            metadata <code>value</code>.
+                        </p>
                     </div>
 
                     <div class="card">
@@ -382,7 +314,10 @@
                             </li>
                         </ol>
 
-                        <p>Returns a mapping of <a href="concepts.html#edge-keys">edge keys</a> to metadata values.</p>
+                        <p>
+                            Returns a list of objects, each of which contains the edge <code>key</code> and
+                            metadata <code>value</code>.
+                        </p>
                     </div>
 
                     <div class="card">
