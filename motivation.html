@@ -62,7 +62,10 @@
                     </p>
                     <ul>
                         <li>
-                            A very simple query language and API, inspired by facebook's <a href="https://www.cs.cmu.edu/%7Epavlo/courses/fall2013/static/papers/11730-atc13-bronson.pdf">TAO</a>. While IndraDB supports more than TAO (e.g. multi-hop queries), it remains very simple relative to, e.g. <a href="https://github.com/cayleygraph/cayley/blob/master/docs/GizmoAPI.md">Ceyley's</a>. This substantially lowers the barrier to entry for end-users and for people writing clients and datastores in IndraDB. But it comes at the cost of making it more cumbersome to perform richer queries. IndraDB's simplicty is also done in anticipation of storing very large graphs, including ones that may be realistically too large for complete graph processing. By simplifying the implementation, it will be easier in the future to ensure IndraDB instances can remain reliable and performant in the face of very large datasets.
+                            A very simple query language and API, inspired by facebook's <a href="https://www.cs.cmu.edu/%7Epavlo/courses/fall2013/static/papers/11730-atc13-bronson.pdf">TAO</a>. While IndraDB supports more than TAO (e.g. multi-hop queries), it remains very simple relative to, e.g. <a href="https://github.com/cayleygraph/cayley/blob/master/docs/GizmoAPI.md">Ceyley's</a>. This substantially lowers the barrier to entry for end-users and for people writing clients and datastores in IndraDB, though it comes at the cost of making it more cumbersome to perform richer queries.
+                        </li>
+                        <li>
+                            Support for graphs that are too large for complete processing. IndraDB queries are designed such that datastore implementations should be able to execute them in a reasonable amount of time, even if the graph is very large. For example, queries for edges yields paginated results, in case there's too many edges to pull at once.
                         </li>
                         <li>
                             Emphasis on minimizing operational headache. IndraDB is designed for you to be able to get it running quickly - whether on your laptop on your cloud server - with little to no tuning required.
