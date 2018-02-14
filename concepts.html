@@ -52,29 +52,10 @@
 }
 </code></pre>
 
-                    <h2><a id="accounts"></a>Accounts</h2>
-                    <p>
-                        All vertices are owned by an account. An account owner can view all data (including other account owners' data), but they can only change or delete their own data. Account owners can also link to unowned vertices, but cannot link from unowned vertices. This facilitates sharing data between accounts in the same way the web does: you can view any page, and you can link to any page, but cannot make a page link back to you. Of course, you can
-                        always have just one account that owns all graph data if this is not necessary, and can always
-                        create separate instances of IndraDB servers to have completely isolated accounts.
-                    </p>
-
                     <h2><a id="metadata"></a>Metadata</h2>
                     <p>
                         Metadata are JSON-based key/value items. They can be global (i.e. tied to nothing), or tied to
-                        a vertex, edge, or account. When a vertex, edge or account is deleted, its respective metadata
-                        is deleted as well.
-                    </p>
-                    <p>
-                        Functionality for querying, updating, and deleting metadata is tied to the same transactions as
-                        the functionality for manipulating graph data. This means you can make updates to metadata
-                        along with graph data, with the guarantees of whatever the underlying datastore affords you.
-                    </p>
-                    <p>
-                        Metadata isn’t directly available via the HTTP API, and isn’t subject to any sort of
-                        permissions checking. It’s generally used by scripts to store data that isn’t directly
-                        representable by the graph. For example, you may have a background script that determines
-                        the nearest neighbors for vertices; you can cache the results in metadata.
+                        a vertex or edge. When a vertex or edge is deleted, its respective metadata is deleted as well.
                     </p>
 
                     <h2><a id="queries"></a>Queries</h2>
