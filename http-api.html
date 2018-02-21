@@ -40,6 +40,16 @@
                         <p>The request body can be JSON. When it is, it is passed to the script as <code>arg</code>.</p>
                         <p>Returns the value returned by the script, serialized to JSON.</p>
                     </div>
+
+                    <div class="card">
+                        <p><code>POST /mapreduce/:filename</code>: Runs a mapreduce script.</p>
+                        <p>URL parameters:</p>
+                        <ul>
+                        <li><code>filename</code> - The lua script to run.</li>
+                        </ul>
+                        <p>The request body can be JSON. When it is, it is passed to the script as <code>arg</code>.</p>
+                        <p>Returns the final reduced value, serialized to JSON.</p>
+                    </div>
                     
                     <div class="card">
                         <p><code>POST /transaction</code>: Executes several requests in a single transaction.</p>

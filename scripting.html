@@ -31,15 +31,14 @@
                         to help build vertex and edge queries in lua scripts more easily.
                     </p>
 
+
                     <p>Scripts have access to these globals:</p>
                     <ul>
                         <li><code>arg</code> - The JSON body of the request that called the script.</li>
-                        <li><code>trans</code> - A reference to the current script's transaction.
+                        <li><code>transaction</code> - A function to create a new transaction.</li>
                     </ul>
 
-                    <p>
-                        The script transaction has the following methods:
-                    </p>
+                    <p>Transactions have these methods:</p>
 
                     <div class="card">
                         <p><code>create_vertex</code> - Creates a new vertex.
