@@ -25,27 +25,178 @@
                     </p>
 
                     <p>
-                        See <a href="https://github.com/indradb/indradb/tree/master/bin/test_scripts">test_scripts</a> for
-                        the test scripts as examples.
+                        See the <a href="https://github.com/indradb/indradb/tree/master/bin/test_scripts/execute">tesst scripts</a>  for examples.
                     </p>
 
+                    <p>
+                        The global <code>arg</code> variable represents the JSON payload passed in when the script request was made. The JSON is serialized to equivalent Lua values (e.g. objects and arrays are converted to tables) for convenience.
+                    </p>
 
-                    <p>Scripts have access to these globals:</p>
-                    <ul>
-                        <li><code>arg</code> - The JSON body of the request that called the script.</li>
-                        <li><code>transaction</code> - A function to create a new transaction.</li>
-                    </ul>
+                    <p>
+                        Additionally, the below globally-defined userdata and functions are provided for querying against the IndraDB datastore.
+                    </p>
 
-                    <p>Transactions have these methods:</p>
+                    <h2><code>EdgeKey</code></h2>
+
+                    <p>Table for representing <a href="https://indradb.github.io/concepts.html#edge-keys">edge keys</a>.</p>
 
                     <div class="card">
-                        <p><code>create_vertex</code> - Creates a new vertex.
+                        <p><code>EdgeKey.new</code> - Creates a new edge key.
 
                         <p>Arguments:</p>
                         <ol>
                             <li>
-                                <code>trans</code> - A reference to the current transaction.
+                                <code>outbound_id</code> - The outbound vertex ID.
                             </li>
+                            <li>
+                                <code>type</code> - The edge type. Must be less than 256 characters long, and can
+                                only contain letters, numbers, dashes, and underscores.
+                            </li>
+                            <li>
+                                <code>inbound_id</code> - The inbound vertex ID.
+                            </li>
+                        </ol>
+
+                        <p>Returns the new edge key.</p>
+                    </div>
+
+                    <h2><code>VertexQuery</code></h2>
+
+                    <p>Table for representing <a href="https://indradb.github.io/concepts.html#vertex-queries">vertex queries</a>.</p>
+
+                    <div class="card">
+                        <p><code>VertexQuery.all</code> - Creates a new vertex query to get a range from all vertices.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>start_id</code> - The offset ID to start from, or <code>nil</code> to start from the beginning.
+                            </li>
+                            <li>
+                                <code>limit</code> - Up to how many vertices to return.
+                            </li>
+                        </ol>
+
+                        <p>Returns a new vertex query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>VertexQuery.vertices</code> - Creates a new vertex query to get a specific set of vertices.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>ids</code> - The specific vertex UUIDs to get.
+                            </li>
+                        </ol>
+
+                        <p>Returns a new vertex query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>query:outbound_edges</code> - A vertex query method to get the outbound edges of the vertices.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>type</code> - The edge type. Must be less than 256 characters long, and can
+                                only contain letters, numbers, dashes, and underscores.
+                            </li>
+                            <li>
+                                <code>high</code> - A UNIX timestamp representing the upper bound age of edges that should be returned.
+                            </li>
+                            <li>
+                                <code>low</code> - A UNIX timestamp representing the lower bound age of edges that should be returned.
+                            </li>
+                            <li>
+                                <code>limit</code> - Up to how many edges to return.
+                            </li>
+                        </ol>
+
+                        <p>Returns a new edge query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>query:inbound_edges</code> - A vertex query method to get the inbound edges of the vertices.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>type</code> - The edge type. Must be less than 256 characters long, and can
+                                only contain letters, numbers, dashes, and underscores.
+                            </li>
+                            <li>
+                                <code>high</code> - A UNIX timestamp representing the upper bound age of edges that should be returned.
+                            </li>
+                            <li>
+                                <code>low</code> - A UNIX timestamp representing the lower bound age of edges that should be returned.
+                            </li>
+                            <li>
+                                <code>limit</code> - Up to how many edges to return.
+                            </li>
+                        </ol>
+
+                        <p>Returns a new edge query.</p>
+                    </div>
+
+                    <h2><code>EdgeQuery</code></h2>
+
+                    <p>Table for representing <a href="https://indradb.github.io/concepts.html#edge-queries">edge queries</a>.</p>
+
+                    <div class="card">
+                        <p><code>EdgeQuery.edges</code> - Creates a new edge query to get a specific set of edges.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>keys</code> - The specific edge keys of the edges to get.
+                            </li>
+                        </ol>
+
+                        <p>Returns a new vertex query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>query:outbound_vertices</code> - A vertex query method to get the outbound vertices of the edges.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>limit</code> - Up to how many vertices to return.
+                            </li>
+                        </ol>
+
+                        <p>Returns a new edge query.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>query:inbound_vertices</code> - A vertex query method to get the inbound vertices of the edges.
+
+                        <p>Arguments:</p>
+                        <ol>
+                            <li>
+                                <code>limit</code> - Up to how many vertices to return.
+                            </li>
+                        </ol>
+
+                        <p>Returns a new edge query.</p>
+                    </div>
+
+                    <h2><code>Transaction</code></h2>
+
+                    <p>Userdata for representing transactions.</p>
+
+                    <div class="card">
+                        <p><code>transaction</code> - Creates a new edge transaction.
+
+                        <p>Returns a new transaction.</p>
+                    </div>
+
+                    <div class="card">
+                        <p><code>trans:create_vertex</code> - Creates a new vertex.
+
+                        <p>Arguments:</p>
+                        <ol>
                             <li>
                                 <code>type</code> - The vertex type. Must be less than 256 characters long, and can
                                 only contain letters, numbers, dashes, and underscores.
@@ -56,13 +207,10 @@
                     </div>
 
                     <div class="card">
-                        <p><code>get_vertices</code> - Gets vertices by a given query.
+                        <p><code>trans:get_vertices</code> - Gets vertices by a given query.
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
                                 use.
@@ -73,13 +221,10 @@
                     </div>
 
                     <div class="card">
-                        <p><code>delete_vertices</code> - Deletes vertices by a given query.
+                        <p><code>trans:delete_vertices</code> - Deletes vertices by a given query.
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to
                                 use.
@@ -90,13 +235,10 @@
                     </div>
 
                     <div class="card">
-                        <p><code>create_edge</code> - Creates a new edge.
+                        <p><code>trans:create_edge</code> - Creates a new edge.
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>key</code> - The <a href="concepts.html#edge-keys">edge key</a> that identifies
                                 the edge.
@@ -110,13 +252,10 @@
                     </div>
 
                     <div class="card">
-                        <p><code>get_edges</code> - Gets edges by a given query.
+                        <p><code>trans:get_edges</code> - Gets edges by a given query.
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                 use.
@@ -127,30 +266,29 @@
                     </div>
 
                     <div class="card">
-                        <p><code>get_edge_count</code> - Gets the number of edges that match a given query.
+                        <p><code>trans:get_edge_count</code> - Gets the number of edges that match a given query.
 
                         <p>Arguments:</p>
-                        <ol>
+                        <ul>
                             <li>
-                                <code>trans</code> - A reference to the current transaction.
+                                <code>id</code> - The vertex ID to get the edge count on.
                             </li>
                             <li>
-                                <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
-                                use.
+                                <code>type_filter</code> - What edge types to count, or <code>nil</code> for all edge types.
                             </li>
-                        </ol>
+                            <li>
+                                <code>direction</code> - <code>outbound</code> to count outbound edges, or <code>inbound</code> to count inbound edges.
+                            </li>
+                        </ul>
 
                         <p>Returns the number of edges that match the query.</p>
                     </div>
 
                     <div class="card">
-                        <p><code>delete_edges</code> - Deletes edges by a given query.
+                        <p><code>trans:delete_edges</code> - Deletes edges by a given query.
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to
                                 use.
@@ -162,15 +300,12 @@
 
                     <div class="card">
                         <p>
-                            <code>get_global_metadata</code> - Gets a global
+                            <code>trans:get_global_metadata</code> - Gets a global
                             <a href="concepts.html#metadata">metadata</a> value.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>name</code> - The name of the metadata variable.
                             </li>
@@ -181,15 +316,12 @@
 
                     <div class="card">
                         <p>
-                            <code>set_global_metadata</code> - Sets a global
+                            <code>trans:set_global_metadata</code> - Sets a global
                             <a href="concepts.html#metadata">metadata</a> value.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>name</code> - The name of the metadata variable.
                             </li>
@@ -203,15 +335,12 @@
 
                     <div class="card">
                         <p>
-                            <code>delete_global_metadata</code> - Deletes a global
+                            <code>trans:delete_global_metadata</code> - Deletes a global
                             <a href="concepts.html#metadata">metadata</a> value.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>name</code> - The name of the metadata variable.
                             </li>
@@ -222,15 +351,12 @@
 
                     <div class="card">
                         <p>
-                            <code>get_vertex_metadata</code> - Gets vertex
+                            <code>trans:get_vertex_metadata</code> - Gets vertex
                             <a href="concepts.html#metadata">metadata</a> values by a vertex query.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to run.
                             </li>
@@ -247,15 +373,12 @@
 
                     <div class="card">
                         <p>
-                            <code>set_vertex_metadata</code> - Sets vertex
+                            <code>trans:set_vertex_metadata</code> - Sets vertex
                             <a href="concepts.html#metadata">metadata</a> values by a vertex query.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to run.
                             </li>
@@ -272,15 +395,12 @@
 
                     <div class="card">
                         <p>
-                            <code>delete_vertex_metadata</code> - Deletes vertex
+                            <code>trans:delete_vertex_metadata</code> - Deletes vertex
                             <a href="concepts.html#metadata">metadata</a> values by a vertex query.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#vertex-queries">vertex query</a> to run.
                             </li>
@@ -294,15 +414,12 @@
 
                     <div class="card">
                         <p>
-                            <code>get_edge_metadata</code> - Gets edge
+                            <code>trans:get_edge_metadata</code> - Gets edge
                             <a href="concepts.html#metadata">metadata</a> values by an edge query.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to run.
                             </li>
@@ -319,15 +436,12 @@
 
                     <div class="card">
                         <p>
-                            <code>set_edge_metadata</code> - Sets edge
+                            <code>trans:set_edge_metadata</code> - Sets edge
                             <a href="concepts.html#metadata">metadata</a> values by an edge query.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to run.
                             </li>
@@ -344,15 +458,12 @@
 
                     <div class="card">
                         <p>
-                            <code>delete_edge_metadata</code> - Deletes edge
+                            <code>trans:delete_edge_metadata</code> - Deletes edge
                             <a href="concepts.html#metadata">metadata</a> values by an edge query.
                         </p>
 
                         <p>Arguments:</p>
                         <ol>
-                            <li>
-                                <code>trans</code> - A reference to the current transaction.
-                            </li>
                             <li>
                                 <code>query</code> - The <a href="concepts.html#edge-queries">edge query</a> to run.
                             </li>
