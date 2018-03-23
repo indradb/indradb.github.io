@@ -65,14 +65,15 @@
                             <p><code>create_vertex</code> - Creates a new vertex.
 
                             <p>Arguments:</p>
+
                             <ul>
                                 <li>
-                                    <code>type</code> - The vertex type. Must be less than 256 characters long, and can
-                                    only contain letters, numbers, dashes, and underscores.
+                                    <code>vertex</code> - A JSON object with <code>id</code> and <code>type</code>
+                                    keys.
                                 </li>
                             </ul>
 
-                            <p>Returns the new vertex UUID.</p>
+                            <p>Returns whether the vertex was successfully generated.</p>
                         </div>
 
                         <div class="card">
