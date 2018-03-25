@@ -62,7 +62,26 @@
                         <p>The transaction requests and responses:</p>
 
                         <div class="card">
-                            <p><code>create_vertex</code> - Creates a new vertex.
+                            <p><code>create_vertex</code> - Creates a new vertex.</p>
+
+                            <p>Arguments:</p>
+                            <ul>
+                                <li>
+                                    <code>vertex</code> - A JSON object specifying the vertex. It should have a
+                                    <code>type</code> property - specifying the vertex type - and an
+                                    <code>id</code> property - specifying the vertex' UUID.
+                                </li>
+                            </ul>
+
+                            <p>Returns the new vertex UUID.</p>
+                        </div>
+
+                        <div class="card">
+                            <p>
+                                <code>create_vertex_from_type</code> - Creates a new vertex from a given type. Used as
+                                opposed to <code>create_vertex</code> when you do not want to manually specify the new
+                                vertex's UUID.
+                            </p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -76,7 +95,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>get_vertices</code> - Gets vertices by a given query.
+                            <p><code>get_vertices</code> - Gets vertices by a given query.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -90,7 +109,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>delete_vertices</code> - Deletes vertices by a given query.
+                            <p><code>delete_vertices</code> - Deletes vertices by a given query.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -104,7 +123,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>create_edge</code> - Creates a new edge.
+                            <p><code>create_edge</code> - Creates a new edge.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -121,7 +140,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>get_edges</code> - Gets edges by a given query.
+                            <p><code>get_edges</code> - Gets edges by a given query.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -135,7 +154,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>delete_edges</code> - Deletes edges by a given query.
+                            <p><code>delete_edges</code> - Deletes edges by a given query.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -149,7 +168,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>get_edge_count</code> - Gets the number of edges that match a given query.
+                            <p><code>get_edge_count</code> - Gets the number of edges that match a given query.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -168,7 +187,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>get_global_metadata</code> - Gets a global metadata value.
+                            <p><code>get_global_metadata</code> - Gets a global metadata value.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -181,7 +200,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>set_global_metadata</code> - Sets a global metadata value.
+                            <p><code>set_global_metadata</code> - Sets a global metadata value.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -197,7 +216,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>delete_global_metadata</code> - Deletes a global metadata value.
+                            <p><code>delete_global_metadata</code> - Deletes a global metadata value.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -210,7 +229,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>get_vertex_metadata</code> - Gets vertex metadata values.
+                            <p><code>get_vertex_metadata</code> - Gets vertex metadata values.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -230,7 +249,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>set_vertex_metadata</code> - Sets vertex metadata values.
+                            <p><code>set_vertex_metadata</code> - Sets vertex metadata values.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -250,7 +269,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>delete_vertex_metadata</code> - Deletes vertex metadata.
+                            <p><code>delete_vertex_metadata</code> - Deletes vertex metadata.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -267,7 +286,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>get_edge_metadata</code> - Gets edge metadata values.
+                            <p><code>get_edge_metadata</code> - Gets edge metadata values.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -287,7 +306,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>set_edge_metadata</code> - Sets edge metadata values.
+                            <p><code>set_edge_metadata</code> - Sets edge metadata values.</p>
 
                             <p>Arguments:</p>
                             <ul>
@@ -307,7 +326,7 @@
                         </div>
 
                         <div class="card">
-                            <p><code>delete_edge_metadata</code> - Deletes edge metadata.
+                            <p><code>delete_edge_metadata</code> - Deletes edge metadata.</p>
 
                             <p>Arguments:</p>
                             <ul>
